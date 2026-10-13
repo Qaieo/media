@@ -12,3 +12,6 @@ venv*
 .vscode*
 .venv
 execution_groups/
+
+# qaieo site tracker runtime state (rewritten on every tracker run)
+site/.tracker-state.json

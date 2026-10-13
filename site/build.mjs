@@ -10,7 +10,7 @@ const SITE_DIR = dirname(fileURLToPath(import.meta.url));
 const POSTS_DIR = join(SITE_DIR, "posts");
 const PUBLIC = join(SITE_DIR, "public");
 const SITE_URL = "https://qaieo.com";
-const NEWSLETTER_USER = "izadjou"; // TODO: swap to the dedicated Qaieo Buttondown username
+const NEWSLETTER_USER = "izadjou"; // TODO: rewire signup to the dedicated Qaieo Loops list once the list ID exists
 
 function parseFile(path) {
   const raw = readFileSync(path, "utf8");
@@ -35,7 +35,8 @@ function md(src) {
   const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   let html = esc(src);
   html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, t, u) =>
+    `<a href="${u.replace(/"/g, "&quot;")}">${t}</a>`);
   const lines = html.split("\n");
   let out = "", inList = false;
   for (const line of lines) {
@@ -56,6 +57,11 @@ function md(src) {
 
 function fmtDate(iso) {
   return new Date(iso + "T12:00:00Z").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
+}
+
+// Keep CDATA sections well-formed if post content ever contains "]]>".
+function cdata(s) {
+  return s.replace(/\]\]>/g, "]]]]><![CDATA[>");
 }
 
 mkdirSync(PUBLIC, { recursive: true });
@@ -117,7 +123,7 @@ const cards = posts.map((p) => `
         <div class="post-source">Source: <a href="${p.source_url}">${p.source}</a></div>
       </article>`).join("\n");
 
-writeFileSync(join(PUBLIC, "index.html"), page("Qaieo — Photonic Quantum, Tracked",
+writeFileSync(join(PUBLIC, "index.html"), page("Qaieo, Photonic Quantum, Tracked",
   "Qaieo is an independent publication covering photonic quantum computing: open-source frameworks, hardware milestones, papers, and the people building them.",
   `
       <p class="lede"><span class="live-dot"></span>Qaieo tracks photonic quantum computing: the open-source frameworks, the hardware milestones, the papers, and the people building them. Anchored on Perceval, the last actively developed open framework in the field.</p>
@@ -133,7 +139,7 @@ ${cards}
       </section>`));
 
 const releases = posts.filter((p) => p.tags.includes("release"));
-writeFileSync(join(PUBLIC, "timeline.html"), page("Qaieo — Release Timeline",
+writeFileSync(join(PUBLIC, "timeline.html"), page("Qaieo, Release Timeline",
   "Perceval release timeline, tracked by Qaieo.",
   `
       <h2 class="page-title">Release timeline</h2>
@@ -150,7 +156,7 @@ ${releases.map((p) => `
       </div>`));
 
 const about = parseFile(join(SITE_DIR, "about.md"));
-writeFileSync(join(PUBLIC, "about.html"), page("Qaieo — About",
+writeFileSync(join(PUBLIC, "about.html"), page("Qaieo, About",
   "About Qaieo: the independent publication covering photonic quantum computing.",
   `
       <h2 class="page-title">${about.title}</h2>
@@ -158,17 +164,17 @@ writeFileSync(join(PUBLIC, "about.html"), page("Qaieo — About",
 
 const items = posts.slice(0, 30).map((p) => `
     <item>
-      <title><![CDATA[${p.title}]]></title>
+      <title><![CDATA[${cdata(p.title)}]]></title>
       <link>${SITE_URL}/index.html#${p.slug}</link>
       <guid>${SITE_URL}/index.html#${p.slug}</guid>
       <pubDate>${new Date(p.date + "T12:00:00Z").toUTCString()}</pubDate>
-      <description><![CDATA[${md(p.body)}<p>Source: <a href="${p.source_url}">${p.source}</a></p>]]></description>
+      <description><![CDATA[${cdata(md(p.body))}<p>Source: <a href="${p.source_url}">${p.source}</a></p>]]></description>
     </item>`).join("\n");
 
 writeFileSync(join(PUBLIC, "feed.xml"), `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>Qaieo — Photonic Quantum, Tracked</title>
+    <title>Qaieo, Photonic Quantum, Tracked</title>
     <link>${SITE_URL}/</link>
     <description>Qaieo is an independent publication covering photonic quantum computing.</description>
     <language>en-us</language>
