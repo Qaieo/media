@@ -1,0 +1,419 @@
+# MIT License
+#
+# Copyright (c) 2022 Quandela
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# As a special exception, the copyright holders of exqalibur library give you
+# permission to combine exqalibur with code included in the standard release of
+# Perceval under the MIT license (or modified versions of such code). You may
+# copy and distribute such a combined system following the terms of the MIT
+# license for both exqalibur and Perceval. This exception for the usage of
+# exqalibur is limited to the python bindings used by Perceval.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+import time
+from copy import deepcopy, copy
+from typing import Callable, Any
+
+from .contraint_checker import ConstraintChecker
+from .check_cancel import call_and_check_cancel
+from .communication_layer import CommunicationLayer, RemoteId
+from .computation import Computation
+from .abstract_computer import AComputer
+from .computation_iterator import ComputationIterator
+from .platform_specs import PlatformSpecs
+from .error_mitigation import AMitigation, Imperfections
+from .execution_status import RunningStatus
+from .simulated_computer import SimulatedComputer
+from .async_getter import AsyncGetter
+from .payload_generator import PayloadGenerator
+
+from perceval.utils import perf_dict_to_noise, ProgressCallback, NoiseModel, PostSelect, ContextManager
+from perceval.utils.logging import channel, get_logger
+from perceval.components import PortLocation, Experiment, update_detectors_from_perfs
+from perceval.serialization import Serialization, InputArchive
+
+
+class _RemoteGetter(AsyncGetter):
+    STATUS_REFRESH_DELAY = 1  # minimum job status refresh period (in s)
+
+    def __init__(self, communication_layer: CommunicationLayer, remote_id: RemoteId):
+        super().__init__()
+        self._results = {}
+        self._communication_layer = communication_layer
+        self._remote_id = remote_id
+        self._last_status_refresh = 0.
+        self._job_status_errors = 0
+
+    def cancel(self):
+        if self.status.status in (RunningStatus.RUNNING, RunningStatus.WAITING, RunningStatus.SUSPENDED):
+            get_logger().info(f"Programmatically request job {self._remote_id} cancellation", channel.general)
+            self._communication_layer.cancel(self._remote_id)
+            self._status.stop_run(RunningStatus.CANCEL_REQUESTED, 'Cancellation requested by user')
+        else:
+            raise RuntimeError('Job is not waiting or running, cannot cancel it')
+
+    def _update_status(self) -> None:
+        if self._status.completed:  # static status - retrieving from the cloud unnecessary.
+            return
+
+        now = time.time()
+        if now - self._last_status_refresh > self.STATUS_REFRESH_DELAY:
+            self._previous_status_refresh = now
+            status = self._communication_layer.get_job_status(self._remote_id, self._job_status_errors)
+            if status is not None:
+                self._job_status_errors = 0
+                self._status.copy_from(status)
+            else:
+                self._job_status_errors += 1
+
+    def _get_results(self) -> dict | None:
+        if self._results and self.status.completed:
+            return self._results
+        if not self.status.maybe_completed:
+            raise RuntimeError('The job is still running, results are not available yet.')
+        self._results = self._communication_layer.get_results(self._remote_id)
+        return self._results
+
+    def get_details(self) -> str:
+        return f"Remote: {{id: {self._remote_id}, status: {self._status.status.name}, platform: {self._communication_layer.name}}}"
+
+
+class RemoteComputer(AComputer):
+    """
+    A computer that sends Computations to a remote platform.
+
+    :param communication_layer: A CommunicationLayer used to communicate with the remote computer.
+    """
+
+    WARN_INTERVAL = 1800
+    INFO_INTERVAL = 10
+
+    def __init__(self, communication_layer: CommunicationLayer):
+        super().__init__()
+        self._communication_layer = communication_layer
+        self._commands = {command.name: command for command in communication_layer.get_commands()}
+        self._specs = communication_layer.get_specs()
+        self._perfs = communication_layer.get_performances()
+        self._custom_noise: NoiseModel | None = None
+        self.use_mitigations_remotely: bool = True
+        self._available_jobs = 0
+
+    @property
+    def name(self) -> str:
+        return self._communication_layer.name
+
+    @property
+    def noise(self):
+        if self._custom_noise is not None:
+            return self._custom_noise
+        return perf_dict_to_noise(self.performance)
+
+    @noise.setter
+    def noise(self, noise: NoiseModel | None):
+        self._custom_noise = noise
+
+    def _use_mitigations_remotely(self):
+        use_mitigations_remotely = self.use_mitigations_remotely
+        if self._error_mitigations is not None and use_mitigations_remotely:
+            for mitigation in self._error_mitigations:
+                if not mitigation.is_known_from(self.specs.known_mitigations):
+                    use_mitigations_remotely = False
+                    break
+
+        return use_mitigations_remotely
+
+    def _get_local_mitigations(self) -> list[AMitigation]:
+        return [] if self._use_mitigations_remotely() else super()._get_local_mitigations()
+
+    @property
+    def specs(self) -> PlatformSpecs:
+        return self._specs
+
+    @property
+    def performance(self):
+        self._perfs = self._communication_layer.get_performances()
+        return self._perfs
+
+    @property
+    def status(self) -> str:
+        return self._communication_layer.get_remote_status()
+
+    @property
+    def available_parameters(self) -> dict[str, str]:
+        return self._specs.parameters
+
+    @property
+    def details(self) -> dict[str, Any]:
+        return self._communication_layer.get_platform_details()
+
+    def validate_single(self, computation: Computation) -> None:
+        super().validate_single(computation)
+        for sub_comp in computation:
+            self.check_experiment(sub_comp.experiment)
+
+        params = computation.parameters
+        if "max_samples" in params and "max_shots" in params:
+            if params["max_samples"] > params["max_shots"]:
+                get_logger().warn(f"Lowered 'max_samples' from user defined value ({params['max_samples']}) to"
+                                  f" 'max_shots' value ({params['max_shots']}) for consistency.",
+                                  channel.user)
+                params["max_samples"] = params["max_shots"]
+
+    @staticmethod
+    def check_min_detected_photons_filter(experiment: Experiment) -> None:
+        if experiment.min_photons_filter is None:
+            raise ValueError("The value of min_detected_photons is not set."
+                             " Use the method experiment.min_detected_photons_filter(value).")
+
+    def check_experiment(self, experiment: Experiment) -> None:
+        self.check_min_detected_photons_filter(experiment)
+        ConstraintChecker.verify_experiment(self.specs.constraints, experiment)
+
+    def _handle_iterator(self, comp: Computation | ComputationIterator, out: dict | None)\
+            -> tuple[dict, Callable[[dict], None]]:
+        if out is None:
+            out = dict()
+
+        # Avoids sending separate jobs if there is an Iterator but no local mitigations
+        if isinstance(comp, ComputationIterator) and len(self._get_local_mitigations()) > 0:
+            return out, comp.make_inserter(out)
+
+        return out, lambda res: out.update(res)
+
+    def extend_computation_keep_original(self, computation: Computation | ComputationIterator) -> list[tuple[list[Computation], Computation]]:
+        if len(self._get_local_mitigations()) > 0:
+            return super().extend_computation_keep_original(computation)
+        else:
+            # Avoids sending separate jobs if there is an Iterator but no local mitigations
+            # This is doable here because execute_command was made so that it supports ComputationIterator
+            return [([computation], computation)]
+
+    def extend_computation(self, computation: Computation | ComputationIterator) -> list[list[Computation]]:
+        if len(self._get_local_mitigations()) > 0:
+            return super().extend_computation(computation)
+        else:
+            # Avoids sending separate jobs if there is an Iterator but no local mitigations
+            # This is doable here because execute_command was made so that it supports ComputationIterator
+            return [[computation]]
+
+    def _execute_command(self, computation: Computation, progress_cb: ProgressCallback = None) -> dict:
+        async_getter = self._execute_single_async(computation)
+        status = async_getter.status
+        while not status.completed:
+            time.sleep(1)
+            status = async_getter.status
+            if call_and_check_cancel(progress_cb, status.progress, status.message or ""):
+                async_getter.cancel()
+                break
+        return async_getter.get_results()
+
+    def _get_imperfections(self, computation: Computation | ComputationIterator) -> Imperfections:
+        architecture = self.specs.architecture
+        if architecture is not None:
+            detectors = copy(architecture.detectors)
+            update_detectors_from_perfs(detectors, self.performance)
+        else:
+            detectors = computation.experiment.detectors  # Supposes the remote can simulate them
+
+        if computation.experiment.noise is not None:
+            get_logger().warn("Noise given in the Experiment - Mitigations may behave weirdly")
+            noise = computation.experiment.noise
+        else:
+            noise = self.noise
+        return Imperfections(noise, detectors)
+
+    def _execute_command_async(self, computation: Computation) -> _RemoteGetter:
+        payload = self.prepare_payload(computation)
+        self._take_resource()
+        return _RemoteGetter(self._communication_layer, self._communication_layer.send(payload))
+
+    @property
+    def available_jobs(self) -> int:
+        self._available_jobs = self._communication_layer.get_availability()
+        return self._available_jobs
+
+    def _take_resource(self):
+        start = time.time()
+        start_warn = time.time()
+        start_info = start_warn
+        self._available_jobs = self._communication_layer.get_availability()
+        while self._available_jobs <= 0:
+            time.sleep(1)
+            if time.time() - start_warn > self.WARN_INTERVAL:
+                start_warn = time.time()
+                get_logger().warn(f"Couldn't find a way to send any job for {int(start_warn - start)} seconds - queue is full")
+            elif time.time() - start_info > self.INFO_INTERVAL:
+                start_info = time.time()
+                get_logger().info(f"Couldn't find a way to send any job for {int(start_info - start)} seconds - queue is full")
+            self._available_jobs = self._communication_layer.get_availability()
+
+    def _reserve_resource(self) -> ContextManager:
+        return ContextManager(self._take_resource)
+
+    def prepare_payload(self, computation: Computation) -> dict:
+        if self._error_mitigations is not None:
+            if self._use_mitigations_remotely():
+                remote_mitigations = self._error_mitigations
+            else:
+                remote_mitigations = []
+        else:
+            remote_mitigations = None  # Apply default mitigations
+
+        return PayloadGenerator.from_computation(computation,
+                                                 remote_mitigations,
+                                                 self._parameters,
+                                                 self._custom_noise)
+
+    def start(self) -> None:
+        """May be used to start a non-interrupted session. May do nothing for stateless providers"""
+        self._communication_layer.start_session()
+
+    def stop(self) -> None:
+        """May be used to stop a non-interrupted session. May do nothing for stateless providers"""
+        self._communication_layer.stop_session()
+
+    def delete(self) -> None:
+        """May be used to delete a non-interrupted session. May do nothing for stateless providers"""
+        self._communication_layer.delete_session()
+
+    @property
+    def is_remote(self) -> bool:
+        return True
+
+    @property
+    def type(self):
+        return self._specs.type
+
+    def _estimate_sample_probability(self, computation: Computation | ComputationIterator, param_values: dict = None) -> float:
+        # Simulation with a noisy source (only losses)
+        computation.validate()
+
+        lc = SimulatedComputer("SLOS")  # TODO: replace by "best" when available
+
+        computation = deepcopy(computation)
+        computation.command = lc.get_command("probs")
+
+        exp = computation.experiment
+        n = exp.input_state.n
+        photon_filter = n
+        if exp.min_photons_filter is not None:
+            photon_filter = exp.min_photons_filter + sum(exp.heralds.values())
+            if photon_filter > n:
+                return 0
+        if photon_filter < 2:
+            return 1
+
+        if param_values is not None:
+            params = exp.get_circuit_parameters()
+            for param_name, value in param_values.items():
+                if param_name in params:
+                    params[param_name].set_value(value)
+
+        # Remove all selection
+        exp.min_detected_photons_filter(1)
+        exp.set_postselection(PostSelect())
+        while len(exp.in_heralds):
+            m = next(iter(exp.in_heralds))
+            exp.remove_port(m, PortLocation.INPUT)
+        while len(exp.heralds):
+            m = next(iter(exp.heralds))
+            exp.remove_port(m, PortLocation.OUTPUT)
+
+        archi = self.specs.architecture
+        if archi is not None:
+            for m in range(exp.circuit_size):
+                exp.add(m, archi.detectors[m])
+
+        nm = deepcopy(self.noise)
+        nm.g2 = 0
+        nm.indistinguishability = 1
+        lc.noise = nm
+
+        if self._error_mitigations is not None:
+            lc.mitigations = self._error_mitigations
+        else:
+            lc.mitigations = self.specs.default_mitigations
+
+        probs = lc.execute(computation)
+        p_above_filter_ns = 0
+        for state, prob in probs['results'].items():
+            if state.n >= photon_filter:
+                p_above_filter_ns += prob
+        return p_above_filter_ns
+
+    def estimate_required_shots(self, computation: Computation | ComputationIterator, nsamples: int, param_values: dict = None) -> int | None:
+        """
+        Compute an estimate number of required shots given the platform and the user request.
+        The circuit, input state, minimum photon filter, and error mitigations are taken into account.
+
+        :param computation: The computation that will be sent with unknown number of samples. It needs to be valid.
+        :param nsamples: Number of expected samples of interest
+        :param param_values: Key/value pairs for variable parameters inside the circuit. All parameters need to be fixed
+            for this computation to run.
+        :return: Estimate of the number of shots the user needs to acquire enough samples of interest,
+            or None if no sample of interest can be acquired
+        """
+        p_interest = self._estimate_sample_probability(computation, param_values=param_values)
+        if p_interest == 0:
+            return None
+        return round(nsamples / p_interest)
+
+    def estimate_expected_samples(self, computation: Computation | ComputationIterator, nshots: int, param_values: dict = None) -> int:
+        """
+        Compute an estimate number of samples the user can expect given the platform and the user request.
+        The circuit, input state, minimum photon filter, and error mitigations are taken into account.
+
+        :param computation: The computation that will be sent with unknown number of shots. It needs to be valid.
+        :param nshots: Number of shots the user is willing to consume
+        :param param_values: Key/value pairs for variable parameters inside the circuit. All parameters need to be fixed
+            for this computation to run.
+        :return: Estimate of the number of samples of interest the user can expect back
+        """
+        p_interest = self._estimate_sample_probability(computation, param_values=param_values)
+        return round(nshots * p_interest)
+
+
+Serialization.register_class(
+    _RemoteGetter,
+    ["_remote_id", "_results", "_status", "_last_status_refresh", "_communication_layer", "_job_status_errors"],
+    tag="RemoteGetter"
+)
+
+
+def _load_remote_computer(
+    computer: RemoteComputer,
+    archive: InputArchive,
+    members,
+    version: int,
+):
+    values = {name: archive.create(index) for name, index in members}
+    computer.__init__(values.pop("_communication_layer"))  # This sets the specs and perfs as usual
+    for name, value in values.items():
+        setattr(computer, name, value)
+
+
+Serialization.register_class(
+    RemoteComputer,
+    # Do not save specs and perfs - asked again to the communication layer
+    class_serial_members_write=lambda computer, archive: archive.save_attr(
+        computer, ["_communication_layer", "_error_mitigations", "_parameters", "_custom_noise", "use_mitigations_remotely"]
+    ),
+    class_serial_members_read=_load_remote_computer,
+)

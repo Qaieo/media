@@ -1,0 +1,15 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+markers = [
+    "long_test: marks tests as slow (deselect with '--skip-long-test')",
+    "rendering: marks rendering tests"
+]
+minversion = "6.0"
+addopts = "-ra"
+testpaths = "tests"
