@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qaieo — Photonic Quantum Tracker (Unofficial)</title>
+  <meta name="description" content="Unofficial fan-run tracker of Perceval and photonic quantum computing: releases, hardware, papers. Not affiliated with Quandela." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="alternate" type="application/rss+xml" title="Qaieo" href="feed.xml" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <span class="badge">Unofficial fan project</span>
+      <h1><a href="index.html" class="home-link">Qaieo <span class="accent">·</span> Photonic Quantum Tracker</a></h1>
+      
+    <nav class="nav">
+      <a href="index.html">Latest</a>
+      <a href="timeline.html">Timeline</a>
+      <a href="about.html">About</a>
+      <a href="feed.xml">RSS</a>
+    </nav>
+    </header>
+    <main>
+
+      <p class="lede"><span class="live-dot"></span>Tracking Perceval — the last actively developed open-source photonic quantum framework — plus hardware milestones, papers, and the field around it.</p>
+      <h2 class="feed-title">Latest updates</h2>
+
+      <article class="post" id="2026-10-13-what-is-perceval">
+        <div class="post-meta">
+          <time datetime="2026-10-13">October 13, 2026</time>
+          <span class="post-tags"><span class="tag">explainer</span></span>
+        </div>
+        <h3>What is Perceval?</h3>
+        <div class="post-body"><p><strong>Perceval</strong> is Quandela's open-source Python framework for photonic quantum computing. If Qiskit is the SDK for superconducting qubits, Perceval is the equivalent for photons.</p><p>Photonic quantum computers use particles of light as qubits. They run at room temperature, network naturally over fiber, and are the bet of companies like Quandela, PsiQuantum, Xanadu, and ORCA. The programming model is different from gate-based machines: you design linear optical circuits (beam splitters, phase shifters, detectors) and the framework simulates them or targets real hardware.</p><p>What Perceval gives you:</p><ul><li><strong>Circuit design</strong> for linear optical quantum computing, with a simulator backend for development.</li><li><strong>Hardware access</strong> to Quandela's photonic QPUs through the cloud.</li><li><strong>Error mitigation</strong> (as of v1.3.0) for dealing with the probabilistic reality of photonic hardware: loss, detector imperfections, partial distinguishability.</li><li><strong>A growing algorithm library</strong> for the problems photonics is naturally good at: boson sampling, graph problems, quantum machine learning.</li></ul><p>It's Apache-licensed, actively developed (monthly-ish releases), and currently the most alive open-source project in photonic quantum software. Which brings us to the bigger story.</p></div>
+        <div class="post-source">Source: <a href="https://github.com/Quandela/Perceval">Quandela docs and repo</a></div>
+      </article>
+
+      <article class="post" id="2026-10-13-the-last-photonic-framework">
+        <div class="post-meta">
+          <time datetime="2026-10-13">October 13, 2026</time>
+          <span class="post-tags"><span class="tag">analysis</span><span class="tag">editorial</span></span>
+        </div>
+        <h3>The last photonic framework standing</h3>
+        <div class="post-body"><p>Something quiet happened in photonic quantum software: <strong>Xanadu archived Strawberry Fields</strong>, its flagship photonic quantum computing library (854 stars, the reference implementation for continuous-variable photonic circuits since 2018). Then it archived <strong>MrMustard</strong>, the successor library. Both now read-only. No new features, ever.</p><p>That leaves <strong>Perceval</strong> as the only actively developed open-source framework for programming photonic quantum computers. One framework, one company (Quandela) behind it, for an entire hardware paradigm.</p><p><strong>Why this matters more than it looks.</strong> Open-source frameworks are where a field's knowledge compounds. Qiskit's dominance didn't just help IBM; it trained a generation of quantum programmers who default to IBM's stack. Every archived framework is a small brain drain: tutorials rot, Stack Overflow answers age out, new students find a graveyard where the onboarding used to be.</p><p><strong>The risk is a single point of failure.</strong> If Quandela pivots, gets acquired, or just slows down, photonic quantum software has no bench. PsiQuantum, the best-funded photonic player, has no open framework at all. The field's software story becomes "one French company's SDK," which is a fragile foundation for an entire approach to quantum computing.</p><p><strong>The opportunity is concentration.</strong> Scarcity focuses attention. Every photonic quantum developer now has exactly one serious open-source home, which means Perceval's community, docs, and ecosystem get all the oxygen. If you're learning photonic quantum computing in 2026, there is one answer to "where do I start," and this site exists to make that answer as good as it can be.</p><p>That's the thesis here: track Perceval closely, cover the field honestly, and help the last framework standing become the foundation photonic quantum deserves.</p><p>*Editorial. If I've misread the archival status of anything, the corrections policy stands.*</p></div>
+        <div class="post-source">Source: <a href="https://github.com/Quandela/Perceval">Qaieo editorial</a></div>
+      </article>
+
+      <article class="post" id="2026-10-01-perceval-v1-3-1">
+        <div class="post-meta">
+          <time datetime="2026-10-01">October 1, 2026</time>
+          <span class="post-tags"><span class="tag">release</span><span class="tag">v1.3.1</span></span>
+        </div>
+        <h3>Perceval v1.3.1: bugfix follow-up</h3>
+        <div class="post-body"><p>A small follow-up to v1.3.0: <strong>v1.3.1</strong> fixes deepcopy in `SimulatedComputer.execute_async`. Patch-level, no API changes. If you upgraded to the Sir Galaad line, take this one.</p></div>
+        <div class="post-source">Source: <a href="https://github.com/Quandela/Perceval/releases/tag/v1.3.1">Quandela/Perceval GitHub release</a></div>
+      </article>
+
+      <article class="post" id="2026-09-18-perceval-v1-3-0">
+        <div class="post-meta">
+          <time datetime="2026-09-18">September 18, 2026</time>
+          <span class="post-tags"><span class="tag">release</span><span class="tag">v1.3.0</span><span class="tag">error-mitigation</span></span>
+        </div>
+        <h3>Perceval v1.3.0 'Sir Galaad': error mitigation and a new computation workflow</h3>
+        <div class="post-body"><p>The biggest Perceval release in a while. <strong>v1.3.0 "Sir Galaad"</strong> ships a whole new error mitigation feature, significant enough that it required rewriting the high-level classes (everything above Processor/RemoteProcessor).</p><p><strong>Error mitigation, built in.</strong> The new classes slot into a Computer for automatic use and mitigate the probabilistic results you get running on real photonic hardware. Available algorithms: detector loss balancing, HOM/g2 mitigation, loss mitigation, and compilation averaging. Usable as individual classes or through the ErrorMitigationFactory.</p><p><strong>A new computation workflow.</strong> SimulatedComputer and RemoteComputer replace Processor and RemoteProcessor (minus the Experiment), so they can be reused easily, with noise linked to the Computers. The old path still works but should not be used in new code; the docs include a migration table.</p><p>Why it matters: error mitigation is the difference between a photonic QPU demo and a photonic QPU result you can defend. Baking it into the framework's main path, rather than leaving it as user-land code, is a maturation signal for the whole stack.</p></div>
+        <div class="post-source">Source: <a href="https://github.com/Quandela/Perceval/releases/tag/v1.3.0">Quandela/Perceval GitHub release</a></div>
+      </article>
+
+      <article class="post" id="2026-07-02-v1-2-4">
+        <div class="post-meta">
+          <time datetime="2026-07-02">July 2, 2026</time>
+          <span class="post-tags"><span class="tag">release</span><span class="tag">v1.2.4</span></span>
+        </div>
+        <h3>Perceval v1.2.4</h3>
+        <div class="post-body"><p>Quandela published <strong>v1.2.4</strong> of Perceval.</p><p>Release notes (abridged, see the full notes at the source link):</p><h2>New features</h2><p>* New KipuSession, allowing to send jobs to the Kipu Quantum Hub</p><p>* Requires the installation of perceval using `pip install perceval-quandela[kipu]`</p><h2>Improvements</h2><p>* `GenericInterferometer` now accepts str as interferometer shape</p><p>You can contact us on <a href="https://community.quandela.com/">Quandela community forum</a></p><p>*This post was auto-generated from the official release notes. Summaries may miss nuance; read the full notes at the source.*</p></div>
+        <div class="post-source">Source: <a href="https://github.com/Quandela/Perceval/releases/tag/v1.2.4">Quandela/Perceval GitHub release</a></div>
+      </article>
+
+      <article class="post" id="2026-06-17-v1-2-3">
+        <div class="post-meta">
+          <time datetime="2026-06-17">June 17, 2026</time>
+          <span class="post-tags"><span class="tag">release</span><span class="tag">v1.2.3</span></span>
+        </div>
+        <h3>Perceval v1.2.3</h3>
+        <div class="post-body"><p>Quandela published <strong>v1.2.3</strong> of Perceval.</p><p>Release notes (abridged, see the full notes at the source link):</p><h2>New features</h2><p>* Arithmetic operations can now be applied on BSDistribution</p><p>* "+" and "-" between BSDistributions with the same number of modes</p><p>* "*" and "/" between floats and BSDistributions</p><h2>Improvements</h2><p>* HTTP error message is now clearer</p><h2>Breaking changes</h2><p>* The BSDistribution internal representation has been changed. It must now be imported directly from perceval and no longer from exqalibur</p><p>You can contact us on <a href="https://community.quandela.com/">Quandela community forum</a></p><p>*This post was auto-generated from the official release notes. Summaries may miss nuance; read the full notes at the source.*</p></div>
+        <div class="post-source">Source: <a href="https://github.com/Quandela/Perceval/releases/tag/v1.2.3">Quandela/Perceval GitHub release</a></div>
+      </article>
+
+      <article class="post" id="2026-06-04-v1-2-2">
+        <div class="post-meta">
+          <time datetime="2026-06-04">June 4, 2026</time>
+          <span class="post-tags"><span class="tag">release</span><span class="tag">v1.2.2</span></span>
+        </div>
+        <h3>Perceval v1.2.2</h3>
+        <div class="post-body"><p>Quandela published <strong>v1.2.2</strong> of Perceval.</p><p>Release notes (abridged, see the full notes at the source link):</p><h2>Improvements</h2><p>* Sped up the creation of BS components</p><h2>Bug fixes</h2><p>* Fixed Sampler's iterations crashing when used with a RemoteProcessor</p><p>* Numeric overflows in backend computations are now properly caught and raised</p><p>*This post was auto-generated from the official release notes. Summaries may miss nuance; read the full notes at the source.*</p></div>
+        <div class="post-source">Source: <a href="https://github.com/Quandela/Perceval/releases/tag/v1.2.2">Quandela/Perceval GitHub release</a></div>
+      </article>
+      <section class="newsletter">
+        <h2>Get the weekly roundup</h2>
+        <p>One email a week: Perceval releases, photonic quantum news, and what mattered. No spam, unsubscribe anytime.</p>
+        <form action="https://buttondown.email/api/emails/embed-subscribe/izadjou" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/izadjou','popupwindow')" class="embeddable-buttondown-form">
+          <input type="email" name="email" id="bd-email" placeholder="you@example.com" required />
+          <input type="submit" value="Subscribe" />
+        </form>
+      </section>
+    </main>
+    <footer class="site">
+      <p><strong>Unofficial fan project.</strong> This site is run by an independent enthusiast and is not affiliated with, endorsed by, or sponsored by Quandela. Perceval and related marks are trademarks of their respective owners.</p>
+      <p>Posts summarize public sources, linked under each update. Corrections welcome via the <a href="https://github.com/omeal007/qaieo">GitHub repo</a>.</p>
+    </footer>
+  </div>
+</body>
+</html>

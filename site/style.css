@@ -1,0 +1,168 @@
+:root {
+  --bg: #0b0a13;
+  --surface: #14121f;
+  --border: #26233a;
+  --text: #eceaf4;
+  --muted: #9d97b8;
+  --accent: #a78bfa;
+  --accent-dim: #6d5bd0;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  line-height: 1.6;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 1.25rem; }
+
+header.site {
+  border-bottom: 1px solid var(--border);
+  padding: 2.5rem 0 1.75rem;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0b0a13;
+  background: var(--accent);
+  border-radius: 4px;
+  padding: 0.2rem 0.55rem;
+  margin-bottom: 0.9rem;
+}
+
+header.site h1 { margin: 0 0 0.4rem; font-size: 2rem; letter-spacing: -0.02em; }
+header.site h1 .accent { color: var(--accent); }
+a.home-link { color: var(--text); }
+a.home-link:hover { text-decoration: none; }
+
+.nav { display: flex; gap: 1.2rem; margin-top: 1rem; font-size: 0.9rem; }
+.nav a { color: var(--muted); }
+.nav a:hover { color: var(--accent); }
+
+.lede { color: var(--muted); max-width: 38rem; margin: 1.75rem 0 0; }
+.page-title { font-size: 1.6rem; letter-spacing: -0.02em; margin: 1.75rem 0 0.5rem; }
+.prose p, .prose li { color: #d5d1e6; font-size: 0.95rem; }
+.prose h2 { font-size: 1.15rem; margin: 1.6rem 0 0.5rem; color: var(--text); }
+
+.live-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-right: 0.45rem;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+h2.feed-title { font-size: 1.05rem; color: var(--muted); font-weight: 600; margin: 2.25rem 0 1rem; }
+
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.4rem 1.5rem;
+  margin-bottom: 1.1rem;
+}
+
+.post-meta {
+  display: flex;
+  gap: 0.7rem;
+  align-items: baseline;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.post-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.tag {
+  font-size: 0.72rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.1rem 0.55rem;
+  color: var(--muted);
+}
+
+article.post h3 { margin: 0 0 0.6rem; font-size: 1.25rem; letter-spacing: -0.01em; }
+
+.post-body p { margin: 0 0 0.8rem; color: #d5d1e6; font-size: 0.95rem; }
+.post-body ul { color: #d5d1e6; font-size: 0.95rem; padding-left: 1.3rem; }
+.post-body strong { color: var(--text); }
+
+.post-source { font-size: 0.82rem; color: var(--muted); margin-top: 0.9rem; }
+
+/* Timeline */
+.timeline { margin: 1.5rem 0 0; border-left: 2px solid var(--accent-dim); padding-left: 1.5rem; }
+.tl-item { position: relative; margin-bottom: 1.4rem; }
+.tl-item::before {
+  content: "";
+  position: absolute;
+  left: calc(-1.5rem - 6px);
+  top: 0.35rem;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.tl-date { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.25rem; }
+.tl-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.9rem 1.1rem;
+}
+.tl-card h3 { margin: 0 0 0.3rem; font-size: 1.05rem; }
+
+/* Newsletter */
+.newsletter {
+  background: var(--surface);
+  border: 1px solid var(--accent-dim);
+  border-radius: 10px;
+  padding: 1.4rem 1.5rem;
+  margin: 2.25rem 0 0;
+}
+.newsletter h2 { margin: 0 0 0.5rem; font-size: 1.1rem; color: var(--text); }
+.newsletter p { margin: 0 0 0.7rem; font-size: 0.92rem; color: #d5d1e6; }
+.embeddable-buttondown-form { display: flex; gap: 0.6rem; margin-top: 0.9rem; flex-wrap: wrap; }
+.embeddable-buttondown-form input[type="email"] {
+  flex: 1; min-width: 200px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.9rem;
+}
+.embeddable-buttondown-form input[type="submit"] {
+  background: var(--accent);
+  color: #0b0a13;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.embeddable-buttondown-form input[type="submit"]:hover { background: #c4b5fd; }
+
+footer.site {
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+  padding: 1.75rem 0 2.5rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+footer.site p { margin: 0 0 0.6rem; max-width: 40rem; }
