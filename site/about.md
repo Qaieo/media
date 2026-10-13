@@ -2,17 +2,17 @@
 title: "About"
 ---
 
+## What is Qaieo
+
+**Qaieo** is an independent publication covering photonic quantum computing: the open-source frameworks, the hardware milestones, the papers, and the people building them. It started from a simple observation: after Xanadu archived Strawberry Fields and MrMustard, Perceval is the last actively developed open-source photonic quantum framework, and the field deserves a publication watching it closely.
+
 ## Who runs this
 
-**Omid Izadjou.** I work in fintech and spend my free time tracking AI infrastructure and the physics underneath it: photonics, semiconductors, quantum computing. Photonic quantum is where those threads meet, so I started writing down what I learn.
-
-## What this site is
-
-An independent, unofficial tracker of Perceval and the photonic quantum computing field: releases, hardware milestones, papers, and explainers. The thesis is simple: Perceval is the last actively developed open-source photonic quantum framework, and it deserves a community around it.
+**Omid Izadjou.** I work in fintech and spend my free time tracking the physics underneath AI infrastructure: photonics, semiconductors, quantum computing. Photonic quantum is where those threads meet.
 
 ## What it isn't
 
-Not affiliated with Quandela. Not investment advice. Release posts are generated from official notes and labeled as such; analysis posts are my own reading.
+Not affiliated with Quandela or any hardware company. Not investment advice. Release posts are generated from official notes and labeled as such; analysis posts are my own reading.
 
 ## Corrections
 
