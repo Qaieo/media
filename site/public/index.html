@@ -3,28 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Qaieo, Photonic Quantum, Tracked (Unofficial)</title>
-  <meta name="description" content="Qaieo is a publication covering photonic quantum computing: open-source frameworks, hardware milestones, papers, and the people building them." />
+  <title>Qaieo, Quantum Research Lab</title>
+  <meta name="description" content="Qaieo is a research lab studying how quantum computing gets built and financed, with quantum news read through an underwriting lens." />
   <link rel="stylesheet" href="style.css" />
   <link rel="alternate" type="application/rss+xml" title="Qaieo" href="feed.xml" />
 </head>
 <body>
   <div class="wrap">
     <header class="site">
-      <span class="badge">Quantum research</span>
+      <span class="badge">Research lab</span>
       <h1><a href="index.html" class="home-link">Qaieo</a></h1>
       
     <nav class="nav">
-      <a href="index.html">Latest</a>
-      <a href="timeline.html">Timeline</a>
+      <a href="index.html">Lab</a>
+      <a href="index.html#news">News</a>
+      <a href="timeline.html">Releases</a>
       <a href="about.html">About</a>
       <a href="feed.xml">RSS</a>
     </nav>
     </header>
     <main>
 
-      <p class="lede"><span class="live-dot"></span>Qaieo tracks photonic quantum computing: the open-source frameworks, the hardware milestones, the papers, and the people building them. Anchored on Perceval, the last actively developed open framework in the field.</p>
-      <h2 class="feed-title">Latest updates</h2>
+      <p class="lede"><span class="live-dot"></span>Qaieo is a research lab studying how quantum computing gets built and financed: the contracts, the milestones, the counterparties, and the risk between them. We also cover quantum news, read through an underwriting lens.</p>
+
+      <section class="agenda">
+        <h2 class="feed-title">Research agenda</h2>
+        <ul>
+          <li><strong>Contracts and counterparties.</strong> Who buys quantum systems (governments, national labs, HPC centers, enterprises) and how strong those counterparties are.</li>
+          <li><strong>Milestones and delivery risk.</strong> Announced timelines versus actual delivery, and what slippage looks like on first-of-kind systems.</li>
+          <li><strong>Cost to complete.</strong> What it takes to build, install, and operate a quantum system, and how those costs move.</li>
+          <li><strong>Capital and markets.</strong> Funding rounds, public listings, and program budgets, read for what they mean for credit risk.</li>
+        </ul>
+      </section>
+      <h2 class="feed-title">Research</h2>
 
       <article class="post" id="2026-10-13-what-is-perceval">
         <div class="post-meta">
@@ -55,6 +66,7 @@
         <div class="post-body"><p>Photonic quantum computing had its breakout year. Private capital into photonic hardware hit <strong>$2.1 billion in 2025</strong>, about 21% of all quantum tech investment, overtaking superconducting as the largest hardware subcategory (per Future Markets' 2026 report). Here's the field as it stands.</p><p><strong>Three architectures, three bets.</strong> Continuous-variable systems, led by <strong>Xanadu</strong>, encode information in squeezed light and target quantum machine learning through PennyLane. Discrete-variable systems (<strong>PsiQuantum</strong>, <strong>Quandela</strong>, <strong>ORCA</strong>, QuiX) work with individual photons in linear optical circuits, aiming at fault-tolerant universal machines. Hybrid spin-photon (<strong>Photonic Inc</strong>, backed by Microsoft) links silicon spin qubits with telecom photons for distributed architectures.</p><p><strong>PsiQuantum</strong> is the capital leader: a <a href="https://www.businesswire.com/news/home/20250910135739/en/PsiQuantum-Raises-$1-Billion-to-Build-Million-Qubit-Scale-Fault-Tolerant-Quantum-Computers">$1B Series E in September 2025</a> (BlackRock, Temasek, Baillie Gifford; $7B valuation), a $100M CHIPS Act agreement finalized in September 2026, and the Omega silicon-photonic chipset fabbed at GlobalFoundries on a standard 300mm process. Brisbane and Chicago utility-scale sites are under construction, with leadership shifting to ex-AMD/Xilinx chief Victor Peng as interim CEO for the scaling phase. The bet: photons don't generate heat or feel electromagnetic interference, so chips link over standard fiber and the million-qubit roadmap is a manufacturing problem, not a physics problem.</p><p><strong>Xanadu</strong> became the first pure-play photonic quantum company on a major public market, listing on NASDAQ and the TSX as XNDU in March 2026 via SPAC (~$302M gross proceeds, $275M PIPE). The hardware story in 2026 is packaging: an <a href="https://www.newswire.ca/news-releases/xanadu-sets-new-industry-benchmark-in-photonic-chip-packaging-834077847.html">average 0.085 dB/facet edge-coupling loss</a>, meaning 98%+ of the optical signal survives each fiber-to-chip interface. In photonics, loss is the enemy that compounds at every interface, so this is a genuine milestone, not marketing, though edge coupling is one of roughly 16-17 loss contributors, and analysts estimate another 5-10x system-wide reduction is still needed for fault tolerance. The software story is the opposite: Strawberry Fields and MrMustard are archived, and PennyLane carries the stack alone.</p><p><strong>Quandela</strong> is the deployment leader in Europe: the 12-qubit Belenos system serves 1,200+ researchers across 30 countries via cloud, and its EuroHPC sibling Lucy was delivered to CEA's TGCC and inaugurated in April 2026. Perceval, its open framework, is the subject this publication tracks most closely.</p><p><strong>ORCA Computing</strong> is the operational-simplicity play: <a href="https://www.hpcwire.com/off-the-wire/orca-computing-delivers-1st-photonic-quantum-computing-system-to-uks-nqcc/">its PT Series system was installed at the UK's National Quantum Computing Centre and powered up and operational within 36 hours</a> (June 2025). Rack-mounted, room-temperature (cryogenics confined to the detectors), accessible via NVIDIA's CUDA-Q. When a quantum computer installs faster than enterprise SaaS, the deployment model has changed.</p><p><strong>Don't forget Hefei.</strong> USTC's Jiuzhang 4.0 manipulated and detected 3,050 photons in Gaussian boson sampling (reported in *Nature*, May 2026), still the academic high-water mark. China's photonic program runs quieter than the venture-backed Western companies but keeps setting the experimental bar.</p><p><strong>What to watch.</strong> Whether PsiQuantum's manufacturing bet converts capital into deployed systems. Whether Xanadu's public-market discipline accelerates or starves its hardware roadmap. Whether Quandela's European deployments compound into a developer ecosystem around Perceval. And whether anyone else open-sources a serious photonic framework, or the field consolidates around one.</p><p>*Editorial synthesis from public reporting. Company claims are as stated by the companies; treat funding and timeline figures accordingly. Corrections welcome via the <a href="https://github.com/omeal007/qaieo">GitHub repo</a>.*</p></div>
         <div class="post-source">Source: <a href="https://www.futuremarketsinc.com/the-global-photonic-quantum-computing-market-2026-2036/">Qaieo editorial</a></div>
       </article>
+      <h2 class="feed-title" id="news">News</h2>
 
       <article class="post" id="2026-10-01-perceval-v1-3-1">
         <div class="post-meta">
@@ -106,8 +118,8 @@
         <div class="post-source">Source: <a href="https://github.com/Quandela/Perceval/releases/tag/v1.2.2">Quandela/Perceval GitHub release</a></div>
       </article>
       <section class="newsletter">
-        <h2>Get the weekly roundup</h2>
-        <p>One email a week: Perceval releases, photonic quantum news, and what mattered. No spam, unsubscribe anytime.</p>
+        <h2>Get the weekly brief</h2>
+        <p>One email a week: Qaieo research, the quantum news that matters, and what it means for risk. No spam, unsubscribe anytime.</p>
         <form action="https://buttondown.email/api/emails/embed-subscribe/izadjou" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/izadjou','popupwindow')" class="embeddable-buttondown-form">
           <input type="email" name="email" id="bd-email" placeholder="you@example.com" required />
           <input type="submit" value="Subscribe" />

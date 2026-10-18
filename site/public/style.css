@@ -166,3 +166,7 @@ footer.site {
   color: var(--muted);
 }
 footer.site p { margin: 0 0 0.6rem; max-width: 40rem; }
+
+.agenda ul { padding-left: 1.1rem; margin: 0; max-width: 40rem; }
+.agenda li { margin: 0 0 0.6rem; color: var(--muted); }
+.agenda li strong { color: var(--text); }

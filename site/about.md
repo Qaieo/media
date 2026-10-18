@@ -4,15 +4,28 @@ title: "About"
 
 ## What is Qaieo
 
-**Qaieo** is a publication covering photonic quantum computing: the open-source frameworks, the hardware milestones, the papers, and the people building them. It started from a simple observation: after Xanadu archived Strawberry Fields and MrMustard, Perceval is the last actively developed open-source photonic quantum framework, and the field deserves a publication watching it closely.
+**Qaieo** is a research lab studying how quantum computing gets built and financed. Most quantum coverage asks whether the physics works. Qaieo asks a lender's questions: who is buying, what was promised, when it gets delivered, what it costs to finish, and what happens if it slips.
+
+The lab publishes two things. **Research**: original analysis on contracts, counterparties, milestones, and capital in quantum. **News**: the developments that matter, read through an underwriting lens.
+
+## Research agenda
+
+- **Contracts and counterparties.** Who buys quantum systems (governments, national labs, HPC centers, enterprises) and how strong those counterparties are.
+- **Milestones and delivery risk.** Announced timelines versus actual delivery, and what slippage looks like on first-of-kind systems.
+- **Cost to complete.** What it takes to build, install, and operate a quantum system, and how those costs move.
+- **Capital and markets.** Funding rounds, public listings, and program budgets, read for what they mean for credit risk.
+
+## Where it started
+
+Qaieo began by tracking photonic quantum computing. After Xanadu archived Strawberry Fields and MrMustard, Quandela's Perceval became the last actively developed open-source photonic quantum framework. Perceval releases are still tracked here.
 
 ## Who runs this
 
-**Omid Izadjou.** I work in fintech and spend my free time tracking the physics underneath AI infrastructure: photonics, semiconductors, quantum computing. Photonic quantum is where those threads meet.
+**Omid Izadjou.** I work in fintech and track the physics underneath AI infrastructure: photonics, semiconductors, quantum computing. Quantum hardware is where the physics underneath AI infrastructure meets the hardest underwriting problems: long timelines, first-of-kind builds, and concentrated buyers.
 
 ## What it isn't
 
-Not affiliated with Quandela or any company it covers. Not investment advice. I have business interests that touch this field; they are listed in full on the [Disclosures](disclosures.html) page. Release posts are generated from official notes and labeled as such; analysis posts are my own reading.
+Not affiliated with Quandela or any company it covers. Not investment advice. I have business interests that touch this field; they are listed in full on the [Disclosures](disclosures.html) page.
 
 ## Corrections
 

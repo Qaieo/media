@@ -74,8 +74,9 @@ const posts = readdirSync(POSTS_DIR)
 
 const NAV = `
     <nav class="nav">
-      <a href="index.html">Latest</a>
-      <a href="timeline.html">Timeline</a>
+      <a href="index.html">Lab</a>
+      <a href="index.html#news">News</a>
+      <a href="timeline.html">Releases</a>
       <a href="about.html">About</a>
       <a href="feed.xml">RSS</a>
     </nav>`;
@@ -88,7 +89,7 @@ function page(title, desc, body) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${title} (Unofficial)</title>
+  <title>${title}</title>
   <meta name="description" content="${desc}" />
   <link rel="stylesheet" href="style.css" />
   <link rel="alternate" type="application/rss+xml" title="Qaieo" href="feed.xml" />
@@ -96,7 +97,7 @@ function page(title, desc, body) {
 <body>
   <div class="wrap">
     <header class="site">
-      <span class="badge">Quantum research</span>
+      <span class="badge">Research lab</span>
       <h1><a href="index.html" class="home-link">Qaieo</a></h1>
       ${NAV}
     </header>
@@ -112,7 +113,7 @@ ${body}
 </html>`;
 }
 
-const cards = posts.map((p) => `
+const card = (p) => `
       <article class="post" id="${p.slug}">
         <div class="post-meta">
           <time datetime="${p.date}">${fmtDate(p.date)}</time>
@@ -121,17 +122,35 @@ const cards = posts.map((p) => `
         <h3>${p.title}</h3>
         <div class="post-body">${md(p.body)}</div>
         <div class="post-source">Source: <a href="${p.source_url}">${p.source}</a></div>
-      </article>`).join("\n");
+      </article>`;
+const RESEARCH_TAGS = ["analysis", "research", "explainer", "underwriting"];
+const isResearch = (p) => p.tags.some((t) => RESEARCH_TAGS.includes(t));
+const researchCards = posts.filter(isResearch).map(card).join("\n");
+const newsCards = posts.filter((p) => !isResearch(p)).map(card).join("\n");
 
-writeFileSync(join(PUBLIC, "index.html"), page("Qaieo, Photonic Quantum, Tracked",
-  "Qaieo is a publication covering photonic quantum computing: open-source frameworks, hardware milestones, papers, and the people building them.",
+const AGENDA = `
+      <section class="agenda">
+        <h2 class="feed-title">Research agenda</h2>
+        <ul>
+          <li><strong>Contracts and counterparties.</strong> Who buys quantum systems (governments, national labs, HPC centers, enterprises) and how strong those counterparties are.</li>
+          <li><strong>Milestones and delivery risk.</strong> Announced timelines versus actual delivery, and what slippage looks like on first-of-kind systems.</li>
+          <li><strong>Cost to complete.</strong> What it takes to build, install, and operate a quantum system, and how those costs move.</li>
+          <li><strong>Capital and markets.</strong> Funding rounds, public listings, and program budgets, read for what they mean for credit risk.</li>
+        </ul>
+      </section>`;
+
+writeFileSync(join(PUBLIC, "index.html"), page("Qaieo, Quantum Research Lab",
+  "Qaieo is a research lab studying how quantum computing gets built and financed, with quantum news read through an underwriting lens.",
   `
-      <p class="lede"><span class="live-dot"></span>Qaieo tracks photonic quantum computing: the open-source frameworks, the hardware milestones, the papers, and the people building them. Anchored on Perceval, the last actively developed open framework in the field.</p>
-      <h2 class="feed-title">Latest updates</h2>
-${cards}
+      <p class="lede"><span class="live-dot"></span>Qaieo is a research lab studying how quantum computing gets built and financed: the contracts, the milestones, the counterparties, and the risk between them. We also cover quantum news, read through an underwriting lens.</p>
+${AGENDA}
+      <h2 class="feed-title">Research</h2>
+${researchCards}
+      <h2 class="feed-title" id="news">News</h2>
+${newsCards}
       <section class="newsletter">
-        <h2>Get the weekly roundup</h2>
-        <p>One email a week: Perceval releases, photonic quantum news, and what mattered. No spam, unsubscribe anytime.</p>
+        <h2>Get the weekly brief</h2>
+        <p>One email a week: Qaieo research, the quantum news that matters, and what it means for risk. No spam, unsubscribe anytime.</p>
         <form action="https://buttondown.email/api/emails/embed-subscribe/${NEWSLETTER_USER}" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/${NEWSLETTER_USER}','popupwindow')" class="embeddable-buttondown-form">
           <input type="email" name="email" id="bd-email" placeholder="you@example.com" required />
           <input type="submit" value="Subscribe" />
@@ -139,7 +158,7 @@ ${cards}
       </section>`));
 
 const releases = posts.filter((p) => p.tags.includes("release"));
-writeFileSync(join(PUBLIC, "timeline.html"), page("Qaieo, Release Timeline",
+writeFileSync(join(PUBLIC, "timeline.html"), page("Qaieo, Perceval Releases",
   "Perceval release timeline, tracked by Qaieo.",
   `
       <h2 class="page-title">Release timeline</h2>
@@ -157,7 +176,7 @@ ${releases.map((p) => `
 
 const about = parseFile(join(SITE_DIR, "about.md"));
 writeFileSync(join(PUBLIC, "about.html"), page("Qaieo, About",
-  "About Qaieo: the publication covering photonic quantum computing.",
+  "About Qaieo: a research lab studying quantum computing through an underwriting lens.",
   `
       <h2 class="page-title">${about.title}</h2>
       <div class="prose">${md(about.body)}</div>`));
@@ -181,9 +200,9 @@ const items = posts.slice(0, 30).map((p) => `
 writeFileSync(join(PUBLIC, "feed.xml"), `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>Qaieo, Photonic Quantum, Tracked</title>
+    <title>Qaieo, Quantum Research Lab</title>
     <link>${SITE_URL}/</link>
-    <description>Qaieo is a publication covering photonic quantum computing.</description>
+    <description>Qaieo is a research lab studying how quantum computing gets built and financed, with quantum news read through an underwriting lens.</description>
     <language>en-us</language>
 ${items}
   </channel>
