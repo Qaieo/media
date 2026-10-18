@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Build script: reads site/posts/*.md and site/about.md, generates site/public/
-// (index.html, timeline.html, about.html, feed.xml).
+// (index.html, timeline.html, about.html, disclosures.html, feed.xml).
 // Run from repo root: node site/build.mjs
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, copyFileSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -80,7 +80,7 @@ const NAV = `
       <a href="feed.xml">RSS</a>
     </nav>`;
 
-const DISCLAIMER = `<p><strong>Qaieo is an independent publication.</strong> Not affiliated with, endorsed by, or sponsored by Quandela. Perceval and related marks are trademarks of their respective owners.</p>`;
+const DISCLAIMER = `<p>Qaieo is not affiliated with, endorsed by, or sponsored by Quandela or any company it covers. Perceval and related marks are trademarks of their respective owners. Not investment advice. See <a href="disclosures.html">Disclosures</a>.</p>`;
 
 function page(title, desc, body) {
   return `<!DOCTYPE html>
@@ -96,7 +96,7 @@ function page(title, desc, body) {
 <body>
   <div class="wrap">
     <header class="site">
-      <span class="badge">Independent publication</span>
+      <span class="badge">Quantum research</span>
       <h1><a href="index.html" class="home-link">Qaieo</a></h1>
       ${NAV}
     </header>
@@ -124,7 +124,7 @@ const cards = posts.map((p) => `
       </article>`).join("\n");
 
 writeFileSync(join(PUBLIC, "index.html"), page("Qaieo, Photonic Quantum, Tracked",
-  "Qaieo is an independent publication covering photonic quantum computing: open-source frameworks, hardware milestones, papers, and the people building them.",
+  "Qaieo is a publication covering photonic quantum computing: open-source frameworks, hardware milestones, papers, and the people building them.",
   `
       <p class="lede"><span class="live-dot"></span>Qaieo tracks photonic quantum computing: the open-source frameworks, the hardware milestones, the papers, and the people building them. Anchored on Perceval, the last actively developed open framework in the field.</p>
       <h2 class="feed-title">Latest updates</h2>
@@ -157,10 +157,17 @@ ${releases.map((p) => `
 
 const about = parseFile(join(SITE_DIR, "about.md"));
 writeFileSync(join(PUBLIC, "about.html"), page("Qaieo, About",
-  "About Qaieo: the independent publication covering photonic quantum computing.",
+  "About Qaieo: the publication covering photonic quantum computing.",
   `
       <h2 class="page-title">${about.title}</h2>
       <div class="prose">${md(about.body)}</div>`));
+
+const disclosures = parseFile(join(SITE_DIR, "disclosures.md"));
+writeFileSync(join(PUBLIC, "disclosures.html"), page("Qaieo, Disclosures",
+  "Qaieo disclosures: financial interests and how conflicts are handled.",
+  `
+      <h2 class="page-title">${disclosures.title}</h2>
+      <div class="prose">${md(disclosures.body)}</div>`));
 
 const items = posts.slice(0, 30).map((p) => `
     <item>
@@ -176,7 +183,7 @@ writeFileSync(join(PUBLIC, "feed.xml"), `<?xml version="1.0" encoding="UTF-8"?>
   <channel>
     <title>Qaieo, Photonic Quantum, Tracked</title>
     <link>${SITE_URL}/</link>
-    <description>Qaieo is an independent publication covering photonic quantum computing.</description>
+    <description>Qaieo is a publication covering photonic quantum computing.</description>
     <language>en-us</language>
 ${items}
   </channel>
