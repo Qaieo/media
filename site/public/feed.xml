@@ -31,11 +31,27 @@
     </item>
 
     <item>
+      <title><![CDATA[Perceval v1.3.1 Sir Galaad]]></title>
+      <link>https://qaieo.com/index.html#2026-10-01-v1-3-1-sir-galaad</link>
+      <guid>https://qaieo.com/index.html#2026-10-01-v1-3-1-sir-galaad</guid>
+      <pubDate>Thu, 01 Oct 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[<p>Quandela published <strong>v1.3.1</strong> (v1.3.1 Sir Galaad) of Perceval.</p><p>Release notes (abridged, see the full notes at the source link):</p><h2>Bug fixes</h2><p>* Fixed deepcopy in SimulatedComputer.execute_async</p><p>*This post was auto-generated from the official release notes. Summaries may miss nuance; read the full notes at the source.*</p><p>Source: <a href="https://github.com/Quandela/Perceval/releases/tag/v1.3.1">Quandela/Perceval GitHub release</a></p>]]></description>
+    </item>
+
+    <item>
       <title><![CDATA[Perceval v1.3.1: bugfix follow-up]]></title>
       <link>https://qaieo.com/index.html#2026-10-01-perceval-v1-3-1</link>
       <guid>https://qaieo.com/index.html#2026-10-01-perceval-v1-3-1</guid>
       <pubDate>Thu, 01 Oct 2026 12:00:00 GMT</pubDate>
       <description><![CDATA[<p>A small follow-up to v1.3.0: <strong>v1.3.1</strong> fixes deepcopy in `SimulatedComputer.execute_async`. Patch-level, no API changes. If you upgraded to the Sir Galaad line, take this one.</p><p>Source: <a href="https://github.com/Quandela/Perceval/releases/tag/v1.3.1">Quandela/Perceval GitHub release</a></p>]]></description>
+    </item>
+
+    <item>
+      <title><![CDATA[Perceval v1.3.0 Sir Galaad]]></title>
+      <link>https://qaieo.com/index.html#2026-09-18-v1-3-0-sir-galaad</link>
+      <guid>https://qaieo.com/index.html#2026-09-18-v1-3-0-sir-galaad</guid>
+      <pubDate>Fri, 18 Sep 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[<p>Quandela published <strong>v1.3.0</strong> (v1.3.0 Sir Galaad) of Perceval.</p><p>Release notes (abridged, see the full notes at the source link):</p><p>This update offers a whole new error mitigation feature, which needed a complete rewriting of the high-level classes of perceval (everything above Processor or RemoteProcessor). This new path also offers a lot of features that the old path couldn't do.</p><p>The choice has been made to add a new main path for launching computations, while keeping the existing path as it is. The old path <strong>should not</strong> be used in new code anymore. You will find in the legacy page of the doc a table describing how to update the old workflow to the new one (link at the bottom of this text).</p><h2>New features</h2><p>* Error Mitigation classes:</p><p>* Can be inserted into a Computer for automatic use.</p><p>* Mitigates the probabilistic results got when using a QPU.</p><p>* Available algorithms:</p><p>* Detector loss balancing</p><p>* HOM/g2 mitigation</p><p>* Loss mitigation</p><p>* Compilation averaging</p><p>* Available as individual classes or through the ErrorMitigationFactory class.</p><p>* A new computation workflow:</p><p>* SimulatedComputer, RemoteComputer replace the Processor and RemoteProcessor, minus the Experiment, so they can easily be reused. The noise is linked to these Computers</p><p>* Computation handles all the com</p><p>*This post was auto-generated from the official release notes. Summaries may miss nuance; read the full notes at the source.*</p><p>Source: <a href="https://github.com/Quandela/Perceval/releases/tag/v1.3.0">Quandela/Perceval GitHub release</a></p>]]></description>
     </item>
 
     <item>

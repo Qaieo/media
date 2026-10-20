@@ -10,7 +10,8 @@ const SITE_DIR = dirname(fileURLToPath(import.meta.url));
 const POSTS_DIR = join(SITE_DIR, "posts");
 const PUBLIC = join(SITE_DIR, "public");
 const SITE_URL = "https://qaieo.com";
-const NEWSLETTER_USER = "izadjou"; // TODO: rewire signup to the dedicated Qaieo Loops list once the list ID exists
+// Signup posts to /api/subscribe (worker.js), which adds the contact to the
+// dedicated Qaieo Loops mailing list (LOOPS_LIST_ID in wrangler.jsonc).
 
 function parseFile(path) {
   const raw = readFileSync(path, "utf8");
@@ -151,10 +152,24 @@ ${newsCards}
       <section class="newsletter">
         <h2>Get the weekly brief</h2>
         <p>One email a week: Qaieo research, the quantum news that matters, and what it means for risk. No spam, unsubscribe anytime.</p>
-        <form action="https://buttondown.email/api/emails/embed-subscribe/${NEWSLETTER_USER}" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.email/${NEWSLETTER_USER}','popupwindow')" class="embeddable-buttondown-form">
-          <input type="email" name="email" id="bd-email" placeholder="you@example.com" required />
+        <form id="qaieo-subscribe" action="/api/subscribe" method="post">
+          <input type="email" name="email" placeholder="you@example.com" required />
+          <input type="text" name="company" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <input type="submit" value="Subscribe" />
         </form>
+        <p id="qaieo-sub-msg" class="sub-msg" hidden></p>
+        <script>
+        document.getElementById('qaieo-subscribe').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const f = e.target, msg = document.getElementById('qaieo-sub-msg');
+          msg.hidden = false; msg.textContent = 'Subscribing\u2026';
+          try {
+            const r = await fetch(f.action, { method: 'POST', body: new FormData(f) });
+            const j = await r.json();
+            msg.textContent = j.ok ? 'You are in. The next brief lands in your inbox.' : (j.error || 'Something went wrong.');
+          } catch { msg.textContent = 'Something went wrong. Try again.'; }
+        });
+        </script>
       </section>`));
 
 const releases = posts.filter((p) => p.tags.includes("release"));
