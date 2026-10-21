@@ -8,6 +8,10 @@ const esc = (s) =>
 const fmtDate = (iso) =>
   new Date(iso + "T12:00:00Z").toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" });
 
+// Each word in its own clip box so it can rise in; the sheen wraps the whole line.
+const headline = (text) =>
+  text.split(" ").map((w, i) => `<span class="w"><i style="--i:${i}">${esc(w)}</i></span>`).join(" ");
+
 const PLAY = `<span class="play" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="#f4f3ef"><path d="M3 1.5v11l9-5.5z"/></svg></span>`;
 
 const NODES = [[12, 18, 0], [27, 62, 1.3], [41, 30, 2.1], [55, 74, 3.4], [63, 22, 0.7], [71, 48, 4.2], [84, 14, 2.8], [91, 66, 1.9], [6, 84, 5], [48, 90, 3.9]]
@@ -79,7 +83,7 @@ export function renderLanding({ frontier, clips, ventures, archiveUrl, beaconTok
   <title>Qaieo</title>
   <meta name="description" content="Qaieo Frontier tracks the contract awards, grants and prizes funding the physical economy. Qaieo Clips and Qaieo Ventures.">
   <meta property="og:title" content="Qaieo">
-  <meta property="og:description" content="The contracts awarding the future.">
+  <meta property="og:description" content="Follow the contracts awarding the future.">
   <meta property="og:url" content="https://qaieo.com/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
@@ -108,19 +112,24 @@ export function renderLanding({ frontier, clips, ventures, archiveUrl, beaconTok
         <div class="hlines"></div><div class="grid-b"></div><div class="grid-a"></div><div class="scan"></div>
         ${NODES}
         <div class="orbit"><div class="orbit-in"></div><div class="orbit-core"></div></div>
+        <svg class="contours" viewBox="0 0 1600 500" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 420 C 200 380, 300 300, 520 320 S 900 420, 1120 340 S 1450 220, 1600 260"/>
+          <path d="M0 360 C 180 330, 340 240, 560 262 S 940 360, 1160 282 S 1480 160, 1600 200"/>
+          <path d="M0 300 C 160 280, 380 180, 600 204 S 980 300, 1200 224 S 1510 100, 1600 140"/>
+        </svg>
         <div class="fade"></div>
       </div>
       <div class="wrap">
-        <div class="mono" style="margin-bottom:28px">Qaieo Frontier · Qaieo Clips · Qaieo Ventures</div>
-        <h1>The contracts awarding the future.</h1>
-        <div class="cta">
-          <a class="btn btn-primary" href="${esc(latestUrl)}">Read the latest <span aria-hidden="true">→</span></a>
+        <div class="mono rise d1" style="margin-bottom:28px">Qaieo Frontier · Qaieo Clips · Qaieo Ventures</div>
+        <h1 aria-label="Follow the contracts awarding the future.">${headline("Follow the contracts awarding the future.")}</h1>
+        <div class="cta rise d2">
+          <a class="btn btn-primary" href="#frontier">Latest <span aria-hidden="true">↓</span></a>
           <div class="mono">Hardware · Robotics · Energy · Defense · Space</div>
         </div>
       </div>
     </section>
 
-    <section id="frontier" class="wrap section">
+    <section id="frontier" class="wrap section first reveal">
       <div class="section-head">
         <div><div class="mono">01 / Qaieo Frontier</div><h2>Awards, grants and prizes in the physical economy.</h2></div>
         <a class="link" href="${esc(archiveUrl)}">Archive →</a>
@@ -130,7 +139,7 @@ ${featured ? featureCard(featured) : `      <p class="empty">First issue coming 
       </div>
     </section>
 
-    <section id="clips" class="wrap section">
+    <section id="clips" class="wrap section reveal">
       <div class="section-head">
         <div><div class="mono">02 / Qaieo Clips</div><h2>Short films on how hard things get built.</h2></div>
         ${clips.length ? "" : `<p>First clips publish here when ready.</p>`}
@@ -138,7 +147,7 @@ ${featured ? featureCard(featured) : `      <p class="empty">First issue coming 
 ${clips.length ? `      <div class="grid3">${clips.map(clipCard).join("")}\n      </div>` : ""}
     </section>
 
-    <section id="ventures" class="wrap section">
+    <section id="ventures" class="wrap section reveal">
       <div class="section-head">
         <div><div class="mono">03 / Qaieo Ventures</div><h2>Backed early.</h2></div>
         <p>Where Qaieo Ventures has invested historically.</p>
@@ -151,7 +160,7 @@ ${clips.length ? `      <div class="grid3">${clips.map(clipCard).join("")}\n    
       <div class="ticker">${[...TICKER, ...TICKER].map((t) => `<span>${t}</span><span>·</span>`).join("")}</div>
     </div>
 
-    <section id="subscribe" class="wrap subscribe">
+    <section id="subscribe" class="wrap subscribe reveal">
       <div class="row">
         <div class="copy"><h2>One award a day. Read in two minutes.</h2><p>Who won, what it funds, what comes next.</p></div>
         <form id="qaieo-subscribe" action="/api/subscribe" method="post">
@@ -173,6 +182,19 @@ ${clips.length ? `      <div class="grid3">${clips.map(clipCard).join("")}\n    
   </footer>
 
   <script>
+  (function () {
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var els = document.querySelectorAll('.reveal');
+    if (reduce || !('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); }
+    else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+      }, { rootMargin: '0px 0px -12% 0px' });
+      els.forEach(function (e) { io.observe(e); });
+    }
+    var top = document.querySelector('.top');
+    addEventListener('scroll', function () { top.classList.toggle('scrolled', scrollY > 40); }, { passive: true });
+  })();
   (function () {
     var f = document.getElementById('qaieo-subscribe'), msg = document.getElementById('qaieo-sub-msg');
     // Attribution: UTM params and referrer travel with the signup so Loops can segment by source.
