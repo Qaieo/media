@@ -11,10 +11,16 @@ export default {
       }
       let email = "";
       let honeypot = "";
+      const attribution = {};
       try {
         const form = await request.formData();
         email = (form.get("email") || "").toString().trim().toLowerCase();
         honeypot = (form.get("company") || "").toString();
+        // Attribution fields the landing page sends; stored as Loops contact properties.
+        for (const k of ["source", "utm_source", "utm_medium", "utm_campaign", "utm_content", "referrer"]) {
+          const v = (form.get(k) || "").toString().trim().slice(0, 200);
+          if (v) attribution[k] = v;
+        }
       } catch {
         return Response.json({ ok: false, error: "Enter a valid email address." }, { status: 400 });
       }
@@ -31,6 +37,9 @@ export default {
         },
         body: JSON.stringify({
           email,
+          source: attribution.source || "qaieo.com",
+          subscribedAt: new Date().toISOString(),
+          ...attribution,
           mailingLists: { [env.LOOPS_LIST_ID]: true },
         }),
       });

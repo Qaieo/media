@@ -5,6 +5,7 @@
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, copyFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { renderLanding } from "./landing.mjs";
 
 const SITE_DIR = dirname(fileURLToPath(import.meta.url));
 const POSTS_DIR = join(SITE_DIR, "posts");
@@ -67,6 +68,19 @@ function cdata(s) {
 
 mkdirSync(PUBLIC, { recursive: true });
 copyFileSync(join(SITE_DIR, "style.css"), join(PUBLIC, "style.css"));
+copyFileSync(join(SITE_DIR, "landing.css"), join(PUBLIC, "landing.css"));
+mkdirSync(join(PUBLIC, "logos"), { recursive: true });
+for (const f of readdirSync(join(SITE_DIR, "logos"))) copyFileSync(join(SITE_DIR, "logos", f), join(PUBLIC, "logos", f));
+
+// qaieo.com home: the Frontier / Clips / Ventures landing. Data lives in site/data/.
+const readJson = (name) => JSON.parse(readFileSync(join(SITE_DIR, "data", name), "utf8"));
+writeFileSync(join(PUBLIC, "index.html"), renderLanding({
+  frontier: readJson("frontier.json"),
+  clips: readJson("clips.json"),
+  ventures: readJson("ventures.json"),
+  archiveUrl: "https://yeki.ai/qaieo/media",
+  beaconToken: process.env.CF_BEACON_TOKEN || "",
+}));
 
 const posts = readdirSync(POSTS_DIR)
   .filter((f) => f.endsWith(".md"))
@@ -75,8 +89,8 @@ const posts = readdirSync(POSTS_DIR)
 
 const NAV = `
     <nav class="nav">
-      <a href="index.html">Lab</a>
-      <a href="index.html#news">News</a>
+      <a href="lab.html">Lab</a>
+      <a href="lab.html#news">News</a>
       <a href="timeline.html">Releases</a>
       <a href="about.html">About</a>
       <a href="feed.xml">RSS</a>
@@ -140,7 +154,7 @@ const AGENDA = `
         </ul>
       </section>`;
 
-writeFileSync(join(PUBLIC, "index.html"), page("Qaieo, Quantum Research Lab",
+writeFileSync(join(PUBLIC, "lab.html"), page("Qaieo, Quantum Research Lab",
   "Qaieo is a research lab studying how quantum computing gets built and financed, with quantum news read through an underwriting lens.",
   `
       <p class="lede"><span class="live-dot"></span>Qaieo is a research lab studying how quantum computing gets built and financed: the contracts, the milestones, the counterparties, and the risk between them. We also cover quantum news, read through an underwriting lens.</p>
@@ -206,7 +220,7 @@ writeFileSync(join(PUBLIC, "disclosures.html"), page("Qaieo, Disclosures",
 const items = posts.slice(0, 30).map((p) => `
     <item>
       <title><![CDATA[${cdata(p.title)}]]></title>
-      <link>${SITE_URL}/index.html#${p.slug}</link>
+      <link>${SITE_URL}/lab.html#${p.slug}</link>
       <guid>${SITE_URL}/index.html#${p.slug}</guid>
       <pubDate>${new Date(p.date + "T12:00:00Z").toUTCString()}</pubDate>
       <description><![CDATA[${cdata(md(p.body))}<p>Source: <a href="${p.source_url}">${p.source}</a></p>]]></description>
