@@ -2,9 +2,12 @@
 // Build script: reads site/posts/*.md and site/about.md, generates site/public/
 // (index.html, timeline.html, about.html, disclosures.html, feed.xml).
 // Run from repo root: node site/build.mjs
+import { assertSupportedNode } from "./node-runtime.mjs";
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, copyFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+
+assertSupportedNode();
 
 const SITE_DIR = dirname(fileURLToPath(import.meta.url));
 const POSTS_DIR = join(SITE_DIR, "posts");
@@ -224,3 +227,4 @@ ${items}
 </rss>`);
 
 console.log(`Built ${posts.length} posts, ${releases.length} releases.`);
+

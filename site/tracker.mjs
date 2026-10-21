@@ -2,9 +2,12 @@
 // Weekly Perceval tracker: checks Quandela/Perceval GitHub releases for anything
 // new since the last run, writes a post markdown file into site/posts/.
 // State: site/.tracker-state.json. Run from repo root: node site/tracker.mjs
+import { assertSupportedNode } from "./node-runtime.mjs";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+
+assertSupportedNode();
 
 const SITE_DIR = dirname(fileURLToPath(import.meta.url));
 const STATE_FILE = join(SITE_DIR, ".tracker-state.json");
@@ -64,3 +67,4 @@ ${notes}
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
+
