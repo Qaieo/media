@@ -1,0 +1,6 @@
+[
+  { "name": "Godela", "what": "Physics AI for engineering", "domain": "godela.ai", "url": "https://godela.ai", "logo": "logos/godela.png" },
+  { "name": "Besxar Space", "what": "Semiconductor manufacturing in space", "domain": "besxar.com", "url": "https://www.besxar.com/", "logo": "logos/besxar.png" },
+  { "name": "Linewise", "what": "Training data for AI and robotics from how physical things are made", "domain": "linewise.io", "url": "https://linewise.io", "logo": "logos/linewise.png" },
+  { "name": "Empirical Health", "what": "Proactive primary care", "domain": "empirical.health", "url": "https://www.empirical.health/", "logo": "logos/empirical.png" }
+]
