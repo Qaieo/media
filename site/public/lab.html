@@ -13,10 +13,11 @@
     <header class="site">
       <span class="badge">Research lab</span>
       <h1><a href="index.html" class="home-link">Qaieo</a></h1>
-      
-    <nav class="nav">
-      <a href="lab.html">Lab</a>
-      <a href="lab.html#news">News</a>
+
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html">Lab</a>
+      <a href="index.html#frontier">Qaieo Frontier</a>
+      <a href="index.html#news">News</a>
       <a href="timeline.html">Releases</a>
       <a href="about.html">About</a>
       <a href="feed.xml">RSS</a>
@@ -25,6 +26,14 @@
     <main>
 
       <p class="lede"><span class="live-dot"></span>Qaieo is a research lab studying how quantum computing gets built and financed: the contracts, the milestones, the counterparties, and the risk between them. We also cover quantum news, read through an underwriting lens.</p>
+      <section id="frontier" class="frontier" aria-labelledby="frontier-title">
+        <h2 id="frontier-title">Qaieo Frontier</h2>
+        <p>Reporting on recent contract awards, commercialization grants and the companies building the physical economy.</p>
+        <p id="frontier-status" class="frontier-status" role="status">Read the latest articles in the Frontier archive.</p>
+        <div id="frontier-articles"></div>
+        <a class="frontier-archive" href="https://yeki.ai/qaieo/media">Read the Frontier archive <span aria-hidden="true">↗</span></a>
+        <script type="module" src="frontier.mjs"></script>
+      </section>
 
       <section class="agenda">
         <h2 class="feed-title">Research agenda</h2>
