@@ -46,7 +46,7 @@ header.site h1 .accent { color: var(--accent); }
 a.home-link { color: var(--text); }
 a.home-link:hover { text-decoration: none; }
 
-.nav { display: flex; gap: 1.2rem; margin-top: 1rem; font-size: 0.9rem; }
+.nav { display: flex; flex-wrap: wrap; gap: 1.2rem; margin-top: 1rem; font-size: 0.9rem; }
 .nav a { color: var(--muted); }
 .nav a:hover { color: var(--accent); }
 
@@ -170,3 +170,12 @@ footer.site p { margin: 0 0 0.6rem; max-width: 40rem; }
 .agenda ul { padding-left: 1.1rem; margin: 0; max-width: 40rem; }
 .agenda li { margin: 0 0 0.6rem; color: var(--muted); }
 .agenda li strong { color: var(--text); }
+
+
+/* Frontier belongs beside the lab, with the same readable visual language. */
+.frontier { margin-top: 2rem; padding: 1.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.frontier h2 { margin: 0 0 0.5rem; font-size: 1.4rem; letter-spacing: -0.02em; }
+.frontier > p { color: var(--muted); margin: 0 0 1rem; }
+.frontier .frontier-status { font-size: 0.85rem; }
+.frontier-post h3 { overflow-wrap: anywhere; }
+.frontier-archive { display: inline-block; font-weight: 600; padding: 0.4rem 0; }

@@ -1,5 +1,7 @@
 # Qaieo newsletter: EPD workflow
 
+> October 23 website update: the research lab remains the homepage, with a live Frontier feed section. The earlier marketing landing is retained in source but is not the generated homepage. Newsletter activation and sending remain unverified and outside this release. See [the current website path](../docs/frontier-publishing.md).
+
 Owner: Omid. Scope: the subscribe path on qaieo.com, what happens after signup, what we measure, and how it can take money later. This is the product and engineering contract for the newsletter; editorial rules live in the Yeki repo (`docs/qaieo/newsletter.md`).
 
 ## 1. Current state (as of 2026-10-21)

@@ -6,7 +6,6 @@ import { assertSupportedNode } from "./node-runtime.mjs";
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, copyFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { renderLanding } from "./landing.mjs";
 
 assertSupportedNode();
 
@@ -75,15 +74,8 @@ copyFileSync(join(SITE_DIR, "landing.css"), join(PUBLIC, "landing.css"));
 mkdirSync(join(PUBLIC, "logos"), { recursive: true });
 for (const f of readdirSync(join(SITE_DIR, "logos"))) copyFileSync(join(SITE_DIR, "logos", f), join(PUBLIC, "logos", f));
 
-// qaieo.com home: the Frontier / Clips / Ventures landing. Data lives in site/data/.
-const readJson = (name) => JSON.parse(readFileSync(join(SITE_DIR, "data", name), "utf8"));
-writeFileSync(join(PUBLIC, "index.html"), renderLanding({
-  frontier: readJson("frontier.json"),
-  clips: readJson("clips.json"),
-  ventures: readJson("ventures.json"),
-  archiveUrl: "https://yeki.ai/qaieo/media",
-  beaconToken: process.env.CF_BEACON_TOKEN || "",
-}));
+// Preserve the research lab at the root; Frontier reads the canonical public feed.
+copyFileSync(join(SITE_DIR, "frontier.mjs"), join(PUBLIC, "frontier.mjs"));
 
 const posts = readdirSync(POSTS_DIR)
   .filter((f) => f.endsWith(".md"))
@@ -91,9 +83,10 @@ const posts = readdirSync(POSTS_DIR)
   .sort((a, b) => (a.date < b.date ? 1 : -1));
 
 const NAV = `
-    <nav class="nav">
-      <a href="lab.html">Lab</a>
-      <a href="lab.html#news">News</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html">Lab</a>
+      <a href="index.html#frontier">Qaieo Frontier</a>
+      <a href="index.html#news">News</a>
       <a href="timeline.html">Releases</a>
       <a href="about.html">About</a>
       <a href="feed.xml">RSS</a>
@@ -117,7 +110,7 @@ function page(title, desc, body) {
     <header class="site">
       <span class="badge">Research lab</span>
       <h1><a href="index.html" class="home-link">Qaieo</a></h1>
-      ${NAV}
+${NAV}
     </header>
     <main>
 ${body}
@@ -157,10 +150,18 @@ const AGENDA = `
         </ul>
       </section>`;
 
-writeFileSync(join(PUBLIC, "lab.html"), page("Qaieo, Quantum Research Lab",
+const labPage = page("Qaieo, Quantum Research Lab",
   "Qaieo is a research lab studying how quantum computing gets built and financed, with quantum news read through an underwriting lens.",
   `
       <p class="lede"><span class="live-dot"></span>Qaieo is a research lab studying how quantum computing gets built and financed: the contracts, the milestones, the counterparties, and the risk between them. We also cover quantum news, read through an underwriting lens.</p>
+      <section id="frontier" class="frontier" aria-labelledby="frontier-title">
+        <h2 id="frontier-title">Qaieo Frontier</h2>
+        <p>Reporting on recent contract awards, commercialization grants and the companies building the physical economy.</p>
+        <p id="frontier-status" class="frontier-status" role="status">Read the latest articles in the Frontier archive.</p>
+        <div id="frontier-articles"></div>
+        <a class="frontier-archive" href="https://yeki.ai/qaieo/media">Read the Frontier archive <span aria-hidden="true">↗</span></a>
+        <script type="module" src="frontier.mjs"></script>
+      </section>
 ${AGENDA}
       <h2 class="feed-title">Research</h2>
 ${researchCards}
@@ -187,7 +188,9 @@ ${newsCards}
           } catch { msg.textContent = 'Something went wrong. Try again.'; }
         });
         </script>
-      </section>`));
+      </section>`);
+writeFileSync(join(PUBLIC, "index.html"), labPage);
+writeFileSync(join(PUBLIC, "lab.html"), labPage);
 
 const releases = posts.filter((p) => p.tags.includes("release"));
 writeFileSync(join(PUBLIC, "timeline.html"), page("Qaieo, Perceval Releases",
