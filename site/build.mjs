@@ -165,7 +165,6 @@ const labPage = page("Qaieo — The physical economy, in focus",
         <div class="wave-visual" aria-hidden="true">
           <img class="wave-poster" src="art/quantum-field-gold.webp" alt="" width="1600" height="905" decoding="async" />
           <canvas class="ripple-field"></canvas>
-          <video class="wave-film" data-src="art/quantum-field-gold.mp4" muted loop playsinline preload="none" tabindex="-1" disablepictureinpicture></video>
         </div>
         <div class="hero-copy">
           <p class="eyebrow"><span class="square" aria-hidden="true"></span>Qaieo Frontier</p>
@@ -198,7 +197,7 @@ const labPage = page("Qaieo — The physical economy, in focus",
           </div>
           <a class="hero-explore text-link" href="#frontier">Read the latest articles <span aria-hidden="true">↓</span></a>
         </div>
-        <button class="motion-control" type="button" aria-label="Pause background motion" hidden>Pause motion <span aria-hidden="true">Ⅱ</span></button>
+        <p class="field-hint" aria-hidden="true"><span>↗</span> Move to shape the field</p>
         <script type="module" src="ripple.mjs"></script>
       </section>
       <section id="frontier" class="frontier" aria-labelledby="frontier-title">

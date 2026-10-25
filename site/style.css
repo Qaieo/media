@@ -60,24 +60,17 @@ header.site { min-height: 104px; display: flex; align-items: center; justify-con
 .hero { position: relative; isolation: isolate; padding: clamp(64px, 7vw, 104px) 0 88px; }
 .hero-copy { position: relative; max-width: 650px; width: 61%; }
 .wave-visual { position: absolute; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; mask-image: linear-gradient(0deg, transparent, #000 10%, #000 95%, transparent); }
-.wave-poster, .wave-film, .ripple-field { position: absolute; inset: 0; width: 100%; height: 100%; }
-.wave-poster, .wave-film { object-fit: cover; object-position: 65% center; transform: scale(1.06) translate(var(--field-x, 0px), var(--field-y, 0px)); transition: opacity .7s ease, transform .75s cubic-bezier(.2,.65,.25,1); }
-.wave-film { z-index: 1; opacity: 0; }
-.ripple-field { z-index: 2; opacity: 0; transition: opacity .7s ease; }
+.wave-poster, .ripple-field { position: absolute; inset: 0; width: 100%; height: 100%; }
+.wave-poster { object-fit: cover; object-position: 65% center; }
+.ripple-field { opacity: 0; }
 .field-ready .ripple-field { opacity: 1; }
-.field-ready .wave-poster { opacity: 0; }
-.film-playing .wave-film { opacity: 1; }
-.film-playing .ripple-field { opacity: 1; }
-/* A reflected glint follows the field, not the pointer itself; it never covers controls. */
-.wave-visual::after { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; background: radial-gradient(ellipse 240px 170px at var(--cursor-x, 75%) var(--cursor-y, 45%), rgba(208,181,117,.08), rgba(174,141,80,.025) 42%, transparent 74%); mix-blend-mode: screen; transition: opacity .65s ease; }
-.field-active .wave-visual::after { opacity: 1; }
-.motion-paused .wave-visual::after, .motion-reduced .wave-visual::after { opacity: 0; }
-.motion-reduced .wave-poster { opacity: 1; transform: none; }
-.motion-reduced .ripple-field, .motion-reduced .wave-film { z-index: 1; opacity: 0; }
-.hero::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(90deg, #080a0c 4%, rgba(8,10,12,.94) 25%, rgba(8,10,12,.73) 43%, rgba(8,10,12,.08) 66%, transparent 85%); }
-.motion-control { position: absolute; bottom: 24px; right: 0; display: inline-flex; gap: 12px; align-items: center; padding: 8px 0 8px 12px; min-height: 44px; color: var(--muted); font: 10px/1.5 var(--mono); background: none; border: 0; cursor: pointer; }
-.motion-control[hidden] { display: none; }
-.motion-control:hover { color: var(--text); }
+.field-ready .wave-poster { visibility: hidden; }
+.hero::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(90deg, #080a0c 3%, rgba(8,10,12,.92) 25%, rgba(8,10,12,.58) 43%, rgba(8,10,12,.04) 64%, transparent 82%); }
+.field-hint { display: none; position: absolute; right: 0; bottom: 22px; margin: 0; color: var(--muted); font: 9px/1.5 var(--mono); letter-spacing: .08em; text-transform: uppercase; pointer-events: none; }
+.field-hint span { margin-right: 10px; color: var(--accent-light); font-size: 14px; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .field-ready .field-hint { display: block; }
+}
 .hero-topics { list-style: none; padding: 0; margin: 0 0 18px; }
 .hero-topics li { padding: 15px 0; border-bottom: 1px solid var(--border); font-size: 17px; letter-spacing: -.02em; }
 .hero-topics span { color: var(--accent); font: 10px var(--mono); display: block; margin-bottom: 7px; }
@@ -197,7 +190,7 @@ footer.site p { margin-bottom: 0; max-width: 70ch; }
 
 /* A single, finite entry is ornamental; all content is visible without animation. */
 @media (prefers-reduced-motion: reduce) {
-  .wave-poster, .wave-film, .ripple-field { transition: none; }
+  .wave-poster, .ripple-field { transition: none; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .hero-copy, .hero-note { animation: enter .55s ease-out both; }
@@ -218,7 +211,7 @@ footer.site p { margin-bottom: 0; max-width: 70ch; }
   .hero-copy { width: 88%; }
   .hero::before { background: linear-gradient(90deg, rgba(8,10,12,.94), rgba(8,10,12,.78) 45%, rgba(8,10,12,.15)); }
   .hero h1 { max-width: 16ch; font-size: clamp(48px, 8.5vw, 74px); }
-  .wave-poster, .wave-film { object-position: 75% center; }
+  .wave-poster { object-position: 75% center; }
   .frontier { grid-template-columns: 1fr; gap: 32px; padding: 48px 0; }
   .frontier h2 span { display: inline; }
   .frontier-intro > p:not(.eyebrow) { max-width: 55ch; }
@@ -236,12 +229,12 @@ footer.site p { margin-bottom: 0; max-width: 70ch; }
   .nav a { min-height: 40px; }
   .hero { padding: 48px 0 52px; }
   .hero-copy { width: 100%; }
+  .field-ready .field-hint { display: none; }
   .hero::before { background: linear-gradient(90deg, rgba(8,10,12,.92), rgba(8,10,12,.80) 58%, rgba(8,10,12,.48)); }
   .hero h1 { font-size: clamp(43px, 9.5vw, 58px); max-width: 15ch; }
   .hero .lede { font-size: 16px; }
   .hero-signup input[type="email"] { flex-basis: 160px; }
   .hero-signup input[type="submit"] { flex-grow: 1; }
-  .motion-control { bottom: 6px; }
   .hero .eyebrow { margin-bottom: 20px; }
   .button { min-height: 48px; }
   .frontier { padding: 40px 0 32px; }
