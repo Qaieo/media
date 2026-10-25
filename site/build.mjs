@@ -73,6 +73,8 @@ copyFileSync(join(SITE_DIR, "style.css"), join(PUBLIC, "style.css"));
 copyFileSync(join(SITE_DIR, "landing.css"), join(PUBLIC, "landing.css"));
 mkdirSync(join(PUBLIC, "logos"), { recursive: true });
 for (const f of readdirSync(join(SITE_DIR, "logos"))) copyFileSync(join(SITE_DIR, "logos", f), join(PUBLIC, "logos", f));
+mkdirSync(join(PUBLIC, "fonts"), { recursive: true });
+for (const f of readdirSync(join(SITE_DIR, "fonts"))) copyFileSync(join(SITE_DIR, "fonts", f), join(PUBLIC, "fonts", f));
 
 // Preserve the research lab at the root; Frontier reads the canonical public feed.
 copyFileSync(join(SITE_DIR, "frontier.mjs"), join(PUBLIC, "frontier.mjs"));
@@ -94,7 +96,7 @@ const NAV = `
 
 const DISCLAIMER = `<p>Qaieo is not affiliated with, endorsed by, or sponsored by Quandela or any company it covers. Perceval and related marks are trademarks of their respective owners. Not investment advice. See <a href="disclosures.html">Disclosures</a>.</p>`;
 
-function page(title, desc, body) {
+function page(title, desc, body, { home = false } = {}) {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,18 +104,20 @@ function page(title, desc, body) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${title}</title>
   <meta name="description" content="${desc}" />
+  <meta name="theme-color" content="#080a0c" />
+  <link rel="preload" href="fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="logos/qaieo-avatar.png" />
   <link rel="alternate" type="application/rss+xml" title="Qaieo" href="feed.xml" />
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <div class="wrap">
     <header class="site">
-      <span class="badge">Research lab</span>
-      <h1><a href="index.html" class="home-link" aria-label="Qaieo home"><img class="brand-logo" src="logos/qaieo-logo-white.png" alt="Qaieo" width="1544" height="576" /></a></h1>
+      <a href="index.html" class="home-link" aria-label="Qaieo home"><img class="brand-logo" src="logos/qaieo-logo-white.png" alt="Qaieo" width="1544" height="576" /></a>
 ${NAV}
     </header>
-    <main>
+    <main id="main" class="${home ? "lab-page" : "document-page"}">
 ${body}
     </main>
     <footer class="site">
@@ -141,8 +145,8 @@ const researchCards = posts.filter(isResearch).map(card).join("\n");
 const newsCards = posts.filter((p) => !isResearch(p)).map(card).join("\n");
 
 const AGENDA = `
-      <section class="agenda">
-        <h2 class="feed-title">Research agenda</h2>
+      <section class="agenda" aria-labelledby="agenda-title">
+        <div class="section-heading"><span class="eyebrow">The questions behind the research</span><h2 id="agenda-title">Research agenda</h2></div>
         <ul>
           <li><strong>Contracts and counterparties.</strong> Who buys quantum systems (governments, national labs, HPC centers, enterprises) and how strong those counterparties are.</li>
           <li><strong>Milestones and delivery risk.</strong> Announced timelines versus actual delivery, and what slippage looks like on first-of-kind systems.</li>
@@ -154,29 +158,62 @@ const AGENDA = `
 const labPage = page("Qaieo, Quantum Research Lab",
   "Qaieo is a research lab studying how quantum computing gets built and financed, with quantum news read through an underwriting lens.",
   `
-      <p class="lede"><span class="live-dot"></span>Qaieo is a research lab studying how quantum computing gets built and financed: the contracts, the milestones, the counterparties, and the risk between them. We also cover quantum news, read through an underwriting lens.</p>
+      <section class="hero" aria-labelledby="lab-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="square" aria-hidden="true"></span>Research lab</p>
+          <h1 id="lab-title">How quantum computing gets built <span>and financed.</span></h1>
+          <p class="lede">Qaieo studies the contracts, the milestones, the counterparties, and the risk between them. We also cover quantum news, read through an underwriting lens.</p>
+          <a class="button" href="#frontier">Read Qaieo Frontier <span aria-hidden="true">↗</span></a>
+        </div>
+        <aside class="hero-note" aria-label="Our research lens">
+          <p class="eyebrow">An underwriting lens</p>
+          <p class="hero-question">Who is buying?<br />What was promised?<br />What does it cost to finish?</p>
+          <a class="text-link" href="about.html">Inside the research lab <span aria-hidden="true">↗</span></a>
+        </aside>
+      </section>
       <section id="frontier" class="frontier" aria-labelledby="frontier-title">
-        <h2 id="frontier-title">Qaieo Frontier</h2>
-        <p>Reporting on recent contract awards, commercialization grants and the companies building the physical economy.</p>
-        <p id="frontier-status" class="frontier-status" role="status">Read the latest articles in the Frontier archive.</p>
-        <div id="frontier-articles"></div>
-        <a class="frontier-archive" href="https://yeki.ai/qaieo/media">Read the Frontier archive <span aria-hidden="true">↗</span></a>
+        <div class="frontier-intro">
+          <p class="eyebrow">From the physical economy</p>
+          <h2 id="frontier-title">Qaieo <span>Frontier</span></h2>
+          <p>Reporting on recent contract awards, commercialization grants and the companies building the physical economy.</p>
+          <a class="frontier-archive text-link" href="https://yeki.ai/qaieo/media">Read the Frontier archive <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="frontier-feed">
+          <p id="frontier-status" class="frontier-status" role="status">Read the latest articles in the Frontier archive.</p>
+          <div id="frontier-articles"></div>
+        </div>
         <script type="module" src="frontier.mjs"></script>
       </section>
 ${AGENDA}
-      <h2 class="feed-title">Research</h2>
+      <section class="editorial-section" aria-labelledby="research-title">
+        <div class="section-heading"><p class="eyebrow">From the lab</p><h2 id="research-title">Research</h2><p>Original analysis on contracts, counterparties, milestones, and capital in quantum.</p></div>
+        <div class="article-list">
 ${researchCards}
-      <h2 class="feed-title" id="news">News</h2>
+        </div>
+      </section>
+      <section class="editorial-section" id="news" aria-labelledby="news-title">
+        <div class="section-heading"><p class="eyebrow">Developments that matter</p><h2 id="news-title">News</h2><p>Quantum news, read through an underwriting lens.</p><a class="text-link" href="timeline.html">View the release timeline <span aria-hidden="true">↗</span></a></div>
+        <div class="article-list">
 ${newsCards}
-      <section class="newsletter">
-        <h2>Get the weekly brief</h2>
-        <p>One email a week: Qaieo research, the quantum news that matters, and what it means for risk. No spam, unsubscribe anytime.</p>
+        </div>
+      </section>
+      <section class="newsletter" aria-labelledby="newsletter-title">
+        <div class="newsletter-copy">
+          <p class="eyebrow">Qaieo, in your inbox</p>
+          <h2 id="newsletter-title">Get the weekly brief</h2>
+          <p>One email a week: Qaieo research, the quantum news that matters, and what it means for risk. No spam, unsubscribe anytime.</p>
+        </div>
+        <div class="newsletter-form">
         <form id="qaieo-subscribe" action="/api/subscribe" method="post">
-          <input type="email" name="email" placeholder="you@example.com" required />
+          <label for="subscriber-email">Email address</label>
+          <div class="subscribe-controls">
+          <input id="subscriber-email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
           <input type="text" name="company" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <input type="submit" value="Subscribe" />
+          </div>
         </form>
-        <p id="qaieo-sub-msg" class="sub-msg" hidden></p>
+        <p id="qaieo-sub-msg" class="sub-msg" role="status" hidden></p>
+        </div>
         <script>
         document.getElementById('qaieo-subscribe').addEventListener('submit', async (e) => {
           e.preventDefault();
@@ -189,7 +226,7 @@ ${newsCards}
           } catch { msg.textContent = 'Something went wrong. Try again.'; }
         });
         </script>
-      </section>`);
+      </section>`, { home: true });
 writeFileSync(join(PUBLIC, "index.html"), labPage);
 writeFileSync(join(PUBLIC, "lab.html"), labPage);
 
@@ -197,7 +234,8 @@ const releases = posts.filter((p) => p.tags.includes("release"));
 writeFileSync(join(PUBLIC, "timeline.html"), page("Qaieo, Perceval Releases",
   "Perceval release timeline, tracked by Qaieo.",
   `
-      <h2 class="page-title">Release timeline</h2>
+      <p class="eyebrow">From the lab</p>
+      <h1 class="page-title">Release timeline</h1>
       <p class="lede">Perceval releases, newest first, tracked by Qaieo.</p>
       <div class="timeline">
 ${releases.map((p) => `
@@ -214,14 +252,16 @@ const about = parseFile(join(SITE_DIR, "about.md"));
 writeFileSync(join(PUBLIC, "about.html"), page("Qaieo, About",
   "About Qaieo: a research lab studying quantum computing through an underwriting lens.",
   `
-      <h2 class="page-title">${about.title}</h2>
+      <p class="eyebrow">Research lab</p>
+      <h1 class="page-title">${about.title}</h1>
       <div class="prose">${md(about.body)}</div>`));
 
 const disclosures = parseFile(join(SITE_DIR, "disclosures.md"));
 writeFileSync(join(PUBLIC, "disclosures.html"), page("Qaieo, Disclosures",
   "Qaieo disclosures: financial interests and how conflicts are handled.",
   `
-      <h2 class="page-title">${disclosures.title}</h2>
+      <p class="eyebrow">Research lab</p>
+      <h1 class="page-title">${disclosures.title}</h1>
       <div class="prose">${md(disclosures.body)}</div>`));
 
 const items = posts.slice(0, 30).map((p) => `
