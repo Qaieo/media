@@ -48,7 +48,7 @@
           try {
             const r = await fetch(f.action, { method: 'POST', body: new FormData(f) });
             const j = await r.json();
-            msg.textContent = j.ok ? 'You are in. The next brief lands in your inbox.' : (j.error || 'Something went wrong.');
+            msg.textContent = j.ok ? 'Check your inbox to confirm your subscription. If you already subscribe, you are all set.' : (j.error || 'Something went wrong.');
           } catch { msg.textContent = 'Something went wrong. Try again.'; }
         });
         </script>

@@ -14,7 +14,7 @@ const POSTS_DIR = join(SITE_DIR, "posts");
 const PUBLIC = join(SITE_DIR, "public");
 const SITE_URL = "https://qaieo.com";
 // Signup posts to /api/subscribe (worker.js), which adds the contact to the
-// dedicated Qaieo Loops mailing list (LOOPS_LIST_ID in wrangler.jsonc).
+// dedicated Qaieo Kit form (KIT_FORM_ID in wrangler.jsonc).
 
 function parseFile(path) {
   const raw = readFileSync(path, "utf8");
@@ -180,7 +180,7 @@ const labPage = page("Qaieo — The physical economy, in focus",
           try {
             const r = await fetch(f.action, { method: 'POST', body: new FormData(f) });
             const j = await r.json();
-            msg.textContent = j.ok ? 'You are in. The next brief lands in your inbox.' : (j.error || 'Something went wrong.');
+            msg.textContent = j.ok ? 'Check your inbox to confirm your subscription. If you already subscribe, you are all set.' : (j.error || 'Something went wrong.');
           } catch { msg.textContent = 'Something went wrong. Try again.'; }
         });
         </script>
