@@ -56,6 +56,21 @@ test("HEAD returns metadata without a body; other methods do not fetch", async (
   }
 });
 
+test("proxy retains optional industry metadata and rejects malformed supplied IDs", async () => {
+  for (const industries of [[], ["robotics", "aerospace-defense"]]) {
+    const input = feed();
+    input.articles[0].industries = industries;
+    const response = await frontierResponse(request(), async () => Response.json(input));
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), input);
+  }
+  const input = feed();
+  input.articles[0].industries = ["unknown"];
+  const response = await frontierResponse(request(), async () => Response.json(input));
+  assert.equal(response.status, 502);
+  assert.deepEqual(await response.json(), unavailable);
+});
+
 test("malformed JSON, malformed metadata, and unexpected article destinations fail closed", async () => {
   const invalidUrl = feed();
   invalidUrl.articles[0].url = "https://evil.test/robotics-award";

@@ -3,6 +3,7 @@
 // (index.html, timeline.html, about.html, disclosures.html, feed.xml).
 // Run from repo root: node site/build.mjs
 import { assertSupportedNode } from "./node-runtime.mjs";
+import { FRONTIER_INDUSTRIES } from "./frontier-data.mjs";
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, copyFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -93,6 +94,7 @@ const posts = readdirSync(POSTS_DIR)
 const NAV = `
     <nav class="nav" aria-label="Primary">
       <a href="about.html">About</a>
+      <a href="index.html#industries">Industries</a>
       <a class="nav-signup" href="index.html#newsletter">${NEWSLETTER_READY ? "Sign up for newsletter" : "Newsletter"} <span aria-hidden="true">↗</span></a>
     </nav>`;
 
@@ -121,11 +123,11 @@ ${NAV}
     </header>
     <main id="main" class="${home ? "lab-page" : "document-page"}">
 ${body}
-${home ? "" : `<aside class="document-signup"><p class="eyebrow">Qaieo Frontier</p><h2>The physical economy. In your inbox.</h2><p>Recent awards, commercialization grants and the companies building the physical economy.</p><a class="button" href="index.html#newsletter">${NEWSLETTER_READY ? "Sign up for newsletter" : "Newsletter details"} <span aria-hidden="true">↗</span></a></aside>`}
+${home ? "" : `<aside class="document-signup"><p class="eyebrow">Qaieo Frontier</p><h2>The physical economy. In your inbox.</h2><p>Awards, milestones and contracts shaping the physical economy.</p><a class="button" href="index.html#newsletter">${NEWSLETTER_READY ? "Sign up for newsletter" : "Newsletter details"} <span aria-hidden="true">↗</span></a></aside>`}
     </main>
     <footer class="site">
       ${DISCLAIMER}
-      <p>Posts summarize public sources, linked under each update. Corrections welcome via the <a href="https://github.com/omeal007/qaieo">GitHub repo</a>.</p>
+      <p>Awards, milestones and contracts shaping the physical economy. Posts link to public sources, with grants and prizes in context. Corrections welcome via the <a href="https://github.com/omeal007/qaieo">GitHub repo</a>.</p>
     </footer>
   </div>
 </body>
@@ -151,15 +153,39 @@ const AGENDA = `
       <section class="agenda" id="coverage" aria-labelledby="agenda-title">
         <div class="section-heading"><span class="eyebrow">Follow the work, not just the announcement</span><h2 id="agenda-title">What we cover</h2></div>
         <ul>
-          <li><strong>Recent awards.</strong> Who won the work, who is buying, and what is actually committed.</li>
-          <li><strong>Commercialization grants.</strong> Public funding that helps technology move from development toward deployment.</li>
-          <li><strong>Companies building.</strong> The teams turning robotics, space systems, industrial hardware and infrastructure into delivered products.</li>
-          <li><strong>What comes next.</strong> Delivery milestones, funding conditions and the evidence still needed to understand an announcement.</li>
+          <li><strong>Awards &amp; contracts.</strong> Who won the work, who is buying, and what is committed, obligated or still conditional.</li>
+          <li><strong>Milestones that matter.</strong> Product launches, deployments, manufacturing scale and delivery progress, with evidence behind the announcement.</li>
+          <li><strong>Grants &amp; prizes.</strong> Funding that moves technology toward commercial use, with its conditions and next steps in view.</li>
+          <li><strong>Companies building.</strong> Early-stage and scaling teams in robotics, photonics and aerospace &amp; defense, alongside energy, industry and infrastructure.</li>
         </ul>
       </section>`;
 
+const INDUSTRIES = `
+      <section class="industry-index" id="industries" aria-labelledby="industries-title">
+        <div class="section-heading">
+          <p class="eyebrow">Follow an industry</p>
+          <h2 id="industries-title">Where the work is happening</h2>
+          <p>Robotics, photonics and aerospace &amp; defense lead our coverage, including space. We also follow energy, industry and infrastructure, and emerging frontiers.</p>
+        </div>
+        <nav class="industry-nav" aria-label="Industries">
+${FRONTIER_INDUSTRIES.map(industry => `          <a class="text-link" href="#industry-${industry.id}">${industry.label.replace(/&/g, "&amp;")} <span aria-hidden="true">↓</span></a>`).join("\n")}
+        </nav>
+        <noscript><p>Read published industry coverage in the <a class="text-link" href="https://yeki.ai/qaieo/media">Frontier archive</a>.</p></noscript>
+      </section>
+${FRONTIER_INDUSTRIES.map(industry => `
+      <section class="editorial-section" id="industry-${industry.id}" aria-labelledby="industry-${industry.id}-title">
+        <div class="section-heading">
+          <h2 id="industry-${industry.id}-title">${industry.label.replace(/&/g, "&amp;")}</h2>
+          <p>${industry.description}</p>
+        </div>
+        <div class="frontier-feed">
+          <div id="industry-${industry.id}-articles"></div>
+          <p id="industry-${industry.id}-status" class="frontier-status" role="status">Loading published coverage…</p>
+        </div>
+      </section>`).join("\n")}`;
+
 const labPage = page("Qaieo — The physical economy, in focus",
-  "Recent awards, commercialization grants and the companies building the physical economy.",
+  "Awards, milestones and contracts shaping the physical economy. Early-stage and scaling companies in robotics, photonics, aerospace &amp; defense and beyond.",
   `
       <section class="hero" id="newsletter" aria-labelledby="lab-title">
         <div class="wave-visual" aria-hidden="true">
@@ -169,7 +195,7 @@ const labPage = page("Qaieo — The physical economy, in focus",
         <div class="hero-copy">
           <p class="eyebrow"><span class="square" aria-hidden="true"></span>Qaieo Frontier</p>
           <h1 id="lab-title">The physical economy.<span>In your inbox.</span></h1>
-          <p class="lede">Recent awards, commercialization grants and the companies building the physical economy.</p>
+          <p class="lede">Awards, milestones and contracts shaping the physical economy.</p>
           <div class="hero-signup">
         <form id="qaieo-subscribe" action="/api/subscribe" method="post">
           <label for="subscriber-email">Your email address</label>
@@ -204,7 +230,7 @@ const labPage = page("Qaieo — The physical economy, in focus",
         <div class="frontier-intro">
           <p class="eyebrow">The physical economy, in focus</p>
           <h2 id="frontier-title">Qaieo <span>Frontier</span></h2>
-          <p>Recent awards, commercialization grants and the companies building the physical economy.</p>
+          <p>Following early-stage and scaling companies through awards, contracts and commercial milestones. Established companies feature when their work defines an industry.</p>
           <a class="frontier-archive text-link" href="https://yeki.ai/qaieo/media">All articles <span aria-hidden="true">↗</span></a>
         </div>
         <div class="frontier-feed">
@@ -215,6 +241,7 @@ const labPage = page("Qaieo — The physical economy, in focus",
         <script type="module" src="frontier.mjs"></script>
       </section>
 ${AGENDA}
+${INDUSTRIES}
       <section class="agenda" id="ecosystem" aria-labelledby="ecosystem-title">
         <div class="section-heading"><p class="eyebrow">The connected product</p><h2 id="ecosystem-title">Work data. Research. Financing.</h2></div>
         <ul>
@@ -255,7 +282,7 @@ ${newsCards}
         <div class="newsletter-copy">
           <p class="eyebrow">Keep the frontier in view</p>
           <h2 id="newsletter-title">Follow what’s being built.</h2>
-          <p>Awards, commercialization grants and the companies behind them.</p>
+          <p>Awards, milestones and contracts shaping the physical economy. Grants, prizes and the companies behind them.</p>
         </div>
         <a class="button" href="#newsletter">${NEWSLETTER_READY ? "Sign up for newsletter" : "Newsletter details"} <span aria-hidden="true">↗</span></a>
       </section>`, { home: true });
@@ -282,7 +309,7 @@ ${releases.map((p) => `
 
 const about = parseFile(join(SITE_DIR, "about.md"));
 writeFileSync(join(PUBLIC, "about.html"), page("Qaieo, About",
-  "About Qaieo: recent awards, commercialization grants and the companies building the physical economy.",
+  "About Qaieo: awards, milestones and contracts shaping the physical economy, with early-stage and scaling companies at the center.",
   `
       <p class="eyebrow">Qaieo Frontier</p>
       <h1 class="page-title">${about.title}</h1>
@@ -310,7 +337,7 @@ writeFileSync(join(PUBLIC, "feed.xml"), `<?xml version="1.0" encoding="UTF-8"?>
   <channel>
     <title>Qaieo — Research archive</title>
     <link>${SITE_URL}/</link>
-    <description>Qaieo’s preserved quantum research and software release archive. Current awards and commercialization coverage is available through Qaieo Frontier at qaieo.com.</description>
+    <description>Qaieo’s preserved quantum research and software release archive. Current awards, milestones and contracts coverage is available through Qaieo Frontier at qaieo.com.</description>
     <language>en-us</language>
 ${items}
   </channel>

@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { parseFrontierFeed, frontierDate, latestFrontierArticles, loadFrontier, startFrontier } from "./frontier.mjs";
+import { FRONTIER_INDUSTRIES, parseFrontierFeed, frontierDate, latestFrontierArticles, frontierArticleIndustries, industryFrontierArticles, loadFrontier, startFrontier } from "./frontier.mjs";
 
 const article = {
   title: "A public award", date: "2026-10-22", slug: "a-public-award",
@@ -13,6 +13,35 @@ const feed = (articles = [article]) => ({ version: 1, publication: "Qaieo Fronti
 test("accepts public v1 metadata and orders articles by date", () => {
   const older = { ...article, date: "2026-10-21", slug: "older", url: "https://yeki.ai/qaieo/media/older" };
   assert.deepEqual(parseFrontierFeed(feed([older, article])), [article, older]);
+});
+
+test("legacy v1 industry mapping uses exact case-insensitive tags and supports multiple industries", () => {
+  const aliases = {
+    robotics: ["Robotics", "Space robotics"],
+    photonics: ["Photonics", "Optics", "Optical computing", "Optical communications", "Lasers", "Quantum photonics"],
+    "aerospace-defense": ["Aerospace & defense", "Aerospace and defense", "Aerospace", "Defense", "Space", "Space robotics", "Spacecraft propulsion", "Aviation", "Navy"],
+    energy: ["Energy", "Solar", "Grid", "Energy storage", "Nuclear", "Power systems"],
+    "industry-infrastructure": ["Industry & infrastructure", "Industry and infrastructure", "Industrial", "Industry", "Infrastructure", "Hardware", "Manufacturing", "Materials", "Construction", "Logistics", "Semiconductors"],
+  };
+  for (const [id, tags] of Object.entries(aliases)) {
+    for (const tag of tags) assert.ok(frontierArticleIndustries({ tags: [tag.toUpperCase()] }).includes(id), tag);
+  }
+  assert.deepEqual(frontierArticleIndustries({ tags: ["Space robotics", "Photonics"] }), ["robotics", "photonics", "aerospace-defense"]);
+  assert.deepEqual(frontierArticleIndustries({ tags: ["Robotics overview", "Gridiron"] }), ["emerging-frontiers"]);
+  assert.deepEqual(frontierArticleIndustries({ tags: [] }), ["emerging-frontiers"]);
+  assert.deepEqual(frontierArticleIndustries({ tags: ["Introduction", "Robotics"] }), []);
+});
+
+test("optional explicit industries are validated, retained and take precedence over legacy tags", () => {
+  for (const industries of [[], ["photonics"], ["robotics", "aerospace-defense"], ["emerging-frontiers"]]) {
+    const [parsed] = parseFrontierFeed(feed([{ ...article, industries }]));
+    assert.deepEqual(parsed.industries, industries);
+    assert.deepEqual(frontierArticleIndustries(parsed), industries);
+  }
+  assert.deepEqual(frontierArticleIndustries({ tags: ["Introduction"], industries: ["robotics"] }), []);
+  for (const industries of [null, "robotics", ["Robotics"], [null], ["robotics", "unknown"], ["<script>"], Array(7).fill("robotics")]) {
+    assert.throws(() => parseFrontierFeed(feed([{ ...article, industries }])));
+  }
 });
 
 test("rejects untrusted routes, source schemes and malformed dates", () => {
@@ -64,20 +93,91 @@ test("publication eligibility rolls over at Pacific midnight, including daylight
 });
 
 function documentFixture() {
+  let document;
   class Node {
     constructor(tag) { this.tag = tag; this.children = []; this.textContent = ""; this.replacements = 0; }
     append(...nodes) { this.children.push(...nodes); }
     setAttribute(name, value) { this[name] = value; }
     replaceChildren(fragment) { this.children = fragment.children; this.replacements++; }
+    focus(options) { document.activeElement = this; this.focusOptions = options; }
   }
   const list = new Node("div"), status = new Node("p");
-  const document = Object.assign(new EventTarget(), {
+  const groups = new Map(FRONTIER_INDUSTRIES.map(industry => [industry.id, { list: new Node("div"), status: new Node("p") }]));
+  const elements = new Map([["frontier-articles", list], ["frontier-status", status]]);
+  for (const [id, group] of groups) {
+    elements.set(`industry-${id}-articles`, group.list);
+    elements.set(`industry-${id}-status`, group.status);
+  }
+  document = Object.assign(new EventTarget(), {
     visibilityState: "visible",
-    getElementById: id => id === "frontier-articles" ? list : status,
+    getElementById: id => elements.get(id) ?? null,
     createElement: tag => new Node(tag), createDocumentFragment: () => new Node("fragment"),
   });
-  return { document, list, status };
+  return { document, list, status, groups };
 }
+
+test("industry sections refresh from all published metadata beyond the latest three, excluding future posts and introductions", async () => {
+  const { document, list, groups } = documentFixture();
+  const now = new Date("2026-10-24T18:00:00Z");
+  const articles = [
+    dated("newest", "2026-10-24"), dated("second", "2026-10-23"), dated("third", "2026-10-22"),
+    { ...dated("older-optics", "2026-10-20"), tags: ["Optics"] },
+    { ...dated("future-energy", "2026-10-25"), industries: ["energy"] },
+    { ...dated("intro", "2026-10-19"), tags: ["Introduction"] },
+    { ...dated("older-optics", "2026-10-18"), tags: ["Optics"] },
+  ];
+  await loadFrontier(document, async () => response(articles), now);
+  assert.equal(list.children.length, 3);
+  assert.equal(groups.get("photonics").list.children.length, 1);
+  assert.equal(groups.get("photonics").list.children[0].children[1].children[0].href, "https://yeki.ai/qaieo/media/older-optics");
+  assert.equal(groups.get("energy").list.children.length, 0);
+  assert.equal(groups.get("energy").status.textContent, "No published coverage in this industry yet.");
+  assert.equal(groups.get("emerging-frontiers").list.children.length, 0);
+  const first = list.children[0];
+  const focused = groups.get("photonics").list.children[0].children[1].children[0];
+  focused.focus();
+  await loadFrontier(document, async () => response([...articles, { ...dated("older-photonics", "2026-10-21"), industries: ["photonics", "energy"] }]), now);
+  assert.equal(list.children[0], first);
+  assert.equal(groups.get("photonics").list.children.length, 2);
+  assert.equal(groups.get("energy").list.children.length, 1);
+  assert.equal(document.activeElement.href, focused.href);
+  assert.deepEqual(document.activeElement.focusOptions, { preventScroll: true });
+  const saved = groups.get("photonics").list.children[0];
+  await loadFrontier(document, async () => response([{ ...article, industries: ["bad-id"] }]), now);
+  assert.equal(groups.get("photonics").list.children[0], saved);
+  assert.equal(groups.get("photonics").status.textContent, "Showing the last available articles. Updates will resume automatically.");
+  assert.equal(groups.get("emerging-frontiers").status.textContent, "No published coverage in the last available feed. Updates will resume automatically.");
+});
+
+test("industry groups deduplicate published slugs and include cross-sector coverage once in each group", () => {
+  const articles = parseFrontierFeed(feed([
+    { ...dated("cross-sector", "2026-10-25"), industries: ["photonics"] },
+    { ...dated("cross-sector", "2026-10-24"), tags: ["Space robotics", "Robotics"] },
+    { ...dated("cross-sector", "2026-10-23"), tags: ["Space robotics"] },
+  ]));
+  const groups = industryFrontierArticles("2026-10-24", articles);
+  assert.equal(groups.get("robotics").length, 1);
+  assert.equal(groups.get("aerospace-defense").length, 1);
+  assert.equal(groups.get("photonics").length, 0);
+});
+
+test("first-load errors and empty feeds leave every industry honest and recover on the next refresh", async () => {
+  const { document, list, groups } = documentFixture();
+  const now = new Date("2026-10-24T18:00:00Z");
+  await loadFrontier(document, async () => { throw new Error("Offline"); }, now);
+  for (const { list, status } of groups.values()) {
+    assert.equal(list.children.length, 0);
+    assert.equal(status.textContent, "Articles are temporarily unavailable. Read the Frontier archive.");
+  }
+  await loadFrontier(document, async () => response([]), now);
+  assert.equal(list.children.length, 0);
+  for (const { list, status } of groups.values()) {
+    assert.equal(list.children.length, 0);
+    assert.equal(status.textContent, "No published coverage in this industry yet.");
+  }
+  await loadFrontier(document, async () => response([article]), now);
+  assert.equal(groups.get("robotics").list.children.length, 1);
+});
 
 test("client refresh renders current metadata safely, preserves unchanged nodes and retains last good data on failure", async () => {
   const { document, list, status } = documentFixture();
@@ -149,7 +249,10 @@ test("generated signup homepage preserves the research archive, lab alias and Fr
   const home = readFileSync(new URL("./public/index.html", import.meta.url), "utf8");
   const lab = readFileSync(new URL("./public/lab.html", import.meta.url), "utf8");
   assert.equal(home, lab);
-  for (const expected of ["The physical economy.", "In your inbox.", "Recent awards, commercialization grants and the companies building the physical economy.", "What we cover", "The last photonic framework standing", "Qaieo Frontier", 'href="https://yeki.ai/qaieo/media"', 'type="module" src="frontier.mjs"']) assert.ok(home.includes(expected), expected);
+  for (const expected of ["The physical economy.", "In your inbox.", "Awards, milestones and contracts shaping the physical economy.", "What we cover", "The last photonic framework standing", "Qaieo Frontier", 'href="https://yeki.ai/qaieo/media"', 'type="module" src="frontier.mjs"']) assert.ok(home.includes(expected), expected);
+  for (const { id } of FRONTIER_INDUSTRIES) {
+    for (const expected of [`id="industry-${id}"`, `href="#industry-${id}"`, `id="industry-${id}-articles"`, `id="industry-${id}-status"`]) assert.ok(home.includes(expected), expected);
+  }
   assert.equal((home.match(/id="qaieo-subscribe"/g) || []).length, 1);
   assert.ok(home.indexOf('id="qaieo-subscribe"') < home.indexOf('id="frontier"'));
   assert.ok(!home.includes("Quantum Research Lab"));

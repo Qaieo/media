@@ -4,18 +4,21 @@ The founder approved publishing the gold particle wave and automatic latest-thre
 
 # Qaieo newsletter: EPD workflow
 
-> Current website direction: Qaieo covers recent awards, commercialization grants and the companies building the physical economy. The prepared homepage leads with a newsletter signup hero and this definition, followed by the live Frontier feed; earlier quantum research remains a collapsible archive. Production publication is pending the newsletter connection. Sending is not activated by this design change. See [the current website path](../docs/frontier-publishing.md).
+> Current website direction: Qaieo covers awards, milestones and contracts shaping the physical economy. Early-stage and scaling companies are central. The homepage retains its newsletter hero, disabled signup and live latest-three Frontier feed, with dedicated industry sections; earlier quantum research remains a collapsible archive. Newsletter activation is pending the Kit connection and verified confirmation flow. Sending is not activated by this design change. See [the current website path](../docs/frontier-publishing.md).
 
 Owner: Omid. Scope: the subscribe path on qaieo.com, what happens after signup, what we measure, and how it can take money later. This is the product and engineering contract for the newsletter; editorial rules live in the Yeki repo (`docs/qaieo/newsletter.md`).
 
 ## Coverage and evidence
 
-The current positioning supersedes research-lab-first descriptions: **Recent awards, commercialization grants and the companies building the physical economy.** Quantum research and release notes remain available as an archive. Existing articles keep their canonical URLs and feed; this positioning update does not change the Yeki publishing workflow or establish a sending cadence.
+The current positioning supersedes research-lab-first descriptions: **Awards, milestones and contracts shaping the physical economy.** Focus on early-stage and scaling companies; include established companies when their work defines an industry. Core coverage is **Robotics**, **Photonics**, and **Aerospace & defense** (including space). Supporting coverage is **Energy** and **Industry & infrastructure**; **Emerging frontiers** covers other physical technologies. Grants and prizes remain in scope. Industry sections refresh from all published feed metadata, with no invented stories for empty categories.
+
+Quantum research and release notes remain available as an archive. Existing articles keep their titles, dates, bodies, tags, sources and canonical URLs; this positioning update does not change the Yeki publishing workflow or establish a sending cadence.
 
 - Lead with the recipient, awarding body, award date and status, scope of work and primary source. Distinguish an announced award from work delivered.
 - Label contract ceilings and potential values separately from funds obligated, payments received and revenue. Do not present a program-wide budget as one company's award.
 - For commercialization grants, report disclosed conditions, milestones, matching funds and payment stages. State when terms are unavailable; do not imply that a selection or conditional award is cash received or commercial validation.
 - Explain what the company builds and the evidence behind its commercial progress. Separate reported facts from analysis, and retain visible corrections and relevant disclosures.
+- Cover product launches, deployments, manufacturing scale and delivery milestones when primary evidence supports their status and significance. Keep the reporting tied to commercial progress within the defined industries.
 
 ## 1. Kit connection — October 24, 2026
 
@@ -39,7 +42,7 @@ Success: **Check your inbox to confirm your subscription. If you already subscri
 
 Confirmation email proposal:
 - Subject: Confirm your Qaieo subscription
-- Body: Recent awards, commercialization grants and the companies building the physical economy. Confirm below to receive Qaieo Frontier.
+- Body: Awards, milestones and contracts shaping the physical economy. Confirm below to receive Qaieo Frontier.
 - Button: Confirm subscription
 
 No sending cadence is promised. Kit is the subscriber system of record; the Worker does not store addresses. Campaign UTM parameters are forwarded as form attribution; arbitrary custom fields are not created. No campaigns, paid plan, analytics or automation are activated by this change.
