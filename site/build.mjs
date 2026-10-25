@@ -96,7 +96,7 @@ const NAV = `
       <a class="nav-signup" href="index.html#newsletter">${NEWSLETTER_READY ? "Sign up for newsletter" : "Newsletter"} <span aria-hidden="true">↗</span></a>
     </nav>`;
 
-const DISCLAIMER = `<p>Qaieo is a publication from <a href="https://yeki.ai">Yeki</a>. Coverage draws on public sources. Not investment advice. See <a href="disclosures.html">Disclosures</a> for relationships and conflicts.</p>`;
+const DISCLAIMER = `<p>Qaieo Frontier is a publication from <a href="https://yeki.ai">Yeki</a>. Coverage draws on public sources. Not investment advice. See <a href="disclosures.html">Disclosures</a> for relationships and conflicts.</p>`;
 
 function page(title, desc, body, { home = false } = {}) {
   return `<!DOCTYPE html>
@@ -215,6 +215,16 @@ const labPage = page("Qaieo — The physical economy, in focus",
         <script type="module" src="frontier.mjs"></script>
       </section>
 ${AGENDA}
+      <section class="agenda" id="ecosystem" aria-labelledby="ecosystem-title">
+        <div class="section-heading"><p class="eyebrow">The connected product</p><h2 id="ecosystem-title">Work data. Research. Financing.</h2></div>
+        <ul>
+          <li><strong>Toekyn generates verified-work data.</strong> Physical work linked to TVW outcomes, source evidence, review and corrections.</li>
+          <li><strong>Qaieo owns simulation, RL, evaluations and ML.</strong> Research datasets and models combine verified-work data with simulation data.</li>
+          <li><strong>Yeki brings the inputs together.</strong> Verified work, Qaieo research and external API context inform the underwriting and financing direction.</li>
+        </ul>
+        <p>Planned sources: SAM.gov Opportunities, SAM.gov Contract Awards, USAspending and SAM.gov Entity Management. Integration is in development; current demonstrations are synthetic and financing stays in shadow mode.</p>
+        <a class="text-link" href="about.html">How the three fit together <span aria-hidden="true">↗</span></a>
+      </section>
       <details class="research-archive" id="archive">
         <summary><span>Earlier research &amp; software releases</span><span aria-hidden="true">+</span></summary>
         <p class="archive-intro">Qaieo began with quantum computing. These earlier articles retain their original dates, sources and links.</p>
