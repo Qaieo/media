@@ -31,7 +31,7 @@ test("fetches only the fixed public feed without caller credentials or parameter
     assert.equal(options.method, "GET");
     assert.equal(options.credentials, "omit");
     assert.equal(options.referrerPolicy, "no-referrer");
-    assert.equal(options.redirect, "error");
+    assert.equal(options.redirect, "manual");
     assert.equal(options.cache, "no-store");
     assert.ok(options.signal instanceof AbortSignal);
     assert.equal(options.body, undefined);
