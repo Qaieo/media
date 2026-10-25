@@ -1,3 +1,7 @@
+## Authorized website release — October 24, 2026 PDT
+
+The founder approved publishing the gold particle wave and automatic latest-three Frontier feed to qaieo.com. This supersedes the earlier website publication hold below. Newsletter activation remains pending: the current release disables the email and submit controls, labels signup “Opening soon”, and retains Read the latest articles as the working action. `NEWSLETTER_READY` stays false until Kit is configured and its confirmation flow is verified. No subscriber addresses or email sends are part of this release.
+
 # Qaieo newsletter: EPD workflow
 
 > Current website direction: Qaieo covers recent awards, commercialization grants and the companies building the physical economy. The prepared homepage leads with a newsletter signup hero and this definition, followed by the live Frontier feed; earlier quantum research remains a collapsible archive. Production publication is pending the newsletter connection. Sending is not activated by this design change. See [the current website path](../docs/frontier-publishing.md).

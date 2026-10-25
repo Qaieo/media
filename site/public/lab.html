@@ -19,7 +19,7 @@
 
     <nav class="nav" aria-label="Primary">
       <a href="about.html">About</a>
-      <a class="nav-signup" href="index.html#newsletter">Sign up for newsletter <span aria-hidden="true">↗</span></a>
+      <a class="nav-signup" href="index.html#newsletter">Newsletter <span aria-hidden="true">↗</span></a>
     </nav>
     </header>
     <main id="main" class="lab-page">
@@ -38,15 +38,16 @@
         <form id="qaieo-subscribe" action="/api/subscribe" method="post">
           <label for="subscriber-email">Your email address</label>
           <div class="subscribe-controls">
-          <input id="subscriber-email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+          <input id="subscriber-email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required aria-describedby="newsletter-availability" disabled />
           <input type="text" name="company" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          <input type="submit" value="Sign up" />
+          <input type="submit" value="Opening soon" disabled />
           </div>
         </form>
         <p id="qaieo-sub-msg" class="sub-msg" role="status" hidden></p>
         <script>
         document.getElementById('qaieo-subscribe').addEventListener('submit', async (e) => {
           e.preventDefault();
+          if (!false) return;
           const f = e.target, msg = document.getElementById('qaieo-sub-msg');
           msg.hidden = false; msg.textContent = 'Subscribing…';
           try {
@@ -56,7 +57,7 @@
           } catch { msg.textContent = 'Something went wrong. Try again.'; }
         });
         </script>
-            <p class="signup-note">From Qaieo Frontier. Unsubscribe anytime.</p>
+            <p class="signup-note" id="newsletter-availability">Newsletter signup opens soon. Read the latest articles below.</p>
           </div>
           <a class="hero-explore text-link" href="#frontier">Read the latest articles <span aria-hidden="true">↓</span></a>
         </div>
@@ -217,7 +218,7 @@
           <h2 id="newsletter-title">Follow what’s being built.</h2>
           <p>Awards, commercialization grants and the companies behind them.</p>
         </div>
-        <a class="button" href="#newsletter">Sign up for newsletter <span aria-hidden="true">↗</span></a>
+        <a class="button" href="#newsletter">Newsletter details <span aria-hidden="true">↗</span></a>
       </section>
 
     </main>

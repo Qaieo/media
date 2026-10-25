@@ -1,3 +1,7 @@
+## Authorized website release — October 24, 2026 PDT
+
+The founder approved publishing the gold particle wave and automatic latest-three Frontier feed to qaieo.com. This supersedes the earlier website publication hold below. Newsletter activation remains pending: the current release disables the email and submit controls, labels signup “Opening soon”, and retains Read the latest articles as the working action. `NEWSLETTER_READY` stays false until Kit is configured and its confirmation flow is verified. No subscriber addresses or email sends are part of this release.
+
 # Qaieo Frontier and the research archive
 
 Omid's current definition of Qaieo is: **Recent awards, commercialization grants and the companies building the physical economy.** This supersedes the October 23 research-lab-first positioning. The prepared root page leads with a concise newsletter signup hero using that definition, followed by the live Frontier feed. About and newsletter signup are the two primary navigation links. Publication of this signup-focused version is pending a working newsletter connection. A collapsed research archive below retains all ten existing article blocks and their anchors; deep links automatically reveal the referenced archive content. `/lab.html` remains an identical compatibility alias. All ten research/news source files remain unchanged.

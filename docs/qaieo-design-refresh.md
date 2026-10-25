@@ -1,3 +1,7 @@
+## Authorized website release — October 24, 2026 PDT
+
+The founder approved publishing the gold particle wave and automatic latest-three Frontier feed to qaieo.com. This supersedes the earlier website publication hold below. Newsletter activation remains pending: the current release disables the email and submit controls, labels signup “Opening soon”, and retains Read the latest articles as the working action. `NEWSLETTER_READY` stays false until Kit is configured and its confirmation flow is verified. No subscriber addresses or email sends are part of this release.
+
 ## Current follow-up — October 24, 2026 PDT
 
 The founder superseded the research-lab-first positioning with: **Recent awards, commercialization grants and the companies building the physical economy.** The prepared follow-up uses “The physical economy. In your inbox.” and a single hero signup form. Header navigation is About and Sign up for newsletter; all document pages offer a route to that form. About, coverage, current metadata, footer and disclosure introduction follow the new definition. Original article bodies and dates remain unchanged in a collapsible archive, with working hash links and the identical `/lab.html` compatibility alias. RSS is clearly labelled as the research archive rather than implying it is the current Frontier feed.

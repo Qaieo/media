@@ -13,6 +13,8 @@ const SITE_DIR = dirname(fileURLToPath(import.meta.url));
 const POSTS_DIR = join(SITE_DIR, "posts");
 const PUBLIC = join(SITE_DIR, "public");
 const SITE_URL = "https://qaieo.com";
+// Enable only after Kit configuration and confirmation-flow acceptance.
+const NEWSLETTER_READY = false;
 // Signup posts to /api/subscribe (worker.js), which adds the contact to the
 // dedicated Qaieo Kit form (KIT_FORM_ID in wrangler.jsonc).
 
@@ -91,7 +93,7 @@ const posts = readdirSync(POSTS_DIR)
 const NAV = `
     <nav class="nav" aria-label="Primary">
       <a href="about.html">About</a>
-      <a class="nav-signup" href="index.html#newsletter">Sign up for newsletter <span aria-hidden="true">↗</span></a>
+      <a class="nav-signup" href="index.html#newsletter">${NEWSLETTER_READY ? "Sign up for newsletter" : "Newsletter"} <span aria-hidden="true">↗</span></a>
     </nav>`;
 
 const DISCLAIMER = `<p>Qaieo is a publication from <a href="https://yeki.ai">Yeki</a>. Coverage draws on public sources. Not investment advice. See <a href="disclosures.html">Disclosures</a> for relationships and conflicts.</p>`;
@@ -119,7 +121,7 @@ ${NAV}
     </header>
     <main id="main" class="${home ? "lab-page" : "document-page"}">
 ${body}
-${home ? "" : `<aside class="document-signup"><p class="eyebrow">Qaieo Frontier</p><h2>The physical economy. In your inbox.</h2><p>Recent awards, commercialization grants and the companies building the physical economy.</p><a class="button" href="index.html#newsletter">Sign up for newsletter <span aria-hidden="true">↗</span></a></aside>`}
+${home ? "" : `<aside class="document-signup"><p class="eyebrow">Qaieo Frontier</p><h2>The physical economy. In your inbox.</h2><p>Recent awards, commercialization grants and the companies building the physical economy.</p><a class="button" href="index.html#newsletter">${NEWSLETTER_READY ? "Sign up for newsletter" : "Newsletter details"} <span aria-hidden="true">↗</span></a></aside>`}
     </main>
     <footer class="site">
       ${DISCLAIMER}
@@ -173,15 +175,16 @@ const labPage = page("Qaieo — The physical economy, in focus",
         <form id="qaieo-subscribe" action="/api/subscribe" method="post">
           <label for="subscriber-email">Your email address</label>
           <div class="subscribe-controls">
-          <input id="subscriber-email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+          <input id="subscriber-email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required aria-describedby="newsletter-availability" ${NEWSLETTER_READY ? "" : "disabled"} />
           <input type="text" name="company" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          <input type="submit" value="Sign up" />
+          <input type="submit" value="${NEWSLETTER_READY ? "Sign up" : "Opening soon"}" ${NEWSLETTER_READY ? "" : "disabled"} />
           </div>
         </form>
         <p id="qaieo-sub-msg" class="sub-msg" role="status" hidden></p>
         <script>
         document.getElementById('qaieo-subscribe').addEventListener('submit', async (e) => {
           e.preventDefault();
+          if (!${NEWSLETTER_READY}) return;
           const f = e.target, msg = document.getElementById('qaieo-sub-msg');
           msg.hidden = false; msg.textContent = 'Subscribing\u2026';
           try {
@@ -191,7 +194,7 @@ const labPage = page("Qaieo — The physical economy, in focus",
           } catch { msg.textContent = 'Something went wrong. Try again.'; }
         });
         </script>
-            <p class="signup-note">From Qaieo Frontier. Unsubscribe anytime.</p>
+            <p class="signup-note" id="newsletter-availability">${NEWSLETTER_READY ? "From Qaieo Frontier. Unsubscribe anytime." : "Newsletter signup opens soon. Read the latest articles below."}</p>
           </div>
           <a class="hero-explore text-link" href="#frontier">Read the latest articles <span aria-hidden="true">↓</span></a>
         </div>
@@ -245,7 +248,7 @@ ${newsCards}
           <h2 id="newsletter-title">Follow what’s being built.</h2>
           <p>Awards, commercialization grants and the companies behind them.</p>
         </div>
-        <a class="button" href="#newsletter">Sign up for newsletter <span aria-hidden="true">↗</span></a>
+        <a class="button" href="#newsletter">${NEWSLETTER_READY ? "Sign up for newsletter" : "Newsletter details"} <span aria-hidden="true">↗</span></a>
       </section>`, { home: true });
 writeFileSync(join(PUBLIC, "index.html"), labPage);
 writeFileSync(join(PUBLIC, "lab.html"), labPage);
