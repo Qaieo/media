@@ -36,3 +36,7 @@ Deployment continues through the reviewed Git/Cloudflare release path. A merged 
 ## October 24, 2026 local verification
 
 The real-feed preview at `http://127.0.0.1:8768/index.html#frontier` loaded Momentus (October 24), Gecko (October 22) and AstraQua (October 21), with canonical article URLs and original source links. Desktop and 390px mobile checks passed without horizontal overflow. All 36 website tests pass under Node 22.23.4. The existing gold animation still supports partial-content requests. This is a local preview verification; no production deployment or newsletter activation was performed.
+
+## Cloudflare runtime redirect handling
+
+The public Worker uses `redirect: "manual"` and rejects non-2xx responses, including redirects, without following them. Workers does not support the standard `error` redirect mode that Node accepts; that option caused the initial production feed request to fail before network access. The fixed upstream destination and no-credentials boundary remain unchanged. Reference: https://developers.cloudflare.com/workers/runtime-apis/request/#parameters.

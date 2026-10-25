@@ -58,7 +58,8 @@ export async function frontierResponse(request, fetchFeed = fetch) {
       headers: { Accept: "application/json" },
       credentials: "omit",
       referrerPolicy: "no-referrer",
-      redirect: "error",
+      // Workers supports manual/follow only; reject 3xx below without following.
+      redirect: "manual",
       cache: "no-store",
       signal: controller.signal,
     });
