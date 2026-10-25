@@ -22,14 +22,26 @@ test("legacy v1 industry mapping uses exact case-insensitive tags and supports m
     "aerospace-defense": ["Aerospace & defense", "Aerospace and defense", "Aerospace", "Defense", "Space", "Space robotics", "Spacecraft propulsion", "Aviation", "Navy"],
     energy: ["Energy", "Solar", "Grid", "Energy storage", "Nuclear", "Power systems"],
     "industry-infrastructure": ["Industry & infrastructure", "Industry and infrastructure", "Industrial", "Industry", "Infrastructure", "Hardware", "Manufacturing", "Materials", "Construction", "Logistics", "Semiconductors"],
+    "emerging-frontiers": ["Emerging frontiers"],
   };
   for (const [id, tags] of Object.entries(aliases)) {
-    for (const tag of tags) assert.ok(frontierArticleIndustries({ tags: [tag.toUpperCase()] }).includes(id), tag);
+    for (const tag of tags) assert.ok(frontierArticleIndustries({ tags: [`  ${tag.toUpperCase()}\t`] }).includes(id), tag);
   }
   assert.deepEqual(frontierArticleIndustries({ tags: ["Space robotics", "Photonics"] }), ["robotics", "photonics", "aerospace-defense"]);
   assert.deepEqual(frontierArticleIndustries({ tags: ["Robotics overview", "Gridiron"] }), ["emerging-frontiers"]);
   assert.deepEqual(frontierArticleIndustries({ tags: [] }), ["emerging-frontiers"]);
   assert.deepEqual(frontierArticleIndustries({ tags: ["Introduction", "Robotics"] }), []);
+});
+
+test("explicit Emerging frontiers legacy tag remains alongside other industries after whitespace normalization", () => {
+  const tags = [" Robotics ", "\tEMERGING FRONTIERS "];
+  const [parsed] = parseFrontierFeed(feed([{ ...article, tags }]));
+  assert.deepEqual(parsed.tags, tags);
+  assert.deepEqual(frontierArticleIndustries(parsed), ["robotics", "emerging-frontiers"]);
+  assert.deepEqual(frontierArticleIndustries({ tags: [" Robotics ", "Unmapped tag"] }), ["robotics"]);
+  assert.deepEqual(frontierArticleIndustries({ tags: [" Emerging frontiers ", "Robotics", " Introduction "] }), []);
+  assert.deepEqual(frontierArticleIndustries({ tags, industries: [] }), []);
+  assert.deepEqual(frontierArticleIndustries({ tags, industries: ["photonics"] }), ["photonics"]);
 });
 
 test("optional explicit industries are validated, retained and take precedence over legacy tags", () => {
