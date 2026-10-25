@@ -4,7 +4,7 @@ title: "Disclosures"
 
 ## Who stands behind Qaieo
 
-Qaieo is a publication from **Yeki** ([yeki.ai](https://yeki.ai)), a company building financing for signed contracts at hardware companies. Qaieo covers recent awards, commercialization grants and the companies building the physical economy. Companies covered by Qaieo may also fall within Yeki's financing focus; the conflict and public-source rules below apply to that coverage.
+Qaieo Frontier is a publication from **Yeki** ([yeki.ai](https://yeki.ai)), a company building financing for signed contracts at hardware companies. Qaieo covers recent awards, commercialization grants and the companies building the physical economy. Companies covered by Qaieo may also fall within Yeki's financing focus; the conflict and public-source rules below apply to that coverage.
 
 ## How conflicts are handled
 
