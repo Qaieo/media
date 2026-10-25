@@ -14,6 +14,10 @@ Display the **latest three distinct published articles**, newest first. Determin
 
 The previous marketing landing sources and `site/data/` files are retained as history; the build no longer makes that landing the home page or reads its static article list. This change does not publish videos, activate newsletter sending, configure analytics, or alter the subscription backend. The existing newsletter implementation remains subject to its documented configuration and acceptance requirements.
 
+## Website motion direction — October 25, 2026
+
+Keep the homepage to one cursor-driven gold particle field. Do not layer a video over the interactive surface or add visible Pause/Resume motion buttons. This is the founder's requested design preference for future Qaieo website work. The field renders immediately, follows pointer movement, and settles to a still frame when input stops; there is no autonomous playback. Use a small pointer-only interaction hint, hide it on touch and reduced-motion devices, respect `prefers-reduced-motion`, and suspend rendering when the page is hidden or the hero is offscreen. The poster is only a no-canvas/no-JavaScript fallback, never a second visible wave above the live canvas.
+
 ## Editorial boundaries
 
 Coverage follows recent awards, commercialization grants and the companies delivering products, facilities and infrastructure. Cite the underlying award or grant record where available, identify its date and status, and keep announcement, obligation, payment and delivery distinct. A contract ceiling is not funds obligated; a conditional grant is not proof of cash received or successful commercialization. Preserve uncertainty when terms or progress are not public. The fuller newsletter editorial rules remain in the Yeki repository; this change preserves its canonical articles and public feed.
