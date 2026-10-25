@@ -103,13 +103,14 @@ function page(title, desc, body) {
   <title>${title}</title>
   <meta name="description" content="${desc}" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="logos/qaieo-avatar.png" />
   <link rel="alternate" type="application/rss+xml" title="Qaieo" href="feed.xml" />
 </head>
 <body>
   <div class="wrap">
     <header class="site">
       <span class="badge">Research lab</span>
-      <h1><a href="index.html" class="home-link">Qaieo</a></h1>
+      <h1><a href="index.html" class="home-link" aria-label="Qaieo home"><img class="brand-logo" src="logos/qaieo-logo-white.png" alt="Qaieo" width="1544" height="576" /></a></h1>
 ${NAV}
     </header>
     <main>

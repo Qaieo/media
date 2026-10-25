@@ -45,6 +45,7 @@ header.site h1 { margin: 0 0 0.4rem; font-size: 2rem; letter-spacing: -0.02em; }
 header.site h1 .accent { color: var(--accent); }
 a.home-link { color: var(--text); }
 a.home-link:hover { text-decoration: none; }
+.brand-logo { display: block; height: 32px; width: auto; max-width: 100%; }
 
 .nav { display: flex; flex-wrap: wrap; gap: 1.2rem; margin-top: 1rem; font-size: 0.9rem; }
 .nav a { color: var(--muted); }
