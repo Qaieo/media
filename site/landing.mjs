@@ -1,5 +1,5 @@
 // qaieo.com landing page. Pure function of the data files in site/data/.
-// Frontier issues, clips and ventures are data; copy lives here.
+// Frontier issues and clips are data; copy lives here.
 // Called by build.mjs. Run `node site/build.mjs` from the repo root.
 
 const esc = (s) =>
@@ -56,16 +56,7 @@ const clipCard = (c) => `
           <div class="title">${esc(c.title)}</div>
         </a>`;
 
-const ventureRow = (v, i) => `
-        <a class="vrow" href="${esc(v.url)}" target="_blank" rel="noopener noreferrer">
-          <span class="mono n">0${i + 1}</span>
-          <img src="${esc(v.logo)}" alt="" width="40" height="40">
-          <span class="name">${esc(v.name)}</span>
-          <span class="what">${esc(v.what)}</span>
-          <span class="mono dom">${esc(v.domain)} <span class="arrow" style="font-size:18px" aria-hidden="true">↗</span></span>
-        </a>`;
-
-export function renderLanding({ frontier, clips, ventures, archiveUrl, beaconToken }) {
+export function renderLanding({ frontier, clips, archiveUrl, beaconToken }) {
   // Newest first; entries sharing a date keep their file order (put the lead story first in frontier.json).
   const sorted = frontier.map((p, i) => [p, i]).sort((a, b) => (a[0].date < b[0].date ? 1 : a[0].date > b[0].date ? -1 : a[1] - b[1])).map(([p]) => p);
   const [featured, ...rest] = sorted;
@@ -81,7 +72,7 @@ export function renderLanding({ frontier, clips, ventures, archiveUrl, beaconTok
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Qaieo</title>
-  <meta name="description" content="Qaieo Frontier tracks the contract awards, grants and prizes funding the physical economy. Qaieo Clips and Qaieo Ventures.">
+  <meta name="description" content="Qaieo Frontier tracks the contract awards, grants and prizes funding the physical economy. Qaieo Clips.">
   <meta property="og:title" content="Qaieo">
   <meta property="og:description" content="Follow the contracts awarding the future.">
   <meta property="og:url" content="https://qaieo.com/">
@@ -98,7 +89,6 @@ export function renderLanding({ frontier, clips, ventures, archiveUrl, beaconTok
         <div class="nav-links">
           <a href="#frontier">Frontier</a>
           <a href="#clips">Clips</a>
-          <a href="#ventures">Ventures</a>
           <a href="https://yeki.ai/" target="_blank" rel="noopener noreferrer">Yeki</a>
         </div>
         <a class="btn btn-ghost" href="#subscribe">Subscribe <span aria-hidden="true">→</span></a>
@@ -120,7 +110,7 @@ export function renderLanding({ frontier, clips, ventures, archiveUrl, beaconTok
         <div class="fade"></div>
       </div>
       <div class="wrap">
-        <div class="mono rise d1" style="margin-bottom:28px">Qaieo Frontier · Qaieo Clips · Qaieo Ventures</div>
+        <div class="mono rise d1" style="margin-bottom:28px">Qaieo Frontier · Qaieo Clips</div>
         <h1 aria-label="Follow the contracts awarding the future.">${headline("Follow the contracts awarding the future.")}</h1>
         <div class="cta rise d2">
           <a class="btn btn-primary" href="#frontier">Latest <span aria-hidden="true">↓</span></a>
@@ -147,15 +137,6 @@ ${featured ? featureCard(featured) : `      <p class="empty">First issue coming 
 ${clips.length ? `      <div class="grid3">${clips.map(clipCard).join("")}\n      </div>` : ""}
     </section>
 
-    <section id="ventures" class="wrap section reveal">
-      <div class="section-head">
-        <div><div class="mono">03 / Qaieo Ventures</div><h2>Backed early.</h2></div>
-        <p>Where Qaieo Ventures has invested historically.</p>
-      </div>
-      <div class="vlist">${ventures.map(ventureRow).join("")}
-      </div>
-    </section>
-
     <div class="ticker-wrap mono" aria-hidden="true">
       <div class="ticker">${[...TICKER, ...TICKER].map((t) => `<span>${t}</span><span>·</span>`).join("")}</div>
     </div>
@@ -176,8 +157,8 @@ ${clips.length ? `      <div class="grid3">${clips.map(clipCard).join("")}\n    
 
   <footer class="wrap foot">
     <div class="inner">
-      <span><b>Qaieo</b>Qaieo Frontier · Qaieo Clips · Qaieo Ventures</span>
-      <nav aria-label="Footer"><a href="#frontier">Frontier</a><a href="#clips">Clips</a><a href="#ventures">Ventures</a><a href="disclosures.html">Disclosures</a><a href="https://yeki.ai/" target="_blank" rel="noopener noreferrer">Yeki ↗</a><span>© 2026 Qaieo</span></nav>
+      <span><b>Qaieo</b>Qaieo Frontier · Qaieo Clips</span>
+      <nav aria-label="Footer"><a href="#frontier">Frontier</a><a href="#clips">Clips</a><a href="disclosures.html">Disclosures</a><a href="https://yeki.ai/" target="_blank" rel="noopener noreferrer">Yeki ↗</a><span>© 2026 Qaieo</span></nav>
     </div>
   </footer>
 

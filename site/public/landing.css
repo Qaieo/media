@@ -99,15 +99,6 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #c4c7
 .tags{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .empty{margin-top:40px;padding:40px;border:1px dashed var(--line-strong);border-radius:16px;color:var(--muted);text-align:center}
 
-/* ventures */
-.vlist{margin-top:40px;border-top:1px solid var(--line)}
-.vrow{display:grid;grid-template-columns:48px 40px minmax(0,1fr) minmax(0,1.4fr) auto;align-items:center;gap:24px;padding:26px 24px;margin:0 -24px;border-bottom:1px solid var(--line);color:var(--text);transition:background .2s}
-.vrow:hover{background:#111}.vrow:hover .arrow{transform:translate(4px,-4px);color:var(--text)}
-.vrow img{width:40px;height:40px;object-fit:contain}
-.vrow .name{font-size:24px;line-height:30px;letter-spacing:-.015em}
-.vrow .what{color:var(--muted)}
-.vrow .dom{display:flex;align-items:center;gap:10px}
-
 /* ticker */
 .ticker-wrap{margin-top:128px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0;overflow:hidden;color:#6f7378}
 .ticker{display:flex;gap:48px;white-space:nowrap;animation:ticker 40s linear infinite;width:max-content}
