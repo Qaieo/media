@@ -34,7 +34,7 @@ Qaieo began with photonic quantum computing. Earlier quantum research, news and 
 
 ## What it isn't
 
-Qaieo is a publication from Yeki and reports from public sources. Coverage is not an endorsement, a financing offer or investment advice. Business relationships and the policy for handling conflicts are described on the [Disclosures](disclosures.html) page.
+Qaieo Frontier is a publication from Yeki and reports from public sources. Coverage is not an endorsement, a financing offer or investment advice. Business relationships and the policy for handling conflicts are described on the [Disclosures](disclosures.html) page.
 
 ## Corrections
 

@@ -96,7 +96,7 @@ const NAV = `
       <a class="nav-signup" href="index.html#newsletter">${NEWSLETTER_READY ? "Sign up for newsletter" : "Newsletter"} <span aria-hidden="true">↗</span></a>
     </nav>`;
 
-const DISCLAIMER = `<p>Qaieo is a publication from <a href="https://yeki.ai">Yeki</a>. Coverage draws on public sources. Not investment advice. See <a href="disclosures.html">Disclosures</a> for relationships and conflicts.</p>`;
+const DISCLAIMER = `<p>Qaieo Frontier is a publication from <a href="https://yeki.ai">Yeki</a>. Coverage draws on public sources. Not investment advice. See <a href="disclosures.html">Disclosures</a> for relationships and conflicts.</p>`;
 
 function page(title, desc, body, { home = false } = {}) {
   return `<!DOCTYPE html>
