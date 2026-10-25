@@ -116,7 +116,7 @@ function page(title, desc, body, { home = false } = {}) {
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="wrap">
     <header class="site">
-      <a href="index.html" class="home-link" aria-label="Qaieo home"><img class="brand-logo" src="logos/qaieo-logo-white.png" alt="Qaieo" width="1544" height="576" /></a>
+      <a href="index.html" class="home-link" aria-label="Qaieo home"><img class="brand-logo" src="logos/qaieo-logo-white.svg" alt="Qaieo" width="1544" height="576" /></a>
 ${NAV}
     </header>
     <main id="main" class="${home ? "lab-page" : "document-page"}">
