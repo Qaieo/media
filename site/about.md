@@ -14,6 +14,16 @@ Qaieo Frontier follows who won the work, what they are building, and what has to
 - **Commercialization grants.** What the funding supports, its conditions and the steps toward commercial use. An announced grant does not establish that all funds have been received or milestones met.
 - **Companies building the physical economy.** The products, facilities and infrastructure behind the award, and the evidence of progress from announcement to delivery.
 
+## How the complete product fits together
+
+- **Toekyn generates verified-work data** from physical operations, linking TVW outcomes to source evidence, review, corrections and permissions.
+- **Qaieo owns simulation, reinforcement learning, evaluations and machine learning**, combining verified-work and simulation data to build research datasets and models. Qaieo Frontier is the publication arm, reporting on the companies building the physical economy.
+- **Yeki brings those inputs and research outputs together with external API data** for underwriting and purchase-order and milestone financing workflows.
+
+The four planned government sources are **SAM.gov Opportunities, SAM.gov Contract Awards, USAspending and SAM.gov Entity Management**. The integrated data path is in development. Current demonstrations use synthetic data and financing remains in shadow mode; this description does not activate real-data collection, training or financial decisions.
+
+[Explore Toekyn’s synthetic evidence-to-evaluation demo](https://toekyn.com/demo/) or [see how Qaieo fits within Yeki](https://yeki.ai/qaieo).
+
 ## The research archive
 
 Qaieo began with photonic quantum computing. Earlier quantum research, news and Perceval release notes remain available in the homepage's [research archive](index.html#research-title) and the [release timeline](timeline.html).
