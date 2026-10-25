@@ -2,11 +2,11 @@
 
 The founder superseded the research-lab-first positioning with: **Recent awards, commercialization grants and the companies building the physical economy.** The prepared follow-up uses “The physical economy. In your inbox.” and a single hero signup form. Header navigation is About and Sign up for newsletter; all document pages offer a route to that form. About, coverage, current metadata, footer and disclosure introduction follow the new definition. Original article bodies and dates remain unchanged in a collapsible archive, with working hash links and the identical `/lab.html` compatibility alias. RSS is clearly labelled as the research archive rather than implying it is the current Frontier feed.
 
-`site/ripple.mjs` renders a quiet contour field behind the hero. It uses no video or external animation service. It caps rendering at 30fps and backing-store density at 1.5, uses fewer contours on narrow screens, pauses while hidden/offscreen, supports an explicit pause and paints a static field for reduced motion. Pointer response is slight and ignores touch movement. Canvas failure leaves a fully usable page without the decorative field.
+The homepage now uses a Higgsfield-generated quantum particle field, with a local eight-second muted loop, a live canvas fallback and a still for reduced motion. The right editorial aside was removed to give the field breathing room; coverage remains below. See [particle field implementation and provenance](qaieo-quantum-field.md).
 
-Validation: build, all 12 runtime/feed/motion tests, archive hash navigation, one signup form, desktop and 390px/320px layouts. The original approved logo bytes, article bodies, canonical feed module and subscription endpoint remain unchanged. Local feed fallback is expected because the production feed permits the Qaieo origin, not loopback.
+Validation: build and all 21 runtime/feed/motion/signup tests pass. Browser checks verify real advancing video playback, pause/resume, desktop and narrow layouts. The approved logo, original article bodies and canonical feed module remain unchanged.
 
-**Publication hold:** live Cloudflare settings still contain a placeholder `LOOPS_LIST_ID` and no `LOOPS_API_KEY` secret. The user has been asked which service to connect. The design is ready for review; newsletter collection and sending have not been activated or represented as working. No real subscription or email send was performed.
+**Publication hold:** Kit is selected. Its server-side integration is prepared, but account login, real form ID, API-key connection and an authorized inbox confirmation test remain pending. No real subscription or email send has occurred. This particle-field update is local preview work, not a production release.
 
 ---
 

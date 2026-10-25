@@ -79,6 +79,8 @@ for (const f of readdirSync(join(SITE_DIR, "fonts"))) copyFileSync(join(SITE_DIR
 // Frontier leads the homepage; the original article anchors remain available.
 copyFileSync(join(SITE_DIR, "frontier.mjs"), join(PUBLIC, "frontier.mjs"));
 copyFileSync(join(SITE_DIR, "ripple.mjs"), join(PUBLIC, "ripple.mjs"));
+mkdirSync(join(PUBLIC, "art"), { recursive: true });
+for (const f of readdirSync(join(SITE_DIR, "art"))) copyFileSync(join(SITE_DIR, "art", f), join(PUBLIC, "art", f));
 
 const posts = readdirSync(POSTS_DIR)
   .filter((f) => f.endsWith(".md"))
@@ -157,7 +159,11 @@ const labPage = page("Qaieo — The physical economy, in focus",
   "Recent awards, commercialization grants and the companies building the physical economy.",
   `
       <section class="hero" id="newsletter" aria-labelledby="lab-title">
-        <canvas class="ripple-field" aria-hidden="true"></canvas>
+        <div class="wave-visual" aria-hidden="true">
+          <img class="wave-poster" src="art/quantum-field.webp" alt="" width="1600" height="905" decoding="async" />
+          <canvas class="ripple-field"></canvas>
+          <video class="wave-film" data-src="art/quantum-field.mp4" muted loop playsinline preload="none" tabindex="-1" disablepictureinpicture></video>
+        </div>
         <div class="hero-copy">
           <p class="eyebrow"><span class="square" aria-hidden="true"></span>Qaieo Frontier</p>
           <h1 id="lab-title">The physical economy.<span>In your inbox.</span></h1>
@@ -188,11 +194,6 @@ const labPage = page("Qaieo — The physical economy, in focus",
           </div>
           <a class="hero-explore text-link" href="#frontier">Read the latest articles <span aria-hidden="true">↓</span></a>
         </div>
-        <aside class="hero-note" aria-label="Our editorial focus">
-          <p class="eyebrow">Follow the physical frontier</p>
-          <ul class="hero-topics"><li><span>01</span> Recent awards</li><li><span>02</span> Commercialization grants</li><li><span>03</span> Companies building</li></ul>
-          <a class="text-link" href="about.html">About Qaieo <span aria-hidden="true">↗</span></a>
-        </aside>
         <button class="motion-control" type="button" aria-label="Pause background motion" hidden>Pause motion <span aria-hidden="true">Ⅱ</span></button>
         <script type="module" src="ripple.mjs"></script>
       </section>
