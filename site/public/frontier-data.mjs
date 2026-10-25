@@ -17,11 +17,12 @@ const industryTags = new Map([
   ["aerospace-defense", ["Aerospace & defense", "Aerospace and defense", "Aerospace", "Defense", "Space", "Space robotics", "Spacecraft propulsion", "Aviation", "Navy"]],
   ["energy", ["Energy", "Solar", "Grid", "Energy storage", "Nuclear", "Power systems"]],
   ["industry-infrastructure", ["Industry & infrastructure", "Industry and infrastructure", "Industrial", "Industry", "Infrastructure", "Hardware", "Manufacturing", "Materials", "Construction", "Logistics", "Semiconductors"]],
+  ["emerging-frontiers", ["Emerging frontiers"]],
 ].map(([id, tags]) => [id, new Set(tags.map(tag => tag.toLowerCase()))]));
 
 // Explicit v1 metadata takes precedence; older feeds retain exact-tag compatibility.
 export function frontierArticleIndustries(article) {
-  const tags = article.tags.map(tag => tag.toLowerCase());
+  const tags = article.tags.map(tag => tag.trim().toLowerCase());
   if (tags.includes("introduction")) return [];
   if (Object.hasOwn(article, "industries")) return article.industries;
   const matched = [...industryTags].filter(([, aliases]) => tags.some(tag => aliases.has(tag))).map(([id]) => id);
