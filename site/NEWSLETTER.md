@@ -1,73 +1,55 @@
+## Authorized website release — October 24, 2026 PDT
+
+The founder approved publishing the gold particle wave and automatic latest-three Frontier feed to qaieo.com. This supersedes the earlier website publication hold below. Newsletter activation remains pending: the current release disables the email and submit controls, labels signup “Opening soon”, and retains Read the latest articles as the working action. `NEWSLETTER_READY` stays false until Kit is configured and its confirmation flow is verified. No subscriber addresses or email sends are part of this release.
+
 # Qaieo newsletter: EPD workflow
 
-> October 23 website update: the research lab remains the homepage, with a live Frontier feed section. The earlier marketing landing is retained in source but is not the generated homepage. Newsletter activation and sending remain unverified and outside this release. See [the current website path](../docs/frontier-publishing.md).
+> Current website direction: Qaieo covers recent awards, commercialization grants and the companies building the physical economy. The prepared homepage leads with a newsletter signup hero and this definition, followed by the live Frontier feed; earlier quantum research remains a collapsible archive. Production publication is pending the newsletter connection. Sending is not activated by this design change. See [the current website path](../docs/frontier-publishing.md).
 
 Owner: Omid. Scope: the subscribe path on qaieo.com, what happens after signup, what we measure, and how it can take money later. This is the product and engineering contract for the newsletter; editorial rules live in the Yeki repo (`docs/qaieo/newsletter.md`).
 
-## 1. Current state (as of 2026-10-21)
+## Coverage and evidence
 
-| Piece | Where | Status |
-| --- | --- | --- |
-| Signup form | `site/landing.mjs` → `#subscribe` | Live in build. Honeypot, hidden `source`, UTM and referrer fields. |
-| Endpoint | `worker.js` `POST /api/subscribe` | Validates email, forwards to Loops `contacts/create` with attribution properties. |
-| List | Loops mailing list `LOOPS_LIST_ID` | **Placeholder in `wrangler.jsonc`.** Signups fail with 502 until the real list id is set. |
-| API key | Wrangler secret `LOOPS_API_KEY` | Must be set with `wrangler secret put LOOPS_API_KEY`. |
-| Site analytics | Cloudflare Web Analytics beacon | Injected only when `CF_BEACON_TOKEN` is set at build time. Not set yet. |
-| Send | Loops | Nothing sends yet. No issue has been emailed. |
+The current positioning supersedes research-lab-first descriptions: **Recent awards, commercialization grants and the companies building the physical economy.** Quantum research and release notes remain available as an archive. Existing articles keep their canonical URLs and feed; this positioning update does not change the Yeki publishing workflow or establish a sending cadence.
 
-## 2. Pipeline
+- Lead with the recipient, awarding body, award date and status, scope of work and primary source. Distinguish an announced award from work delivered.
+- Label contract ceilings and potential values separately from funds obligated, payments received and revenue. Do not present a program-wide budget as one company's award.
+- For commercialization grants, report disclosed conditions, milestones, matching funds and payment stages. State when terms are unavailable; do not imply that a selection or conditional award is cash received or commercial validation.
+- Explain what the company builds and the evidence behind its commercial progress. Separate reported facts from analysis, and retain visible corrections and relevant disclosures.
 
-```
-visitor → qaieo.com (beacon: pageview, referrer, UTM)
-        → POST /api/subscribe {email, source, utm_*, referrer}
-        → Loops contact (properties: source, utm_*, referrer, subscribedAt)
-        → Loops double opt-in email → confirmed → mailing list
-        → issue send (Loops campaign or transactional per issue)
-        → opens / clicks (Loops) → links carry utm_source=qaieo-newsletter
-        → yeki.ai/qaieo/media/<slug> (Yeki analytics)
-```
+## 1. Kit connection — October 24, 2026
 
-Rules:
-- Double opt-in on. Confirmed contacts only on the list. Unconfirmed drop after 7 days.
-- One list, segmented by properties, not many lists.
-- Every outbound link in an issue carries `utm_source=qaieo-newsletter&utm_medium=email&utm_campaign=<issue-slug>`.
-- The worker never stores email. Loops is the system of record. Export from Loops is the backup.
+Kit is the selected newsletter provider. The local Worker replaces the unconfigured Loops path with Kit v4: create an inactive subscriber, then enroll in the Qaieo form. Existing subscriber states are preserved; cancelled, bounced or complained subscribers are not re-enrolled. Secrets stay server-side and provider response bodies are not logged.
 
-## 3. Tracking
+Status: implementation prepared; Kit account login, form configuration and credentials are still pending. No live subscription or email has been sent. Do not merge or publish the signup redesign until the end-to-end confirmation flow has been verified.
 
-Events to be able to answer, in order of importance:
-1. Signups per day, by `source` and `utm_source` (Loops contact properties; filter in Loops audience view).
-2. Confirmation rate (double opt-in confirmed / created).
-3. Open and click rate per issue (Loops campaign stats).
-4. Clicks through to yeki.ai per issue (Yeki side, by `utm_campaign`).
-5. Unsubscribes per issue.
+## 2. Activation checklist
 
-Site side: Cloudflare Web Analytics gives pageviews, referrers and country with no cookie banner. Set `CF_BEACON_TOKEN` in the Workers Build environment and rebuild. If finer funnel data is wanted later (scroll depth, form focus), add Plausible or PostHog; not before there is traffic to read.
+- Sign in to the owner's Kit account; create/select the Qaieo newsletter form.
+- Enable the confirmation email and leave auto-confirm OFF. API-created subscribers start inactive; the form settings must still be checked.
+- Set the numeric form ID as `KIT_FORM_ID` in wrangler.jsonc. Store a Kit v4 API key as Worker secret `KIT_API_KEY`; never put the key in source or chat.
+- Verify the sending identity and required account information in Kit.
+- Use an owner-authorized test inbox: submit, receive confirmation, confirm, verify subscription and unsubscribe behavior. Check repeat signup and provider failures.
+- Keep production publication on hold until these checks pass. Publish through the existing reviewed Git/Cloudflare workflow.
 
-## 4. Sending an issue
+## 3. Subscriber experience
 
-Source of truth for issues is the Frontier archive on yeki.ai. An issue email is the article's title, dek and a "Read on Qaieo" link, not the full body, so the click lands on the site where analytics live.
+Homepage: **The physical economy. In your inbox.** CTA: **Sign up**.
+Success: **Check your inbox to confirm your subscription. If you already subscribe, you are all set.**
 
-Manual for now: create the Loops campaign from the article, send to the list. Automate once there are 100+ confirmed contacts: a GitHub Action on the Yeki repo that calls the Loops campaign API when a Frontier article merges. Do not automate before double opt-in is verified end to end with a real inbox.
+Confirmation email proposal:
+- Subject: Confirm your Qaieo subscription
+- Body: Recent awards, commercialization grants and the companies building the physical economy. Confirm below to receive Qaieo Frontier.
+- Button: Confirm subscription
 
-## 5. Monetization path
+No sending cadence is promised. Kit is the subscriber system of record; the Worker does not store addresses. Campaign UTM parameters are forwarded as form attribution; arbitrary custom fields are not created. No campaigns, paid plan, analytics or automation are activated by this change.
 
-Decision deferred until there are at least 500 confirmed subscribers and 4 weeks of open-rate data. Keep the list portable (CSV export, no vendor-locked content) so a move costs a day.
+## 4. Editorial workflow
 
-| Option | When | Needs |
-| --- | --- | --- |
-| Sponsored slot | first; one line per issue, physical-economy vendors and lenders | a rate card, a disclosure line, sponsor tracked by `utm_content` |
-| Paid tier | if open rate holds above 40% at 1,000+ | Loops has no paywall; move to Ghost (self-host on Workers is not supported, so hosted Ghost or beehiiv) or add Stripe + a members-only Frontier section on yeki.ai |
-| Data or deal-flow product | later; the awards database behind Frontier | a Yeki product decision, not a newsletter one |
+The Frontier archive on yeki.ai remains the article source of truth. Prepare broadcasts in Kit with the article title, concise summary and canonical article link. Use `utm_source=qaieo-newsletter&utm_medium=email&utm_campaign=<issue-slug>`. Send only after owner authorization. Keep corrections and sponsorship disclosures visible. Monetization and automated sends remain separate decisions.
 
-Loops is right for the first two stages (free, transactional-friendly, API). If paid subscriptions become the plan, the provider changes; the pipeline above is written so only the "Loops" box changes.
+## References
 
-## 6. Launch checklist
-
-- [ ] Create the Qaieo list in Loops, paste its id into `wrangler.jsonc` `LOOPS_LIST_ID`.
-- [ ] `wrangler secret put LOOPS_API_KEY`.
-- [ ] Turn on double opt-in in Loops and write the confirmation email (one line, Qaieo voice).
-- [ ] Create a Cloudflare Web Analytics site for qaieo.com; set `CF_BEACON_TOKEN` in the build environment.
-- [ ] Deploy, submit a real email on qaieo.com, confirm, verify the contact shows `source=qaieo.com/landing`.
-- [ ] Send the first issue manually; check `utm_campaign` arrives on yeki.ai.
-- [ ] Add the newsletter line to `site/disclosures.md` (sponsorship policy) before the first sponsored slot.
+- https://developers.kit.com/api-reference/subscribers/create-a-subscriber
+- https://developers.kit.com/api-reference/forms/add-subscriber-to-form
+- https://help.kit.com/en/articles/2502655-the-confirmation-email

@@ -13,8 +13,10 @@ const SITE_DIR = dirname(fileURLToPath(import.meta.url));
 const POSTS_DIR = join(SITE_DIR, "posts");
 const PUBLIC = join(SITE_DIR, "public");
 const SITE_URL = "https://qaieo.com";
+// Enable only after Kit configuration and confirmation-flow acceptance.
+const NEWSLETTER_READY = false;
 // Signup posts to /api/subscribe (worker.js), which adds the contact to the
-// dedicated Qaieo Loops mailing list (LOOPS_LIST_ID in wrangler.jsonc).
+// dedicated Qaieo Kit form (KIT_FORM_ID in wrangler.jsonc).
 
 function parseFile(path) {
   const raw = readFileSync(path, "utf8");
@@ -76,8 +78,12 @@ for (const f of readdirSync(join(SITE_DIR, "logos"))) copyFileSync(join(SITE_DIR
 mkdirSync(join(PUBLIC, "fonts"), { recursive: true });
 for (const f of readdirSync(join(SITE_DIR, "fonts"))) copyFileSync(join(SITE_DIR, "fonts", f), join(PUBLIC, "fonts", f));
 
-// Preserve the research lab at the root; Frontier reads the canonical public feed.
+// Frontier leads the homepage; the original article anchors remain available.
 copyFileSync(join(SITE_DIR, "frontier.mjs"), join(PUBLIC, "frontier.mjs"));
+copyFileSync(join(SITE_DIR, "frontier-data.mjs"), join(PUBLIC, "frontier-data.mjs"));
+copyFileSync(join(SITE_DIR, "ripple.mjs"), join(PUBLIC, "ripple.mjs"));
+mkdirSync(join(PUBLIC, "art"), { recursive: true });
+for (const f of readdirSync(join(SITE_DIR, "art"))) copyFileSync(join(SITE_DIR, "art", f), join(PUBLIC, "art", f));
 
 const posts = readdirSync(POSTS_DIR)
   .filter((f) => f.endsWith(".md"))
@@ -86,15 +92,11 @@ const posts = readdirSync(POSTS_DIR)
 
 const NAV = `
     <nav class="nav" aria-label="Primary">
-      <a href="index.html">Lab</a>
-      <a href="index.html#frontier">Qaieo Frontier</a>
-      <a href="index.html#news">News</a>
-      <a href="timeline.html">Releases</a>
       <a href="about.html">About</a>
-      <a href="feed.xml">RSS</a>
+      <a class="nav-signup" href="index.html#newsletter">${NEWSLETTER_READY ? "Sign up for newsletter" : "Newsletter"} <span aria-hidden="true">↗</span></a>
     </nav>`;
 
-const DISCLAIMER = `<p>Qaieo is not affiliated with, endorsed by, or sponsored by Quandela or any company it covers. Perceval and related marks are trademarks of their respective owners. Not investment advice. See <a href="disclosures.html">Disclosures</a>.</p>`;
+const DISCLAIMER = `<p>Qaieo is a publication from <a href="https://yeki.ai">Yeki</a>. Coverage draws on public sources. Not investment advice. See <a href="disclosures.html">Disclosures</a> for relationships and conflicts.</p>`;
 
 function page(title, desc, body, { home = false } = {}) {
   return `<!DOCTYPE html>
@@ -119,6 +121,7 @@ ${NAV}
     </header>
     <main id="main" class="${home ? "lab-page" : "document-page"}">
 ${body}
+${home ? "" : `<aside class="document-signup"><p class="eyebrow">Qaieo Frontier</p><h2>The physical economy. In your inbox.</h2><p>Recent awards, commercialization grants and the companies building the physical economy.</p><a class="button" href="index.html#newsletter">${NEWSLETTER_READY ? "Sign up for newsletter" : "Newsletter details"} <span aria-hidden="true">↗</span></a></aside>`}
     </main>
     <footer class="site">
       ${DISCLAIMER}
@@ -145,87 +148,107 @@ const researchCards = posts.filter(isResearch).map(card).join("\n");
 const newsCards = posts.filter((p) => !isResearch(p)).map(card).join("\n");
 
 const AGENDA = `
-      <section class="agenda" aria-labelledby="agenda-title">
-        <div class="section-heading"><span class="eyebrow">The questions behind the research</span><h2 id="agenda-title">Research agenda</h2></div>
+      <section class="agenda" id="coverage" aria-labelledby="agenda-title">
+        <div class="section-heading"><span class="eyebrow">Follow the work, not just the announcement</span><h2 id="agenda-title">What we cover</h2></div>
         <ul>
-          <li><strong>Contracts and counterparties.</strong> Who buys quantum systems (governments, national labs, HPC centers, enterprises) and how strong those counterparties are.</li>
-          <li><strong>Milestones and delivery risk.</strong> Announced timelines versus actual delivery, and what slippage looks like on first-of-kind systems.</li>
-          <li><strong>Cost to complete.</strong> What it takes to build, install, and operate a quantum system, and how those costs move.</li>
-          <li><strong>Capital and markets.</strong> Funding rounds, public listings, and program budgets, read for what they mean for credit risk.</li>
+          <li><strong>Recent awards.</strong> Who won the work, who is buying, and what is actually committed.</li>
+          <li><strong>Commercialization grants.</strong> Public funding that helps technology move from development toward deployment.</li>
+          <li><strong>Companies building.</strong> The teams turning robotics, space systems, industrial hardware and infrastructure into delivered products.</li>
+          <li><strong>What comes next.</strong> Delivery milestones, funding conditions and the evidence still needed to understand an announcement.</li>
         </ul>
       </section>`;
 
-const labPage = page("Qaieo, Quantum Research Lab",
-  "Qaieo is a research lab studying how quantum computing gets built and financed, with quantum news read through an underwriting lens.",
+const labPage = page("Qaieo — The physical economy, in focus",
+  "Recent awards, commercialization grants and the companies building the physical economy.",
   `
-      <section class="hero" aria-labelledby="lab-title">
+      <section class="hero" id="newsletter" aria-labelledby="lab-title">
+        <div class="wave-visual" aria-hidden="true">
+          <img class="wave-poster" src="art/quantum-field-gold.webp" alt="" width="1600" height="905" decoding="async" />
+          <canvas class="ripple-field"></canvas>
+          <video class="wave-film" data-src="art/quantum-field-gold.mp4" muted loop playsinline preload="none" tabindex="-1" disablepictureinpicture></video>
+        </div>
         <div class="hero-copy">
-          <p class="eyebrow"><span class="square" aria-hidden="true"></span>Research lab</p>
-          <h1 id="lab-title">How quantum computing gets built <span>and financed.</span></h1>
-          <p class="lede">Qaieo studies the contracts, the milestones, the counterparties, and the risk between them. We also cover quantum news, read through an underwriting lens.</p>
-          <a class="button" href="#frontier">Read Qaieo Frontier <span aria-hidden="true">↗</span></a>
-        </div>
-        <aside class="hero-note" aria-label="Our research lens">
-          <p class="eyebrow">An underwriting lens</p>
-          <p class="hero-question">Who is buying?<br />What was promised?<br />What does it cost to finish?</p>
-          <a class="text-link" href="about.html">Inside the research lab <span aria-hidden="true">↗</span></a>
-        </aside>
-      </section>
-      <section id="frontier" class="frontier" aria-labelledby="frontier-title">
-        <div class="frontier-intro">
-          <p class="eyebrow">From the physical economy</p>
-          <h2 id="frontier-title">Qaieo <span>Frontier</span></h2>
-          <p>Reporting on recent contract awards, commercialization grants and the companies building the physical economy.</p>
-          <a class="frontier-archive text-link" href="https://yeki.ai/qaieo/media">Read the Frontier archive <span aria-hidden="true">↗</span></a>
-        </div>
-        <div class="frontier-feed">
-          <p id="frontier-status" class="frontier-status" role="status">Read the latest articles in the Frontier archive.</p>
-          <div id="frontier-articles"></div>
-        </div>
-        <script type="module" src="frontier.mjs"></script>
-      </section>
-${AGENDA}
-      <section class="editorial-section" aria-labelledby="research-title">
-        <div class="section-heading"><p class="eyebrow">From the lab</p><h2 id="research-title">Research</h2><p>Original analysis on contracts, counterparties, milestones, and capital in quantum.</p></div>
-        <div class="article-list">
-${researchCards}
-        </div>
-      </section>
-      <section class="editorial-section" id="news" aria-labelledby="news-title">
-        <div class="section-heading"><p class="eyebrow">Developments that matter</p><h2 id="news-title">News</h2><p>Quantum news, read through an underwriting lens.</p><a class="text-link" href="timeline.html">View the release timeline <span aria-hidden="true">↗</span></a></div>
-        <div class="article-list">
-${newsCards}
-        </div>
-      </section>
-      <section class="newsletter" aria-labelledby="newsletter-title">
-        <div class="newsletter-copy">
-          <p class="eyebrow">Qaieo, in your inbox</p>
-          <h2 id="newsletter-title">Get the weekly brief</h2>
-          <p>One email a week: Qaieo research, the quantum news that matters, and what it means for risk. No spam, unsubscribe anytime.</p>
-        </div>
-        <div class="newsletter-form">
+          <p class="eyebrow"><span class="square" aria-hidden="true"></span>Qaieo Frontier</p>
+          <h1 id="lab-title">The physical economy.<span>In your inbox.</span></h1>
+          <p class="lede">Recent awards, commercialization grants and the companies building the physical economy.</p>
+          <div class="hero-signup">
         <form id="qaieo-subscribe" action="/api/subscribe" method="post">
-          <label for="subscriber-email">Email address</label>
+          <label for="subscriber-email">Your email address</label>
           <div class="subscribe-controls">
-          <input id="subscriber-email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+          <input id="subscriber-email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required aria-describedby="newsletter-availability" ${NEWSLETTER_READY ? "" : "disabled"} />
           <input type="text" name="company" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          <input type="submit" value="Subscribe" />
+          <input type="submit" value="${NEWSLETTER_READY ? "Sign up" : "Opening soon"}" ${NEWSLETTER_READY ? "" : "disabled"} />
           </div>
         </form>
         <p id="qaieo-sub-msg" class="sub-msg" role="status" hidden></p>
-        </div>
         <script>
         document.getElementById('qaieo-subscribe').addEventListener('submit', async (e) => {
           e.preventDefault();
+          if (!${NEWSLETTER_READY}) return;
           const f = e.target, msg = document.getElementById('qaieo-sub-msg');
           msg.hidden = false; msg.textContent = 'Subscribing\u2026';
           try {
             const r = await fetch(f.action, { method: 'POST', body: new FormData(f) });
             const j = await r.json();
-            msg.textContent = j.ok ? 'You are in. The next brief lands in your inbox.' : (j.error || 'Something went wrong.');
+            msg.textContent = j.ok ? 'Check your inbox to confirm your subscription. If you already subscribe, you are all set.' : (j.error || 'Something went wrong.');
           } catch { msg.textContent = 'Something went wrong. Try again.'; }
         });
         </script>
+            <p class="signup-note" id="newsletter-availability">${NEWSLETTER_READY ? "From Qaieo Frontier. Unsubscribe anytime." : "Newsletter signup opens soon. Read the latest articles below."}</p>
+          </div>
+          <a class="hero-explore text-link" href="#frontier">Read the latest articles <span aria-hidden="true">↓</span></a>
+        </div>
+        <button class="motion-control" type="button" aria-label="Pause background motion" hidden>Pause motion <span aria-hidden="true">Ⅱ</span></button>
+        <script type="module" src="ripple.mjs"></script>
+      </section>
+      <section id="frontier" class="frontier" aria-labelledby="frontier-title">
+        <div class="frontier-intro">
+          <p class="eyebrow">The physical economy, in focus</p>
+          <h2 id="frontier-title">Qaieo <span>Frontier</span></h2>
+          <p>Recent awards, commercialization grants and the companies building the physical economy.</p>
+          <a class="frontier-archive text-link" href="https://yeki.ai/qaieo/media">All articles <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="frontier-feed">
+          <div id="frontier-articles"></div>
+          <p id="frontier-status" class="frontier-status" role="status">Loading the latest published articles…</p>
+          <noscript><p>Read the latest publications in the <a href="https://yeki.ai/qaieo/media">Frontier archive</a>.</p></noscript>
+        </div>
+        <script type="module" src="frontier.mjs"></script>
+      </section>
+${AGENDA}
+      <details class="research-archive" id="archive">
+        <summary><span>Earlier research &amp; software releases</span><span aria-hidden="true">+</span></summary>
+        <p class="archive-intro">Qaieo began with quantum computing. These earlier articles retain their original dates, sources and links.</p>
+      <section class="editorial-section" id="research" aria-labelledby="research-title">
+        <div class="section-heading"><p class="eyebrow">From the archive</p><h2 id="research-title">Quantum research</h2><p>Earlier essays and explainers from Qaieo’s quantum research coverage. Original publication dates and sources are retained.</p></div>
+        <div class="article-list">
+${researchCards}
+        </div>
+      </section>
+      <section class="editorial-section" id="news" aria-labelledby="news-title">
+        <div class="section-heading"><p class="eyebrow">From the archive</p><h2 id="news-title">Software releases</h2><p>Historical Perceval release coverage, preserved with its original dates and sources.</p><a class="text-link" href="timeline.html">View the release timeline <span aria-hidden="true">↗</span></a></div>
+        <div class="article-list">
+${newsCards}
+        </div>
+      </section>
+      </details>
+      <script>
+        // Preserve deep links into the original research archive.
+        function revealArchive() {
+          const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+          const archive = target?.closest('.research-archive');
+          if (archive) { archive.open = true; target.scrollIntoView(); }
+        }
+        addEventListener('hashchange', () => { try { revealArchive(); } catch {} });
+        try { revealArchive(); } catch {}
+      </script>
+      <section class="newsletter newsletter-reminder" aria-labelledby="newsletter-title">
+        <div class="newsletter-copy">
+          <p class="eyebrow">Keep the frontier in view</p>
+          <h2 id="newsletter-title">Follow what’s being built.</h2>
+          <p>Awards, commercialization grants and the companies behind them.</p>
+        </div>
+        <a class="button" href="#newsletter">${NEWSLETTER_READY ? "Sign up for newsletter" : "Newsletter details"} <span aria-hidden="true">↗</span></a>
       </section>`, { home: true });
 writeFileSync(join(PUBLIC, "index.html"), labPage);
 writeFileSync(join(PUBLIC, "lab.html"), labPage);
@@ -234,7 +257,7 @@ const releases = posts.filter((p) => p.tags.includes("release"));
 writeFileSync(join(PUBLIC, "timeline.html"), page("Qaieo, Perceval Releases",
   "Perceval release timeline, tracked by Qaieo.",
   `
-      <p class="eyebrow">From the lab</p>
+      <p class="eyebrow">From the archive</p>
       <h1 class="page-title">Release timeline</h1>
       <p class="lede">Perceval releases, newest first, tracked by Qaieo.</p>
       <div class="timeline">
@@ -250,9 +273,9 @@ ${releases.map((p) => `
 
 const about = parseFile(join(SITE_DIR, "about.md"));
 writeFileSync(join(PUBLIC, "about.html"), page("Qaieo, About",
-  "About Qaieo: a research lab studying quantum computing through an underwriting lens.",
+  "About Qaieo: recent awards, commercialization grants and the companies building the physical economy.",
   `
-      <p class="eyebrow">Research lab</p>
+      <p class="eyebrow">Qaieo Frontier</p>
       <h1 class="page-title">${about.title}</h1>
       <div class="prose">${md(about.body)}</div>`));
 
@@ -260,7 +283,7 @@ const disclosures = parseFile(join(SITE_DIR, "disclosures.md"));
 writeFileSync(join(PUBLIC, "disclosures.html"), page("Qaieo, Disclosures",
   "Qaieo disclosures: financial interests and how conflicts are handled.",
   `
-      <p class="eyebrow">Research lab</p>
+      <p class="eyebrow">Qaieo Frontier</p>
       <h1 class="page-title">${disclosures.title}</h1>
       <div class="prose">${md(disclosures.body)}</div>`));
 
@@ -276,9 +299,9 @@ const items = posts.slice(0, 30).map((p) => `
 writeFileSync(join(PUBLIC, "feed.xml"), `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>Qaieo, Quantum Research Lab</title>
+    <title>Qaieo — Research archive</title>
     <link>${SITE_URL}/</link>
-    <description>Qaieo is a research lab studying how quantum computing gets built and financed, with quantum news read through an underwriting lens.</description>
+    <description>Qaieo’s preserved quantum research and software release archive. Current awards and commercialization coverage is available through Qaieo Frontier at qaieo.com.</description>
     <language>en-us</language>
 ${items}
   </channel>

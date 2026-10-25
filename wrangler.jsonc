@@ -1,1 +1,1 @@
-{"assets":{"directory":"./site/public","not_found_handling":"404-page"},"compatibility_date":"2026-10-12","main":"./worker.js","name":"qaieo","vars":{"LOOPS_LIST_ID":"REPLACE_WITH_QAIEO_LIST_ID"}}
+{"assets":{"directory":"./site/public","not_found_handling":"404-page","binding":"ASSETS"},"compatibility_date":"2026-10-12","main":"./worker.js","name":"qaieo","vars":{"KIT_FORM_ID":""}}
