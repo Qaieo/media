@@ -44,11 +44,14 @@ test("unavailable or malformed feeds preserve the archive fallback", async () =>
   }
 });
 
-test("generated root preserves research and lab alias while offering Frontier", () => {
+test("generated signup homepage preserves the research archive, lab alias and Frontier", () => {
   const home = readFileSync(new URL("./public/index.html", import.meta.url), "utf8");
   const lab = readFileSync(new URL("./public/lab.html", import.meta.url), "utf8");
   assert.equal(home, lab);
-  for (const expected of ["Research lab", "Research agenda", "The last photonic framework standing", "Qaieo Frontier", 'href="https://yeki.ai/qaieo/media"', 'type="module" src="frontier.mjs"']) assert.ok(home.includes(expected), expected);
+  for (const expected of ["The physical economy.", "In your inbox.", "Recent awards, commercialization grants and the companies building the physical economy.", "What we cover", "The last photonic framework standing", "Qaieo Frontier", 'href="https://yeki.ai/qaieo/media"', 'type="module" src="frontier.mjs"']) assert.ok(home.includes(expected), expected);
+  assert.equal((home.match(/id="qaieo-subscribe"/g) || []).length, 1);
+  assert.ok(home.indexOf('id="qaieo-subscribe"') < home.indexOf('id="frontier"'));
+  assert.ok(!home.includes("Quantum Research Lab"));
   assert.ok(!home.includes("Follow the contracts awarding the future."));
   assert.ok(!home.includes("First clips publish here"));
 });

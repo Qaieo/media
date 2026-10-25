@@ -1,3 +1,15 @@
+## Current follow-up — October 24, 2026 PDT
+
+The founder superseded the research-lab-first positioning with: **Recent awards, commercialization grants and the companies building the physical economy.** The prepared follow-up uses “The physical economy. In your inbox.” and a single hero signup form. Header navigation is About and Sign up for newsletter; all document pages offer a route to that form. About, coverage, current metadata, footer and disclosure introduction follow the new definition. Original article bodies and dates remain unchanged in a collapsible archive, with working hash links and the identical `/lab.html` compatibility alias. RSS is clearly labelled as the research archive rather than implying it is the current Frontier feed.
+
+`site/ripple.mjs` renders a quiet contour field behind the hero. It uses no video or external animation service. It caps rendering at 30fps and backing-store density at 1.5, uses fewer contours on narrow screens, pauses while hidden/offscreen, supports an explicit pause and paints a static field for reduced motion. Pointer response is slight and ignores touch movement. Canvas failure leaves a fully usable page without the decorative field.
+
+Validation: build, all 12 runtime/feed/motion tests, archive hash navigation, one signup form, desktop and 390px/320px layouts. The original approved logo bytes, article bodies, canonical feed module and subscription endpoint remain unchanged. Local feed fallback is expected because the production feed permits the Qaieo origin, not loopback.
+
+**Publication hold:** live Cloudflare settings still contain a placeholder `LOOPS_LIST_ID` and no `LOOPS_API_KEY` secret. The user has been asked which service to connect. The design is ready for review; newsletter collection and sending have not been activated or represented as working. No real subscription or email send was performed.
+
+---
+
 # Qaieo editorial design refresh
 
 Local implementation based on remote `main` at `9f87600f459d9d54db20fc85e9e41f27c1cfd1c7` (approved white Qaieo logo and favicon, PR #7). Working branch: `codex/qaieo-design-refresh`. This document records local verification, not a production release.

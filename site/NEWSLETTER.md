@@ -1,19 +1,30 @@
 # Qaieo newsletter: EPD workflow
 
-> October 23 website update: the research lab remains the homepage, with a live Frontier feed section. The earlier marketing landing is retained in source but is not the generated homepage. Newsletter activation and sending remain unverified and outside this release. See [the current website path](../docs/frontier-publishing.md).
+> Current website direction: Qaieo covers recent awards, commercialization grants and the companies building the physical economy. The prepared homepage leads with a newsletter signup hero and this definition, followed by the live Frontier feed; earlier quantum research remains a collapsible archive. Production publication is pending the newsletter connection. Sending is not activated by this design change. See [the current website path](../docs/frontier-publishing.md).
 
 Owner: Omid. Scope: the subscribe path on qaieo.com, what happens after signup, what we measure, and how it can take money later. This is the product and engineering contract for the newsletter; editorial rules live in the Yeki repo (`docs/qaieo/newsletter.md`).
 
-## 1. Current state (as of 2026-10-21)
+## Coverage and evidence
+
+The current positioning supersedes research-lab-first descriptions: **Recent awards, commercialization grants and the companies building the physical economy.** Quantum research and release notes remain available as an archive. Existing articles keep their canonical URLs and feed; this positioning update does not change the Yeki publishing workflow or establish a sending cadence.
+
+- Lead with the recipient, awarding body, award date and status, scope of work and primary source. Distinguish an announced award from work delivered.
+- Label contract ceilings and potential values separately from funds obligated, payments received and revenue. Do not present a program-wide budget as one company's award.
+- For commercialization grants, report disclosed conditions, milestones, matching funds and payment stages. State when terms are unavailable; do not imply that a selection or conditional award is cash received or commercial validation.
+- Explain what the company builds and the evidence behind its commercial progress. Separate reported facts from analysis, and retain visible corrections and relevant disclosures.
+
+## 1. Current state (October 24, 2026 PDT)
 
 | Piece | Where | Status |
 | --- | --- | --- |
-| Signup form | `site/landing.mjs` → `#subscribe` | Live in build. Honeypot, hidden `source`, UTM and referrer fields. |
-| Endpoint | `worker.js` `POST /api/subscribe` | Validates email, forwards to Loops `contacts/create` with attribution properties. |
-| List | Loops mailing list `LOOPS_LIST_ID` | **Placeholder in `wrangler.jsonc`.** Signups fail with 502 until the real list id is set. |
-| API key | Wrangler secret `LOOPS_API_KEY` | Must be set with `wrangler secret put LOOPS_API_KEY`. |
-| Site analytics | Cloudflare Web Analytics beacon | Injected only when `CF_BEACON_TOKEN` is set at build time. Not set yet. |
-| Send | Loops | Nothing sends yet. No issue has been emailed. |
+| Signup form | `site/build.mjs` → hero `#newsletter` / form `#qaieo-subscribe` | Prepared locally as the primary CTA; one email field, honeypot, existing status feedback and endpoint. Header and About CTA link here. |
+| Endpoint | `worker.js` `POST /api/subscribe` | Existing implementation validates email and forwards to Loops `contacts/create`. Unchanged in the design update. |
+| List | Live Worker `qaieo`, `LOOPS_LIST_ID` | **Confirmed placeholder** `REPLACE_WITH_QAIEO_LIST_ID` by read-only Cloudflare settings inspection. |
+| API key | Live Worker `qaieo`, `LOOPS_API_KEY` | **Absent**, confirmed by settings bindings and the separate secret-name list (empty). No secret values retrieved. |
+| Signup readiness | Production | **Blocked:** a real list ID and API-key connection are required before advertising the redesigned signup flow as working. No real email submitted. |
+| Sending | Loops | Not configured or verified by this work. No issue sent and no cadence newly promised. |
+
+Current prepared UX: **“The physical economy. In your inbox.”** with **Sign up**, About and newsletter navigation, latest articles, coverage context and an optional research archive. The contour field is decorative, limited to 30fps, paused offscreen/in hidden tabs, and static for reduced-motion users. The approved white artwork is unchanged.
 
 ## 2. Pipeline
 

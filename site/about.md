@@ -4,28 +4,27 @@ title: "About"
 
 ## What is Qaieo
 
-**Qaieo** is a research lab studying how quantum computing gets built and financed. Most quantum coverage asks whether the physics works. Qaieo asks a lender's questions: who is buying, what was promised, when it gets delivered, what it costs to finish, and what happens if it slips.
+**Qaieo** covers recent awards, commercialization grants and the companies building the physical economy.
 
-The lab publishes two things. **Research**: original analysis on contracts, counterparties, milestones, and capital in quantum. **News**: the developments that matter, read through an underwriting lens.
+Qaieo Frontier follows who won the work, what they are building, and what has to happen next. Articles link to public sources and examine the buyers, funding terms, delivery milestones and commercial context behind an announcement.
 
-## Research agenda
+## What we look for
 
-- **Contracts and counterparties.** Who buys quantum systems (governments, national labs, HPC centers, enterprises) and how strong those counterparties are.
-- **Milestones and delivery risk.** Announced timelines versus actual delivery, and what slippage looks like on first-of-kind systems.
-- **Cost to complete.** What it takes to build, install, and operate a quantum system, and how those costs move.
-- **Capital and markets.** Funding rounds, public listings, and program budgets, read for what they mean for credit risk.
+- **Recent awards.** The recipient, buyer, scope and delivery terms. A contract's maximum value is distinct from funds obligated or paid.
+- **Commercialization grants.** What the funding supports, its conditions and the steps toward commercial use. An announced grant does not establish that all funds have been received or milestones met.
+- **Companies building the physical economy.** The products, facilities and infrastructure behind the award, and the evidence of progress from announcement to delivery.
 
-## Where it started
+## The research archive
 
-Qaieo began by tracking photonic quantum computing. After Xanadu archived Strawberry Fields and MrMustard, Quandela's Perceval became the last actively developed open-source photonic quantum framework. Perceval releases are still tracked here.
+Qaieo began with photonic quantum computing. Earlier quantum research, news and Perceval release notes remain available in the homepage's [research archive](index.html#research-title) and the [release timeline](timeline.html).
 
 ## Who runs this
 
-**Omid Izadjou.** I work in fintech and track the physics underneath AI infrastructure: photonics, semiconductors, quantum computing. Quantum hardware is where the physics underneath AI infrastructure meets the hardest underwriting problems: long timelines, first-of-kind builds, and concentrated buyers.
+**Omid Izadjou.** I work in fintech and follow the companies, contracts and technology behind the physical economy.
 
 ## What it isn't
 
-Not affiliated with Quandela or any company it covers. Not investment advice. I have business interests that touch this field; they are listed in full on the [Disclosures](disclosures.html) page.
+Qaieo is a publication from Yeki and reports from public sources. Coverage is not an endorsement, a financing offer or investment advice. Business relationships and the policy for handling conflicts are described on the [Disclosures](disclosures.html) page.
 
 ## Corrections
 
