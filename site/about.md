@@ -16,7 +16,7 @@ Qaieo Frontier follows who won the work, what they are building, and what has to
 
 ## How the complete product fits together
 
-- **Toekyn generates verified-work data** from physical operations, linking TVW outcomes to source evidence, review, corrections and permissions.
+- **Toekyn generates Verified Work™ data** from physical operations, linking Verified Work™ outcomes to source evidence, review, corrections and permissions.
 - **Qaieo owns simulation, reinforcement learning, evaluations and machine learning**, combining verified-work and simulation data to build research datasets and models. Qaieo Frontier is the publication arm, reporting on the companies building the physical economy.
 - **Yeki brings those inputs and research outputs together with external API data** for underwriting and purchase-order and milestone financing workflows.
 
