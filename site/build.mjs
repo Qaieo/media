@@ -218,7 +218,7 @@ ${AGENDA}
       <section class="agenda" id="ecosystem" aria-labelledby="ecosystem-title">
         <div class="section-heading"><p class="eyebrow">The connected product</p><h2 id="ecosystem-title">Work data. Research. Financing.</h2></div>
         <ul>
-          <li><strong>Toekyn generates verified-work data.</strong> Physical work linked to TVW outcomes, source evidence, review and corrections.</li>
+          <li><strong>Toekyn generates Verified Work™ data.</strong> Physical work linked to Verified Work™ outcomes, source evidence, review and corrections.</li>
           <li><strong>Qaieo owns simulation, RL, evaluations and ML.</strong> Research datasets and models combine verified-work data with simulation data.</li>
           <li><strong>Yeki brings the inputs together.</strong> Verified work, Qaieo research and external API context inform the underwriting and financing direction.</li>
         </ul>
