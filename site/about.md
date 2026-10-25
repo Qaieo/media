@@ -4,15 +4,21 @@ title: "About"
 
 ## What is Qaieo
 
-**Qaieo** covers recent awards, commercialization grants and the companies building the physical economy.
+**Qaieo** covers awards, milestones and contracts shaping the physical economy.
 
-Qaieo Frontier follows who won the work, what they are building, and what has to happen next. Articles link to public sources and examine the buyers, funding terms, delivery milestones and commercial context behind an announcement.
+Qaieo Frontier puts early-stage and scaling companies at the center: who won the work, what they are building, and what has to happen next. Articles link to public sources and examine buyers, funding terms, delivery milestones and commercial progress. Established companies appear when their work defines an industry or changes the path for emerging companies.
+
+## Industries we follow
+
+Our core industries are **robotics**, **photonics**, and **aerospace & defense**, including space. Supporting coverage follows **energy** and **industry & infrastructure**. **Emerging frontiers** brings together other physical technologies moving toward commercial use.
+
+Each industry has a [dedicated section](index.html#industries) that updates as articles are published. The reporting lens stays on awards, milestones and contracts, including grants and prizes.
 
 ## What we look for
 
-- **Recent awards.** The recipient, buyer, scope and delivery terms. A contract's maximum value is distinct from funds obligated or paid.
-- **Commercialization grants.** What the funding supports, its conditions and the steps toward commercial use. An announced grant does not establish that all funds have been received or milestones met.
-- **Companies building the physical economy.** The products, facilities and infrastructure behind the award, and the evidence of progress from announcement to delivery.
+- **Awards and contracts.** The recipient, buyer, scope and delivery terms. A contract's maximum value is distinct from funds obligated or paid.
+- **Commercial milestones.** Product launches, deployments, manufacturing scale and delivery progress, with clear evidence and dates.
+- **Grants and prizes.** What the funding supports, its conditions and the steps toward commercial use. An announced award does not establish that all funds have been received or milestones met.
 
 ## How the complete product fits together
 

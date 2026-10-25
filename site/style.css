@@ -108,6 +108,9 @@ article.frontier-post:last-child { border-bottom: 1px solid var(--border); }
 .frontier-post .post-source { margin: 0; padding: 0; font-size: 12px; color: var(--muted); line-height: 1.6; }
 
 /* Research and source material remain full, readable articles with stable anchors. */
+.industry-index { padding: 0 0 40px; }
+.industry-index .section-heading > p:not(.eyebrow) { max-width: 65ch; }
+.industry-nav { display: flex; flex-wrap: wrap; gap: 8px 28px; }
 .agenda { padding: 64px 0; }
 .section-heading h2 { font-size: clamp(32px, 3vw, 44px); margin-bottom: 20px; }
 .section-heading .eyebrow { margin-bottom: 16px; }
