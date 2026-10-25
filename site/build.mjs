@@ -78,6 +78,7 @@ for (const f of readdirSync(join(SITE_DIR, "fonts"))) copyFileSync(join(SITE_DIR
 
 // Frontier leads the homepage; the original article anchors remain available.
 copyFileSync(join(SITE_DIR, "frontier.mjs"), join(PUBLIC, "frontier.mjs"));
+copyFileSync(join(SITE_DIR, "frontier-data.mjs"), join(PUBLIC, "frontier-data.mjs"));
 copyFileSync(join(SITE_DIR, "ripple.mjs"), join(PUBLIC, "ripple.mjs"));
 mkdirSync(join(PUBLIC, "art"), { recursive: true });
 for (const f of readdirSync(join(SITE_DIR, "art"))) copyFileSync(join(SITE_DIR, "art", f), join(PUBLIC, "art", f));
@@ -199,14 +200,15 @@ const labPage = page("Qaieo — The physical economy, in focus",
       </section>
       <section id="frontier" class="frontier" aria-labelledby="frontier-title">
         <div class="frontier-intro">
-          <p class="eyebrow">Qaieo Frontier</p>
-          <h2 id="frontier-title">The latest <span>from the frontier.</span></h2>
-          <p>Public sources. Clear context. The work and funding behind the headlines.</p>
-          <a class="frontier-archive text-link" href="https://yeki.ai/qaieo/media">Read the Frontier archive <span aria-hidden="true">↗</span></a>
+          <p class="eyebrow">The physical economy, in focus</p>
+          <h2 id="frontier-title">Qaieo <span>Frontier</span></h2>
+          <p>Recent awards, commercialization grants and the companies building the physical economy.</p>
+          <a class="frontier-archive text-link" href="https://yeki.ai/qaieo/media">All articles <span aria-hidden="true">↗</span></a>
         </div>
         <div class="frontier-feed">
-          <p id="frontier-status" class="frontier-status" role="status">Read the latest articles in the Frontier archive.</p>
           <div id="frontier-articles"></div>
+          <p id="frontier-status" class="frontier-status" role="status">Loading the latest published articles…</p>
+          <noscript><p>Read the latest publications in the <a href="https://yeki.ai/qaieo/media">Frontier archive</a>.</p></noscript>
         </div>
         <script type="module" src="frontier.mjs"></script>
       </section>

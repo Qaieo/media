@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
-const { default: worker } = await import('data:text/javascript;base64,' + Buffer.from(await readFile(new URL('../worker.js', import.meta.url))).toString('base64'));
+import worker from '../worker.js';
 const env = { KIT_API_KEY: 'test-only', KIT_FORM_ID: '123', ASSETS: { fetch: () => new Response('asset') } };
 function request(fields = {email:'reader@example.test'}) {
  return new Request('https://qaieo.com/api/subscribe', {method:'POST', body:new URLSearchParams(fields)});

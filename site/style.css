@@ -100,13 +100,17 @@ header.site { min-height: 104px; display: flex; align-items: center; justify-con
 .frontier h2 span { display: block; }
 .frontier-intro > p:not(.eyebrow) { font-size: 16px; color: var(--muted); max-width: 31ch; }
 .frontier-archive { margin-top: 8px; }
-.frontier-status { margin: 0 0 20px; color: var(--muted); font: 11px/1.7 var(--mono); }
-#frontier-articles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; }
+.frontier-status { margin: 22px 0 0; color: var(--muted); font: 11px/1.7 var(--mono); }
+#frontier-articles { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
 article.frontier-post { display: flex; flex-direction: column; border-top: 1px solid var(--border); padding: 22px 0; margin: 0; }
-.frontier-post .post-meta { gap: 6px 10px; margin-bottom: 18px; }
+.frontier-post .post-meta { justify-content: space-between; text-transform: uppercase; letter-spacing: .06em; gap: 6px 10px; margin-bottom: 18px; }
 article.frontier-post h3 { font-size: clamp(20px, 1.8vw, 25px); letter-spacing: -.025em; line-height: 1.24; margin-bottom: 22px; overflow-wrap: anywhere; }
-.frontier-post h3 a { display: inline-block; }
-.frontier-post .post-source { margin-top: auto; padding-top: 8px; line-height: 1.6; }
+.frontier-post h3 a { display: flex; justify-content: space-between; gap: 24px; align-items: baseline; }
+.frontier-post .article-arrow { flex-shrink: 0; color: var(--muted); font-size: 24px; }
+.frontier-post h3 a:hover .article-arrow { color: var(--accent); }
+.frontier-post .post-meta .tag { color: var(--accent); }
+article.frontier-post:last-child { border-bottom: 1px solid var(--border); }
+.frontier-post .post-source { margin: 0; padding: 0; font-size: 12px; color: var(--muted); line-height: 1.6; }
 
 /* Research and source material remain full, readable articles with stable anchors. */
 .agenda { padding: 64px 0; }

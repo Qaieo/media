@@ -1,9 +1,13 @@
 // Qaieo worker: serves static assets, plus POST /api/subscribe which adds the
 // email to the Qaieo Kit form. KIT_API_KEY is a Worker secret;
 // KIT_FORM_ID is a non-secret form ID.
+import { frontierResponse } from "./site/frontier-proxy.mjs";
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    if (url.pathname === "/api/frontier") return frontierResponse(request);
 
     if (url.pathname === "/api/subscribe") {
       if (request.method !== "POST") {
