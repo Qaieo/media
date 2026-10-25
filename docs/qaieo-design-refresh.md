@@ -2,9 +2,9 @@
 
 The founder superseded the research-lab-first positioning with: **Recent awards, commercialization grants and the companies building the physical economy.** The prepared follow-up uses “The physical economy. In your inbox.” and a single hero signup form. Header navigation is About and Sign up for newsletter; all document pages offer a route to that form. About, coverage, current metadata, footer and disclosure introduction follow the new definition. Original article bodies and dates remain unchanged in a collapsible archive, with working hash links and the identical `/lab.html` compatibility alias. RSS is clearly labelled as the research archive rather than implying it is the current Frontier feed.
 
-The homepage now uses a Higgsfield-generated quantum particle field, with a local eight-second muted loop, a live canvas fallback and a still for reduced motion. The right editorial aside was removed to give the field breathing room; coverage remains below. See [particle field implementation and provenance](qaieo-quantum-field.md).
+The homepage now uses a Higgsfield-generated dark polished-gold quantum particle field with cursor glide and local particle displacement, with a local eight-second muted loop, a live canvas fallback and a still for reduced motion. The right editorial aside was removed to give the field breathing room; coverage remains below. See [particle field implementation and provenance](qaieo-quantum-field.md).
 
-Validation: build and all 21 runtime/feed/motion/signup tests pass. Browser checks verify real advancing video playback, pause/resume, desktop and narrow layouts. The approved logo, original article bodies and canonical feed module remain unchanged.
+Validation: build and all 25 runtime/feed/motion/signup tests pass. Browser checks verify real advancing video playback, pause/resume, desktop and narrow layouts. The approved logo, original article bodies and canonical feed module remain unchanged.
 
 **Publication hold:** Kit is selected. Its server-side integration is prepared, but account login, real form ID, API-key connection and an authorized inbox confirmation test remain pending. No real subscription or email send has occurred. This particle-field update is local preview work, not a production release.
 
