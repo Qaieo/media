@@ -1,0 +1,52 @@
+{
+  "asset": "Ivory Platinum",
+  "approved_job_id": "305670ba-d3f2-4913-803a-7f0ed1ecffab",
+  "approved_source_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3KtYbXpKrOSUMT6824aQwICRjQF/hf_20261026_020817_305670ba-d3f2-4913-803a-7f0ed1ecffab.mp4",
+  "source_sha256": "4309c6fa9105141963e47d44beff54badee9f6727b5b7612ecfbd0c87c421eee",
+  "web": {
+    "file": "ivory.mp4",
+    "width": 1280,
+    "height": 464,
+    "frames": 145,
+    "fps": 24.0,
+    "duration_seconds": 6.041666666666667,
+    "codec": "H264",
+    "audio": false,
+    "timestamps_identical_to_source": true,
+    "poster": "ivory.webp",
+    "body_text_contrast_minimum": 4.747472186932682,
+    "contrast_assumptions": {
+      "scrim": "rgb(246 240 230 / 58%)",
+      "foreground": "#54474d"
+    },
+    "endpoint_rgb_mean_absolute_difference": 6.397786458333333
+  },
+  "processing": {
+    "crop": {
+      "x": 0,
+      "y": 98,
+      "width": 1920,
+      "height": 696
+    },
+    "annotation_removal": "Fixed expanded text and leader masks with Telea radius 3, then crop and downscale; no color grading, regeneration or retiming.",
+    "loop": "Original endpoints retained; no seamless-loop claim."
+  },
+  "files": {
+    "ivory-platinum-approved-source.mp4": {
+      "bytes": 19980416,
+      "sha256": "4309c6fa9105141963e47d44beff54badee9f6727b5b7612ecfbd0c87c421eee"
+    },
+    "ivory.mp4": {
+      "bytes": 1075697,
+      "sha256": "72263c9d7f8478720791cfc332ee4db33c6b0230c55804dce8a72d486ff9e2a3"
+    },
+    "ivory.webp": {
+      "bytes": 46716,
+      "sha256": "d3af76b149bdb64a99b20c93d6cb49ffec924368898a75f3d21f77d5457f2f83"
+    },
+    "ivory-platinum-approved-reference.png": {
+      "bytes": 1372193,
+      "sha256": "bbc4188b5a6df3e7e48bb34b4a28fcbc38f78fd9fe78f31b5a41cf8e71501abb"
+    }
+  }
+}

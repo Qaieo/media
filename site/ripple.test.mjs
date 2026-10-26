@@ -71,7 +71,7 @@ function mount({ reduce = false, canvasSupported = true } = {}) {
   };
 }
 
-test('one gold field renders immediately and stays still until pointer interaction', () => {
+test('one branded field renders immediately and stays still until pointer interaction', () => {
   const view = mount();
   assert.ok(view.classes.has('field-ready'));
   assert.ok(view.fills > 0);
@@ -208,11 +208,12 @@ test('missing canvas support leaves the static fallback unobstructed', () => {
   assert.equal(view.events.has('pointermove'), false);
 });
 
-test('built homepage uses one decorative canvas without video or pause controls', () => {
+test('built homepage uses approved platinum material with native pause control', () => {
   const html = readFileSync(new URL('./public/index.html', import.meta.url), 'utf8');
   const hero = html.match(/<section\b[^>]*class="hero"[\s\S]*?<\/section>/)?.[0];
-  assert.ok(hero, 'build the homepage before checking its shipped hero');
-  assert.equal((hero.match(/<canvas\b/g) || []).length, 1);
-  assert.doesNotMatch(hero, /<video\b|motion-control|pause (?:background )?motion|resume (?:background )?motion/i);
-  assert.match(hero, /class="wave-visual" aria-hidden="true"/);
+  assert.ok(hero);
+  assert.equal((hero.match(/data-platinum-source=/g) || []).length, 1);
+  assert.doesNotMatch(hero, /<canvas\b|src="ripple.mjs"/);
+  assert.match(hero, /src="art\/ivory.webp"/);
+  assert.match(hero, /data-platinum-toggle aria-pressed="false" hidden/);
 });

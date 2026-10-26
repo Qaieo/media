@@ -5,17 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Qaieo — The physical economy, in focus</title>
   <meta name="description" content="Awards, milestones and contracts shaping the physical economy. Early-stage and scaling companies in robotics, photonics, aerospace &amp; defense and beyond." />
-  <meta name="theme-color" content="#080a0c" />
+  <meta name="theme-color" content="#143D70" />
   <link rel="preload" href="fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/png" href="logos/qaieo-avatar.png" />
+  <link rel="icon" type="image/svg+xml" href="logos/qaieo-favicon-ivory.svg" />
+  <link rel="icon" type="image/svg+xml" href="logos/qaieo-favicon-dark.svg" media="(prefers-color-scheme: dark)" />
   <link rel="alternate" type="application/rss+xml" title="Qaieo" href="feed.xml" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="wrap">
     <header class="site">
-      <a href="index.html" class="home-link" aria-label="Qaieo home"><img class="brand-logo" src="logos/qaieo-logo-white.svg" alt="Qaieo" width="1544" height="576" /></a>
+      <a href="index.html" class="home-link" aria-label="Qaieo home"><img class="brand-logo" src="logos/qaieo-lockup-animated.svg" alt="Qaieo" width="1544" height="576" /></a>
 
     <nav class="nav" aria-label="Primary">
       <a href="about.html">About</a>
@@ -26,9 +27,8 @@
     <main id="main" class="lab-page">
 
       <section class="hero" id="newsletter" aria-labelledby="lab-title">
-        <div class="wave-visual" aria-hidden="true">
-          <img class="wave-poster" src="art/quantum-field-gold.webp" alt="" width="1600" height="905" decoding="async" />
-          <canvas class="ripple-field"></canvas>
+        <div class="wave-visual platinum-material" aria-hidden="true" data-platinum-source="art/ivory.mp4">
+          <img class="wave-poster" src="art/ivory.webp" alt="" width="1280" height="464" decoding="async" />
         </div>
         <div class="hero-copy">
           <p class="eyebrow"><span class="square" aria-hidden="true"></span>Qaieo Frontier</p>
@@ -61,8 +61,8 @@
           </div>
           <a class="hero-explore text-link" href="#frontier">Read the latest articles <span aria-hidden="true">↓</span></a>
         </div>
-        <p class="field-hint" aria-hidden="true"><span>↗</span> Move to shape the field</p>
-        <script type="module" src="ripple.mjs"></script>
+        <button class="platinum-control" type="button" data-platinum-toggle aria-pressed="false" hidden>Pause background animation</button>
+        <script type="module" src="platinum.mjs"></script>
       </section>
       <section id="frontier" class="frontier" aria-labelledby="frontier-title">
         <div class="frontier-intro">
