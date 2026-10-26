@@ -83,6 +83,7 @@ for (const f of readdirSync(join(SITE_DIR, "fonts"))) copyFileSync(join(SITE_DIR
 copyFileSync(join(SITE_DIR, "frontier.mjs"), join(PUBLIC, "frontier.mjs"));
 copyFileSync(join(SITE_DIR, "frontier-data.mjs"), join(PUBLIC, "frontier-data.mjs"));
 copyFileSync(join(SITE_DIR, "ripple.mjs"), join(PUBLIC, "ripple.mjs"));
+copyFileSync(join(SITE_DIR, "platinum.mjs"), join(PUBLIC, "platinum.mjs"));
 mkdirSync(join(PUBLIC, "art"), { recursive: true });
 for (const f of readdirSync(join(SITE_DIR, "art"))) copyFileSync(join(SITE_DIR, "art", f), join(PUBLIC, "art", f));
 
@@ -189,9 +190,8 @@ const labPage = page("Qaieo — The physical economy, in focus",
   "Awards, milestones and contracts shaping the physical economy. Early-stage and scaling companies in robotics, photonics, aerospace &amp; defense and beyond.",
   `
       <section class="hero" id="newsletter" aria-labelledby="lab-title">
-        <div class="wave-visual" aria-hidden="true">
-          <img class="wave-poster" src="art/quantum-field-gold.webp" alt="" width="1600" height="905" decoding="async" />
-          <canvas class="ripple-field"></canvas>
+        <div class="wave-visual platinum-material" aria-hidden="true" data-platinum-source="art/ivory.mp4">
+          <img class="wave-poster" src="art/ivory.webp" alt="" width="1280" height="464" decoding="async" />
         </div>
         <div class="hero-copy">
           <p class="eyebrow"><span class="square" aria-hidden="true"></span>Qaieo Frontier</p>
@@ -224,8 +224,8 @@ const labPage = page("Qaieo — The physical economy, in focus",
           </div>
           <a class="hero-explore text-link" href="#frontier">Read the latest articles <span aria-hidden="true">↓</span></a>
         </div>
-        <p class="field-hint" aria-hidden="true"><span>↗</span> Move to shape the field</p>
-        <script type="module" src="ripple.mjs"></script>
+        <button class="platinum-control" type="button" data-platinum-toggle aria-pressed="false" hidden>Pause background animation</button>
+        <script type="module" src="platinum.mjs"></script>
       </section>
       <section id="frontier" class="frontier" aria-labelledby="frontier-title">
         <div class="frontier-intro">
