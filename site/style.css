@@ -72,7 +72,7 @@ header.site { min-height: 104px; display: flex; align-items: center; justify-con
 .ripple-field { opacity: 0; }
 .field-ready .ripple-field { opacity: 1; }
 .field-ready .wave-poster { visibility: hidden; }
-.hero::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(90deg, #111111 3%, rgba(17,17,17,.97) 38%, rgba(17,17,17,.92) 48%, rgba(17,17,17,.2) 70%, transparent 84%); }
+.hero::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(90deg, #111111, rgb(17 17 17/.94) min(674px, calc(66% + 24px)), transparent calc(min(674px, calc(66% + 24px)) + 200px)); }
 .field-hint { display: none; position: absolute; right: 0; bottom: 22px; margin: 0; color: var(--muted); font: 9px/1.5 var(--mono); letter-spacing: .08em; text-transform: uppercase; pointer-events: none; }
 .field-hint span { margin-right: 10px; color: var(--accent-light); font-size: 14px; }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
