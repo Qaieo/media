@@ -1,19 +1,12 @@
 # Qaieo website branding
 
-Use the approved outlined logo in `logos/qaieo-logo-white.svg` on this dark site.
-The artwork comes from the shared 25 October 2026 logo kit and includes its
-own lettering. Do not retype the wordmark or substitute a font for it.
+Approved 25 October 2026 dynamic brand kit; website application requested by Omid.
 
-The shared header uses a 32px logo canvas height with proportional width at
-all desktop and mobile widths. The home link has 8px padding around the asset
-and a minimum 44px target (48px total with the logo and padding). These values
-are the `--brand-logo-height` and `--brand-clear-space` CSS tokens.
+- Primary: #143D70; shared champagne #D8B77A, warm ivory #F6F0E6 and matte black #111111. Lighter blue/green text tints keep small labels readable on dark surfaces.
+- Platinum animated SVG lockups preserve the kit’s exact outlined geometry and colors. Web derivatives play a single four-second sweep, then stop; reduced motion shows the static base artwork. The original six-second looping source remains in the complete brand kit.
+- Logo canvas: 32px high, proportional width, 8px clear space and a 48px home target.
+- Self-hosted Geist and Geist Mono retain the included SIL Open Font License.
+- Browser favicons use static approved marks, with ivory/dark canvases selected by browser color scheme.
+- Pages retain their content, navigation, forms and data behavior. Company logos retain their own accent color in ecosystem cards.
 
-Ordinary UI and reading text use the existing self-hosted Geist variable font.
-Technical labels and data use Geist Mono. The bundled SIL Open Font License is
-in `fonts/LICENSE.txt`. The logo lettering is independent of these text fonts.
-
-Edit `build.mjs` and `style.css`, then run `node site/build.mjs` with the supported
-Node runtime. All published pages use that shared template. Keep the generated
-`site/public/` files in sync. Check the logo, hit area, loaded font, and horizontal
-overflow at desktop and narrow mobile widths before publication.
+Canonical local kit: `brand-assets/qaieo/brand-kit-2026-10-25/` in the company project.

@@ -108,17 +108,18 @@ function page(title, desc, body, { home = false } = {}) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${title}</title>
   <meta name="description" content="${desc}" />
-  <meta name="theme-color" content="#080a0c" />
+  <meta name="theme-color" content="#143D70" />
   <link rel="preload" href="fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/png" href="logos/qaieo-avatar.png" />
+  <link rel="icon" type="image/svg+xml" href="logos/qaieo-favicon-ivory.svg" />
+  <link rel="icon" type="image/svg+xml" href="logos/qaieo-favicon-dark.svg" media="(prefers-color-scheme: dark)" />
   <link rel="alternate" type="application/rss+xml" title="Qaieo" href="feed.xml" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="wrap">
     <header class="site">
-      <a href="index.html" class="home-link" aria-label="Qaieo home"><img class="brand-logo" src="logos/qaieo-logo-white.svg" alt="Qaieo" width="1544" height="576" /></a>
+      <a href="index.html" class="home-link" aria-label="Qaieo home"><img class="brand-logo" src="logos/qaieo-lockup-animated.svg" alt="Qaieo" width="1544" height="576" /></a>
 ${NAV}
     </header>
     <main id="main" class="${home ? "lab-page" : "document-page"}">

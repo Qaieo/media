@@ -71,7 +71,7 @@ function mount({ reduce = false, canvasSupported = true } = {}) {
   };
 }
 
-test('one gold field renders immediately and stays still until pointer interaction', () => {
+test('one branded field renders immediately and stays still until pointer interaction', () => {
   const view = mount();
   assert.ok(view.classes.has('field-ready'));
   assert.ok(view.fills > 0);

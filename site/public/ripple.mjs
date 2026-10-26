@@ -75,7 +75,7 @@ if (context && hero) {
       const points = buckets[index];
       if (!points.length) continue;
       const alpha = (index % 12) / 12;
-      context.fillStyle = index < 12 ? `rgba(202,173,108,${alpha})` : `rgba(244,228,185,${alpha * .95})`;
+      context.fillStyle = index < 12 ? `rgba(91,155,224,${alpha})` : `rgba(216,183,122,${alpha * .95})`;
       context.beginPath();
       for (let i = 0; i < points.length; i += 3) {
         context.moveTo(points[i] + points[i + 2], points[i + 1]);
